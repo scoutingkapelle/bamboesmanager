@@ -1,0 +1,6 @@
+uuid.invalid=Error: invalid UUID
+cat.not_found=Error: category not found
+person.not_found=Error: person not found
+organisation.not_found=Error: organisation not found
+group.not_found=Error: group not found
+registration.not_found=Error: registration not found
