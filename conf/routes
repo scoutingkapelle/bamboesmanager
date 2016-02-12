@@ -22,6 +22,7 @@ GET        /api/registrations            @controllers.Registrations.all
 GET        /api/registrations/:id        @controllers.Registrations.get(id)
 
 # Map static resources from the /public folder to the /assets URL path
+GET        /webjars/*file                controllers.WebJarAssets.at(file)
 GET        /assets/*file                 controllers.Assets.at(path="/public", file)
 
     
