@@ -14,7 +14,9 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
   "org.webjars" %% "webjars-play" % "2.4.0-1",
   "org.webjars" % "bootstrap" % "3.3.6",
-  "org.webjars" % "bootstrap-table" % "1.9.1"
+  "org.webjars" % "bootstrap-table" % "1.9.1",
+  "com.mohiva" %% "play-silhouette" % "3.0.4",
+  "com.mohiva" %% "play-silhouette-testkit" % "3.0.4" % "test"
 )
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
