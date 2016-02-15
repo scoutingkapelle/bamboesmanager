@@ -1,9 +1,9 @@
-package dao
+package models.daos
 
 import java.util.UUID
 import javax.inject.Inject
 
-import dao.tables.{PasswordInfo, PasswordTable}
+import models.daos.tables.{PasswordInfo, PasswordTable}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._

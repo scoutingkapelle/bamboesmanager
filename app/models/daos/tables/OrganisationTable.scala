@@ -1,4 +1,4 @@
-package dao.tables
+package models.daos.tables
 
 import java.util.UUID
 
