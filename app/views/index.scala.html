@@ -1,7 +1,9 @@
-@(message: String)
+@(user: Option[models.User])(implicit messages: Messages)
 
-@main("Welcome to Play") {
-
-    @play20.welcome(message)
-
+@main(Messages("title"), user) {
+    <div class="container">
+        <div class="well">
+            <h1>@Messages("title")</h1>
+        </div>
+    </div>
 }
