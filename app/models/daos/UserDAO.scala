@@ -3,22 +3,22 @@ package models.daos
 import java.util.UUID
 import javax.inject.Inject
 
-import models.daos.tables.UserTable
+import com.mohiva.play.silhouette.api.LoginInfo
+import com.mohiva.play.silhouette.api.services.IdentityService
 import models.User
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.driver.JdbcProfile
-import slick.driver.PostgresDriver.api._
+import models.daos.tables.DAOSlick
+import play.api.db.slick.DatabaseConfigProvider
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent.Future
 
-class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
+class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends IdentityService[User] with DAOSlick {
 
-  private val users = TableQuery[UserTable]
+  import driver.api._
 
-  def all: Future[Seq[User]] = db.run(users.result)
+  def find(id: UUID): Future[Option[User]] = db.run(users.filter(_.id === id).result.headOption)
 
-  def get(id: UUID): Future[Option[User]] = db.run(users.filter(_.id === id).result.headOption)
+  def retrieve(loginInfo: LoginInfo): Future[Option[User]] = db.run(users.filter(_.email === loginInfo.providerKey).result.headOption)
 
-  def save(user: User) = db.run(users.insertOrUpdate(user))
+  def save(user: User): Future[User] = db.run(users.insertOrUpdate(user)).map(_ => user)
 }
