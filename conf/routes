@@ -3,7 +3,7 @@
 
 # Home page
 GET         /                             @controllers.Application.index
-GET         /dashboard                    @controllers.Application.dashboard
+GET         /register                     @controllers.Application.register
 
 # Authentiaction
 GET         /signin                       @controllers.Application.signIn
@@ -12,9 +12,22 @@ GET         /signup                       @controllers.Application.signUp
 POST        /signup                       @controllers.SignUp.signUp
 POST        /authenticate                 @controllers.Authentication.authenticate
 
+# Admin pages
+GET         /dashboard                    @controllers.Application.dashboard
+
+GET         /categories                   @controllers.Categories.categories
+
+GET         /groups                       @controllers.Groups.groups
+GET         /groups/:id                   @controllers.Groups.group(id)
+
+GET         /organisations                @controllers.Organisations.organisations
+GET         /organisations/:id            @controllers.Organisations.organisation(id)
+
+GET         /registrations                @controllers.Registrations.registrations
+
 # API
-GET         /api/persons                  @controllers.Persons.all
-GET         /api/persons/:id              @controllers.Persons.get(id)
+GET         /api/categories               @controllers.Categories.all
+GET         /api/categories/:id           @controllers.Categories.get(id)
 
 GET         /api/groups                   @controllers.Groups.all
 GET         /api/groups/:id               @controllers.Groups.get(id)
@@ -22,8 +35,8 @@ GET         /api/groups/:id               @controllers.Groups.get(id)
 GET         /api/organisations            @controllers.Organisations.all
 GET         /api/organisations/:id        @controllers.Organisations.get(id)
 
-GET         /api/categories               @controllers.Categories.all
-GET         /api/categories/:id           @controllers.Categories.get(id)
+GET         /api/persons                  @controllers.Persons.all
+GET         /api/persons/:id              @controllers.Persons.get(id)
 
 GET         /api/registrations            @controllers.Registrations.all
 GET         /api/registrations/:id        @controllers.Registrations.get(id)
@@ -31,5 +44,3 @@ GET         /api/registrations/:id        @controllers.Registrations.get(id)
 # Map static resources from the /public folder to the /assets URL path
 GET         /webjars/*file                controllers.WebJarAssets.at(file)
 GET         /assets/*file                 controllers.Assets.at(path="/public", file)
-
-    

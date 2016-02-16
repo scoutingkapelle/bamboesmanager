@@ -14,7 +14,6 @@ trait DBTableDefinitions {
   val users = TableQuery[Users]
   val passwords = TableQuery[Passwords]
 
-
   class Users(tag: Tag) extends Table[User](tag, "users") {
     def * = (id, name, email) <>(User.tupled, User.unapply)
 

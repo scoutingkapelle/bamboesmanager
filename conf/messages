@@ -1,4 +1,5 @@
 title = Actie Bamboes
+dashboard = Dashboard
 
 uuid.invalid=Error: invalid UUID
 category.not_found=Error: category not found
@@ -15,7 +16,7 @@ user.exists = Er bestaat al een gebruiker met dit emailadres!
 sign.up.title = Inschrijven
 sign.in.title = Inloggen
 
-welcome.signed.in = Welkom, je bent nu ingelogd!
+welcome.signed.in = Welkom, je bent nu ingelogd
 
 sign.up.account = Nieuw account aanmaken
 sign.in.credentials = Log in met je gegevens
@@ -23,8 +24,26 @@ sign.in.credentials = Log in met je gegevens
 error = Error!
 home = Home
 name = Naam
+age = Leeftijd
 email = Email
 password = Wachtwoord
 sign.up = Inschrijven
 sign.in = Inloggen
 sign.out = Uitloggen
+
+organisations = Verenigingen
+organisation = Vereniging
+groups = Groepen
+group = Groep
+categories = Stands
+category = Stand
+registrations = Registraties
+register = Registreren
+persons = Medewerkers
+person = Medewerker
+friday = Vrijdag
+saturday = Zaterdag
+sorting = Sorteren
+team.leader = Teamleider
+yes = Ja
+no = Nee

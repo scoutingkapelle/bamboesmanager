@@ -3,8 +3,8 @@ package models.daos
 import java.util.UUID
 import javax.inject.Inject
 
-import models.daos.tables._
 import models._
+import models.daos.tables._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
@@ -31,11 +31,9 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
     db.run(query.result).map(rows => rows.map {
       case (r, p, g, o, c) =>
-        val category = Category(c.id, c.name)
-        val organisation = Organisation(o.id, o.name)
-        val group = Group(g.id, g.name, organisation)
+        val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, category)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, false)
     })
   }
 
@@ -50,11 +48,9 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
     db.run(query.result.headOption).map(rows => rows.map {
       case (r, p, g, o, c) =>
-        val category = Category(c.id, c.name)
-        val organisation = Organisation(o.id, o.name)
-        val group = Group(g.id, g.name, organisation)
+        val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, category)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, false)
     })
   }
 

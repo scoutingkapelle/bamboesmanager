@@ -17,6 +17,10 @@ class Application @Inject()(val messagesApi: MessagesApi, val env: Environment[U
     Future.successful(Ok(views.html.index(request.identity)))
   }
 
+  def register = UserAwareAction.async { implicit request =>
+    Future.successful(Ok(views.html.register(request.identity)))
+  }
+
   def dashboard = SecuredAction.async { implicit request =>
     Future.successful(Ok(views.html.dashboard(request.identity)))
   }

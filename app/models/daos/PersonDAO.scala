@@ -3,8 +3,8 @@ package models.daos
 import java.util.UUID
 import javax.inject.Inject
 
-import models.daos.tables.{DBPerson, GroupTable, OrganisationTable, PersonTable}
 import models._
+import models.daos.tables.{DBPerson, GroupTable, OrganisationTable, PersonTable}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
@@ -28,8 +28,7 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
     db.run(query.result).map(rows => rows.map {
       case (p, g, o) =>
-        val organisation = Organisation(o.id, o.name)
-        val group = Group(g.id, g.name, organisation)
+        val group = Group(g.id, g.name, o)
         Person(p.id, p.name, p.email, p.age, group)
     })
   }
@@ -43,8 +42,7 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
     db.run(query.result.headOption).map(rows => rows.map {
       case (p, g, o) =>
-        val organisation = Organisation(o.id, o.name)
-        val group = Group(g.id, g.name, organisation)
+        val group = Group(g.id, g.name, o)
         Person(p.id, p.name, p.email, p.age, group)
     })
   }

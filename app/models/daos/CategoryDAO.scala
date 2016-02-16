@@ -13,6 +13,7 @@ import scala.concurrent.Future
 
 class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends HasDatabaseConfigProvider[JdbcProfile] {
+
   private val categories = TableQuery[CategoryTable]
 
   def all: Future[Seq[Category]] = db.run(categories.result)

@@ -1,0 +1,17 @@
+@(categories: Seq[Category], user: models.User)(implicit messages: Messages)
+
+@main(Messages("categories"), Some(user)) {
+    <div class="container">
+        <h1>@Messages("categories")</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>@Messages("category")</th>
+            </tr>
+            @for(category <- categories) {
+                <tr>
+                    <td>@category.name</td>
+                </tr>
+            }
+        </table>
+    </div>
+}

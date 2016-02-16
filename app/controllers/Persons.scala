@@ -3,27 +3,30 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
+import com.mohiva.play.silhouette.api.{Environment, Silhouette}
+import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import models.daos._
-import models.{Group, Organisation, Person}
-import play.api.Play.current
-import play.api.i18n.Messages
-import play.api.i18n.Messages.Implicits._
+import models.{Group, Organisation, Person, User}
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json._
-import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
-class Persons @Inject()(personDAO: PersonDAO) extends Controller {
+class Persons @Inject()(personDAO: PersonDAO,
+                        val messagesApi: MessagesApi,
+                        val env: Environment[User, SessionAuthenticator])
+  extends Silhouette[User, SessionAuthenticator] {
+
   implicit val organisationWrites: Writes[Organisation] = Json.writes[Organisation]
   implicit val groupWrites: Writes[Group] = Json.writes[Group]
   implicit val personWrites: Writes[Person] = Json.writes[Person]
 
-  def all = Action.async {
+  def all = SecuredAction.async {
     personDAO.all.map(persons => Ok(Json.toJson(persons)))
   }
 
-  def get(id: String) = Action.async {
+  def get(id: String) = SecuredAction.async {
     try {
       personDAO.get(UUID.fromString(id)).map {
         case Some(person) => Ok(Json.toJson(person))
