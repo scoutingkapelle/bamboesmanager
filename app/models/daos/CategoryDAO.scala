@@ -1,9 +1,9 @@
-package dao
+package models.daos
 
 import java.util.UUID
 import javax.inject.Inject
 
-import dao.tables.CategoryTable
+import models.daos.tables.CategoryTable
 import models.Category
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile

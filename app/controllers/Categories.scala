@@ -3,7 +3,7 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
-import dao.CategoryDAO
+import models.daos.CategoryDAO
 import models.Category
 import play.api.Play.current
 import play.api.i18n.Messages
@@ -26,7 +26,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO) extends Controller {
       val uuid = UUID.fromString(id)
       categoryDAO.get(uuid).map {
         case Some(category) => Ok(Json.toJson(category))
-        case None => NotFound(Json.toJson(Messages("cat.not_found")))
+        case None => NotFound(Json.toJson(Messages("category.not_found")))
       }
     } catch {
       case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))

@@ -1,15 +1,63 @@
-@(title: String)(content: Html)
+@(title: String, user: Option[models.User] = None, scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
 
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+
+        <link rel="stylesheet" href='@routes.Assets.at("stylesheets/main.css")'>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
+
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script>
+        @scripts
     </head>
+
     <body>
-        @content
+        <div id="wrap">
+            <header class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        <a class="navbar-brand" href="/">@Messages("title")</a>
+                    </div>
+
+                    <nav class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li><a href="@routes.Application.index">@Messages("home")</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                        @user.map { u =>
+                            <li><a href="@routes.Application.dashboard">@u.name</a></li>
+                            <li><a href="@routes.Application.signOut">@Messages("sign.out")</a></li>
+                        }.getOrElse {
+                            <li><a href="@routes.Application.signIn">@Messages("sign.in")</a></li>
+                        }
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            @content
+
+            <div id="push"></div>
+        </div>
+
+        <div id="footer">
+            <div class="container">
+                <p class="muted credit">
+			        Development & Hosting by <a href="https://wjglerum.nl">Willem Jan Glerum</a>
+			    </p>
+            </div>
+        </div>
     </body>
 </html>

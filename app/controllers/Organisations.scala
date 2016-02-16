@@ -3,7 +3,7 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
-import dao.OrganisationDAO
+import models.daos.OrganisationDAO
 import models.Organisation
 import play.api.Play.current
 import play.api.i18n.Messages
