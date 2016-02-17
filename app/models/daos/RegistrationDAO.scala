@@ -54,7 +54,9 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
     })
   }
 
-  def save(registration: Registration) = db.run(registrations.insertOrUpdate(toDBRegistration(registration)))
+  def save(registration: Registration): Future[Registration] = {
+    db.run(registrations.insertOrUpdate(toDBRegistration(registration))).map(_ => registration)
+  }
 
   def toDBRegistration(registration: Registration) =
     DBRegistration(

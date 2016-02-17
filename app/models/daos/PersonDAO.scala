@@ -47,7 +47,7 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     })
   }
 
-  def save(person: Person) = db.run(persons.insertOrUpdate(toDBPerson(person)))
+  def save(person: Person): Future[Person] = db.run(persons.insertOrUpdate(toDBPerson(person))).map(_ => person)
 
   def toDBPerson(person: Person) = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
 }

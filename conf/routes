@@ -3,7 +3,8 @@
 
 # Home page
 GET         /                             @controllers.Application.index
-GET         /register                     @controllers.Application.register
+GET         /register                     @controllers.Registrations.register
+POST        /register                     @controllers.Registrations.save
 
 # Authentiaction
 GET         /signin                       @controllers.Application.signIn

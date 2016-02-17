@@ -6,8 +6,8 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.GroupForm
+import models._
 import models.daos.{GroupDAO, OrganisationDAO}
-import models.{Group, Organisation, User}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.{Json, Writes}
 
@@ -49,9 +49,6 @@ class Groups @Inject()(groupDAO: GroupDAO,
     organisationDAO.all.map(organisations =>
       Ok(views.html.groupAdd(GroupForm.form, organisationsTupled(organisations), request.identity)))
   }
-
-  protected def organisationsTupled(organisations: Seq[Organisation]) =
-    organisations.sortBy(_.name).map(organisation => (organisation.id.toString, organisation.name))
 
   def save = SecuredAction.async { implicit request =>
     GroupForm.form.bindFromRequest.fold(
