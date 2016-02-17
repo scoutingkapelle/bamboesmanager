@@ -10,15 +10,17 @@
             </button>
         </a>
 
-        <table class="table table-striped">
-            <tr>
-                <th>@Messages("category")</th>
-            </tr>
-            @for(category <- categories) {
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <tr>
-                    <td>@category.name</td>
+                    <th>@Messages("category")</th>
                 </tr>
-            }
-        </table>
+                @for(category <- categories) {
+                    <tr>
+                        <td>@category.name</td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 }

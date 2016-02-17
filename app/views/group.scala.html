@@ -1,21 +1,24 @@
 @(group: Group, persons: Seq[Person], user: models.User)(implicit messages: Messages)
 
-@main(group.name, Some(user)) {
-    <div class="container">
-        <h1>@(group.organisation.name + ": " + group.name)</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>@Messages("person")</th>
-                <th>@Messages("age")</th>
-                <th>@Messages("email")</th>
-            </tr>
-            @for(person <- persons) {
-                <tr>
-                    <td>@person.name</td>
-                    <td>@person.age</td>
-                    <td>@person.email</td>
-                </tr>
-            }
-        </table>
-    </div>
-}
+    @main(group.name, Some(user)) {
+        <div class="container">
+            <h1>@(group.organisation.name + ": " + group.name)</h1>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>@Messages("person")</th>
+                        <th>@Messages("age")</th>
+                        <th>@Messages("email")</th>
+                    </tr>
+                    @for(person <- persons) {
+                        <tr>
+                            <td>@person.name</td>
+                            <td>@person.age</td>
+                            <td>@person.email</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }

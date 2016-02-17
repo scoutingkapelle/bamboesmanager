@@ -3,17 +3,19 @@
 @main(organisation.name, Some(user)) {
     <div class="container">
         <h1>@organisation.name</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>@Messages("group")</th>
-                <th>@Messages("organisation")</th>
-            </tr>
-            @for(group <- groups) {
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <tr>
-                    <td><a href="@routes.Groups.group(group.id.toString)">@group.name</a></td>
-                    <td>@group.organisation.name</td>
+                    <th>@Messages("group")</th>
+                    <th>@Messages("organisation")</th>
                 </tr>
-            }
-        </table>
+                @for(group <- groups) {
+                    <tr>
+                        <td><a href="@routes.Groups.group(group.id.toString)">@group.name</a></td>
+                        <td>@group.organisation.name</td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 }

@@ -31,7 +31,7 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
 
   def registrations = SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations =>
-      Ok(views.html.registrations(registrations, request.identity)))
+      Ok(views.html.registrations(registrations.sortBy(_.person.name), request.identity)))
   }
 
   def register = UserAwareAction.async { implicit request =>

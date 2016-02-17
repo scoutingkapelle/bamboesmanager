@@ -10,17 +10,19 @@
             </button>
         </a>
 
-        <table class="table table-striped">
-            <tr>
-                <th>@Messages("organisation")</th>
-            </tr>
-            @for(organisation <- organisations) {
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <tr>
-                    <td>
-                        <a href="@routes.Organisations.organisation(organisation.id.toString)">@organisation.name</a>
-                    </td>
+                    <th>@Messages("organisation")</th>
                 </tr>
-            }
-        </table>
+                @for(organisation <- organisations) {
+                    <tr>
+                        <td>
+                            <a href="@routes.Organisations.organisation(organisation.id.toString)">@organisation.name</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
     </div>
 }
