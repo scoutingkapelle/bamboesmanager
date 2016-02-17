@@ -31,6 +31,10 @@ sign.up = Inschrijven
 sign.in = Inloggen
 sign.out = Uitloggen
 
+not.found = Niet gevonden
+object.not.found = Object niet gevonden
+bad.request = Ongeldige invoer
+
 organisations = Verenigingen
 organisation = Vereniging
 organisation.add = Vereninging toevoegen
