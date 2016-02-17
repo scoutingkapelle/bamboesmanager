@@ -22,7 +22,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
   implicit val categoryWrites = Json.writes[Category]
 
   def categories = SecuredAction.async { implicit request =>
-    categoryDAO.all.map(categories => Ok(views.html.categories(categories, request.identity)))
+    categoryDAO.all.map(categories => Ok(views.html.categories(categories.sortBy(_.name), request.identity)))
   }
 
   def add = SecuredAction.async { implicit request =>
@@ -34,12 +34,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
       form => Future.successful(BadRequest(views.html.categoryAdd(form, request.identity))),
       data => {
         val category = Category(UUID.randomUUID, data.name)
-        for {
-          _ <- categoryDAO.save(category)
-          categories <- categoryDAO.all
-        } yield {
-          Ok(views.html.categories(categories, request.identity))
-        }
+        categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories))
       }
     )
   }
