@@ -24,8 +24,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
   implicit val groupWrites = Json.writes[Group]
 
   def groups = SecuredAction.async { implicit request =>
-    groupDAO.all.map(groups =>
-      Ok(views.html.groups(groups, request.identity)))
+    groupDAO.all.map(groups => Ok(views.html.groups(groups.sortBy(_.name), request.identity)))
   }
 
   def group(id: String) = SecuredAction.async { implicit request =>
@@ -36,28 +35,29 @@ class Groups @Inject()(groupDAO: GroupDAO,
         group <- groupDAO.get(uuid)
       } yield {
         group match {
-          case Some(group) => Ok(views.html.group(group, persons, request.identity))
-          case None => NotFound(Messages("group.not_found"))
+          case Some(group) => Ok(views.html.group(group, persons.sortBy(_.name), request.identity))
+          case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest("uuid.invalid"))
+      case _: IllegalArgumentException =>
+        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
   def add = SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
-      Ok(views.html.groupAdd(GroupForm.form, organisations.map(org => (org.id.toString, org.name)), request.identity)))
+      Ok(views.html.groupAdd(GroupForm.form, organisationsTupled(organisations), request.identity)))
   }
+
+  protected def organisationsTupled(organisations: Seq[Organisation]) =
+    organisations.sortBy(_.name).map(organisation => (organisation.id.toString, organisation.name))
 
   def save = SecuredAction.async { implicit request =>
     GroupForm.form.bindFromRequest.fold(
       form => {
-        for {
-          organisations <- organisationDAO.all
-        } yield {
-          BadRequest(views.html.groupAdd(form, organisations.map(org => (org.id.toString, org.name)), request.identity))
-        }
+        organisationDAO.all.map(organisations =>
+          BadRequest(views.html.groupAdd(form, organisationsTupled(organisations), request.identity)))
       },
       data => {
         for {
@@ -65,7 +65,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
           group = Group(UUID.randomUUID, data.name, organisation.get)
           _ <- groupDAO.save(group)
         } yield {
-          Ok(views.html.group(group, Nil, request.identity))
+          Redirect(routes.Groups.group(group.id.toString))
         }
       }
     )
