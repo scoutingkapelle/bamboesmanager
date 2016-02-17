@@ -23,7 +23,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
 
   def organisations = SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
-      Ok(views.html.organisations(organisations, request.identity)))
+      Ok(views.html.organisations(organisations.sortBy(_.name), request.identity)))
   }
 
   def organisation(id: String) = SecuredAction.async { implicit request =>
@@ -34,12 +34,13 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         organisation <- organisationDAO.get(uuid)
       } yield {
         organisation match {
-          case Some(organisation) => Ok(views.html.organisation(organisation, groups, request.identity))
-          case None => NotFound(Messages("organisation.not_found"))
+          case Some(organisation) => Ok(views.html.organisation(organisation, groups.sortBy(_.name), request.identity))
+          case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest("uuid.invalid"))
+      case _: IllegalArgumentException =>
+        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
