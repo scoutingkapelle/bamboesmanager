@@ -3,6 +3,13 @@
 @main(Messages("categories"), Some(user)) {
     <div class="container">
         <h1>@Messages("categories")</h1>
+        <a href="@routes.Categories.add">
+            <button id="btn-add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                @Messages("category.add")
+            </button>
+        </a>
+
         <table class="table table-striped">
             <tr>
                 <th>@Messages("category")</th>

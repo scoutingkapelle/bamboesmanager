@@ -16,6 +16,8 @@ POST        /authenticate                 @controllers.Authentication.authentica
 GET         /dashboard                    @controllers.Application.dashboard
 
 GET         /categories                   @controllers.Categories.categories
+GET         /categories/add               @controllers.Categories.add
+POST        /categories/add               @controllers.Categories.save
 
 GET         /groups                       @controllers.Groups.groups
 GET         /groups/add                   @controllers.Groups.add

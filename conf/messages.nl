@@ -43,6 +43,9 @@ group.save = Groep opslaan
 
 categories = Stands
 category = Stand
+category.add = Stand toevoegen
+category.save = Stand opslaan
+
 registrations = Registraties
 register = Registreren
 persons = Medewerkers
