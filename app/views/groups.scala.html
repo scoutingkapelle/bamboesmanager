@@ -3,6 +3,13 @@
 @main(Messages("groups"), Some(user)) {
     <div class="container">
         <h1>@Messages("groups")</h1>
+        <a href="@routes.Groups.add">
+            <button id="btn-group" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                @Messages("group.add")
+            </button>
+        </a>
+
         <table class="table table-striped">
             <tr>
                 <th>@Messages("group")</th>

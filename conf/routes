@@ -18,6 +18,8 @@ GET         /dashboard                    @controllers.Application.dashboard
 GET         /categories                   @controllers.Categories.categories
 
 GET         /groups                       @controllers.Groups.groups
+GET         /groups/add                   @controllers.Groups.add
+POST        /groups/add                   @controllers.Groups.save
 GET         /groups/:id                   @controllers.Groups.group(id)
 
 GET         /organisations                @controllers.Organisations.organisations

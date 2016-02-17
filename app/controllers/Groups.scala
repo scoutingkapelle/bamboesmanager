@@ -5,7 +5,8 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
-import models.daos.GroupDAO
+import forms.GroupForm
+import models.daos.{GroupDAO, OrganisationDAO}
 import models.{Group, Organisation, User}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.{Json, Writes}
@@ -14,6 +15,7 @@ import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
 class Groups @Inject()(groupDAO: GroupDAO,
+                       organisationDAO: OrganisationDAO,
                        val messagesApi: MessagesApi,
                        val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
@@ -41,6 +43,32 @@ class Groups @Inject()(groupDAO: GroupDAO,
     } catch {
       case _: IllegalArgumentException => Future(BadRequest("uuid.invalid"))
     }
+  }
+
+  def add = SecuredAction.async { implicit request =>
+    organisationDAO.all.map(organisations =>
+      Ok(views.html.groupAdd(GroupForm.form, organisations.map(org => (org.id.toString, org.name)), request.identity)))
+  }
+
+  def save = SecuredAction.async { implicit request =>
+    GroupForm.form.bindFromRequest.fold(
+      form => {
+        for {
+          organisations <- organisationDAO.all
+        } yield {
+          BadRequest(views.html.groupAdd(form, organisations.map(org => (org.id.toString, org.name)), request.identity))
+        }
+      },
+      data => {
+        for {
+          organisation <- organisationDAO.get(UUID.fromString(data.organisation_id))
+          group = Group(UUID.randomUUID, data.name, organisation.get)
+          _ <- groupDAO.save(group)
+        } yield {
+          Ok(views.html.group(group, Nil, request.identity))
+        }
+      }
+    )
   }
 
   def all = SecuredAction.async {

@@ -38,6 +38,9 @@ organisation.save = Vereniging opslaan
 
 groups = Groepen
 group = Groep
+group.add = Groep toevoegen
+group.save = Groep opslaan
+
 categories = Stands
 category = Stand
 registrations = Registraties

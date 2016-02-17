@@ -44,12 +44,12 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
   }
 
   def add = SecuredAction.async { implicit request =>
-    Future(Ok(views.html.organisationForm(OrganisationForm.form, request.identity)))
+    Future(Ok(views.html.organisationAdd(OrganisationForm.form, request.identity)))
   }
 
   def save = SecuredAction.async { implicit request =>
     OrganisationForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.organisationForm(form, request.identity))),
+      form => Future.successful(BadRequest(views.html.organisationAdd(form, request.identity))),
       data => {
         val organisation = Organisation(UUID.randomUUID, data.name)
         for {
