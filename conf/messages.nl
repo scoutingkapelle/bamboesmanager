@@ -33,6 +33,9 @@ sign.out = Uitloggen
 
 organisations = Verenigingen
 organisation = Vereniging
+organisation.add = Vereninging toevoegen
+organisation.save = Vereniging opslaan
+
 groups = Groepen
 group = Groep
 categories = Stands

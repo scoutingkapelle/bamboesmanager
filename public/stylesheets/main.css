@@ -48,3 +48,7 @@ html, body {
 .container .credit {
     margin: 20px 0;
 }
+
+#btn-organisation {
+    margin-bottom: 1em;
+}

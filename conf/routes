@@ -21,6 +21,8 @@ GET         /groups                       @controllers.Groups.groups
 GET         /groups/:id                   @controllers.Groups.group(id)
 
 GET         /organisations                @controllers.Organisations.organisations
+GET         /organisations/add            @controllers.Organisations.add
+POST        /organisations/add            @controllers.Organisations.save
 GET         /organisations/:id            @controllers.Organisations.organisation(id)
 
 GET         /registrations                @controllers.Registrations.registrations

@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import forms.OrganisationForm
 import models.daos.OrganisationDAO
 import models.{Organisation, User}
 import play.api.i18n.{Messages, MessagesApi}
@@ -40,7 +41,25 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     } catch {
       case _: IllegalArgumentException => Future(BadRequest("uuid.invalid"))
     }
+  }
 
+  def add = SecuredAction.async { implicit request =>
+    Future(Ok(views.html.organisationForm(OrganisationForm.form, request.identity)))
+  }
+
+  def save = SecuredAction.async { implicit request =>
+    OrganisationForm.form.bindFromRequest.fold(
+      form => Future.successful(BadRequest(views.html.organisationForm(form, request.identity))),
+      data => {
+        val organisation = Organisation(UUID.randomUUID, data.name)
+        for {
+          org <- organisationDAO.save(organisation)
+          groups <- organisationDAO.groups(organisation.id)
+        } yield {
+          Ok(views.html.organisation(organisation, groups, request.identity))
+        }
+      }
+    )
   }
 
   def all = SecuredAction.async {
