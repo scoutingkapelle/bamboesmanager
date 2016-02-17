@@ -55,6 +55,7 @@ category.label = Stand verkopen
 
 registrations = Registraties
 register = Aanmelden
+conformation = Bevestiging
 persons = Medewerkers
 person = Medewerker
 friday = Vrijdag

@@ -14,41 +14,43 @@
     </head>
 
     <body>
-        <header class="navbar navbar-inverse" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="@routes.Application.index">@Messages("title")</a>
+        <div id="wrap">
+            <header class="navbar navbar-inverse" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="@routes.Application.index">@Messages("title")</a>
+                    </div>
+
+                    <nav class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li><a href="@routes.Registrations.register">@Messages("register")</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                        @user.map { u =>
+                        <li><a href="@routes.Organisations.organisations">@Messages("organisations")</a></li>
+                        <li><a href="@routes.Groups.groups">@Messages("groups")</a></li>
+                        <li><a href="@routes.Categories.categories">@Messages("categories")</a></li>
+                        <li><a href="@routes.Registrations.registrations">@Messages("registrations")</a></li>
+                        <li><a href="@routes.Application.dashboard">@u.name</a></li>
+                        <li><a href="@routes.Application.signOut">@Messages("sign.out")</a></li>
+                        }.getOrElse {
+                            <li><a href="@routes.Application.signIn">@Messages("sign.in")</a></li>
+                        }
+                        </ul>
+                    </nav>
                 </div>
+            </header>
 
-                <nav class="collapse navbar-collapse" id="myNavbar">
-                    <ul class="nav navbar-nav">
-                        <li><a href="@routes.Registrations.register">@Messages("register")</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                    @user.map { u =>
-                    <li><a href="@routes.Organisations.organisations">@Messages("organisations")</a></li>
-                    <li><a href="@routes.Groups.groups">@Messages("groups")</a></li>
-                    <li><a href="@routes.Categories.categories">@Messages("categories")</a></li>
-                    <li><a href="@routes.Registrations.registrations">@Messages("registrations")</a></li>
-                    <li><a href="@routes.Application.dashboard">@u.name</a></li>
-                    <li><a href="@routes.Application.signOut">@Messages("sign.out")</a></li>
-                    }.getOrElse {
-                        <li><a href="@routes.Application.signIn">@Messages("sign.in")</a></li>
-                    }
-                    </ul>
-                </nav>
-            </div>
-        </header>
-
-        <main id="wrap">
-            @content
-            <div id="push"></div>
-        </main>
+            <main>
+                @content
+                <div id="push"></div>
+            </main>
+        </div>
 
         <footer id="footer">
             <div class="container">

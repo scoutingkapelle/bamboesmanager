@@ -76,7 +76,8 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
                   person => {
                     val registration = Registration(UUID.randomUUID, person,
                       data.friday, data.saturday, data.sorting, category, false)
-                    registrationDAO.save(registration).flatMap(_ => Future.successful(Ok("saved registration")))
+                    registrationDAO.save(registration).flatMap(registration =>
+                      Future.successful(Ok(views.html.conformation(registration, request.identity))))
                   }
                 }
               }
