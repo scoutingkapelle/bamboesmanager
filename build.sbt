@@ -21,7 +21,8 @@ libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette" % "3.0.4",
   "com.mohiva" %% "play-silhouette-testkit" % "3.0.4" % "test",
   "net.codingwell" %% "scala-guice" % "4.0.1",
-  "net.ceedubs" %% "ficus" % "1.1.2"
+  "net.ceedubs" %% "ficus" % "1.1.2",
+  "com.typesafe.play" %% "play-mailer" % "4.0.0-M1"
 )
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")

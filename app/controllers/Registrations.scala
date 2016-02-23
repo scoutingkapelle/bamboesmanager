@@ -14,7 +14,8 @@ import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
-class Registrations @Inject()(registrationDAO: RegistrationDAO,
+class Registrations @Inject()(mail: Mail,
+                              registrationDAO: RegistrationDAO,
                               organisationDAO: OrganisationDAO,
                               groupDAO: GroupDAO,
                               categoryDAO: CategoryDAO,
@@ -89,8 +90,10 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
                   person => {
                     val registration = Registration(UUID.randomUUID, person,
                       data.friday, data.saturday, data.sorting, category, false)
-                    registrationDAO.save(registration).flatMap(registration =>
-                      Future.successful(Ok(views.html.conformation(registration, request.identity))))
+                    registrationDAO.save(registration).flatMap(registration => {
+                      mail.sendConformation(registration)
+                      Future.successful(Ok(views.html.conformation(registration, request.identity)))
+                    })
                   }
                 }
               }

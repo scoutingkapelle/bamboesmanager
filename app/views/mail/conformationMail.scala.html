@@ -1,0 +1,34 @@
+@(registration: Registration) {
+    <html>
+        <body>
+            <p>Beste @registration.person.name,</p>
+
+            <p>Bedankt voor het aanmelden als medewerker voor Actie Bamboes 2016, we zijn erg blij met je hulp! Je voorkeur voor een stand is nog niet definitief, eind april krijg je een email met alle informatie en de stand waar je bent ingedeeld.</p>
+
+            <p>Je hebt de volgende gegevens aan ons doorgegeven:</p>
+
+            <ul>
+                <li>Naam: @registration.person.name</li>
+                <li>Leeftijd: @registration.person.age</li>
+                <li>Email: @registration.person.email</li>
+                <li>Vereniging: @registration.person.group.organisation.name</li>
+                <li>Groep: @registration.person.group.name</li>
+                <li>Ophalen vrijdag: @if(registration.friday) {Ja} else {Nee}</li>
+                <li>Ophalen zaterdag: @if(registration.saturday) {Ja} else {Nee}</li>
+                @if(registration.sorting) {
+                    <li>Helpen sorteren: Ja</li>
+                }
+                <li>Voorkeur stand: @registration.category.name</li>
+            </ul>
+
+            <p>Klopt er iets niet? Beantwoordt dan deze mail met de juiste gegevens, wij passen het vervolgens voor je aan.</p>
+
+
+            <p>Tot op Koningsdag!</p>
+
+            <p>Groeten,</p>
+
+            <p>Het Actie Bamboes team</p>
+        </body>
+    </html>
+}
