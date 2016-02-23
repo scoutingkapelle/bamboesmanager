@@ -71,6 +71,10 @@ team.leader = Teamleider
 yes = Ja
 no = Nee
 
+select.organisation = Selecteer een vereniging
+select.group = Selecteer eerst een vereninging
+select.category = Selecteer een stand
+
 # --- Constraints
 constraint.required=Verplicht
 constraint.min=Minimale waarde: {0}

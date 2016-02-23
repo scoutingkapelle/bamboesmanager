@@ -1,12 +1,15 @@
 @(registerForm: Form[forms.RegisterForm.Data],
         organisations: Seq[(String, String)],
-        groups: Seq[(String, String)],
         categories: Seq[(String, String)],
         user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
+@scripts = {
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/register.js")"></script>
+}
+
 @implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-10") }
 
-@main(Messages("register"), user) {
+@main(Messages("register"), user, scripts) {
     <div class="container">
         <div class="well">
             @request.flash.get("error").map { msg =>
@@ -24,12 +27,12 @@
                     @b3.text(registerForm("surName"), '_label -> Messages("sur.name"), 'class -> "form-control input-lg")
                     @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
                     @b3.text(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
-                    @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation", 'class -> "form-control input-lg"))
-                    @b3.select(registerForm("group"), options = groups, '_label -> Messages("group", 'class -> "form-control input-lg"))
+                    @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("select.organisation"))
+                    @b3.select(registerForm("group"), options = Nil, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("select.group"))
                     @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"), '_text -> Messages("friday.true"))
                     @b3.checkbox(registerForm("saturday"), '_label -> Messages("saturday.label"), '_text -> Messages("saturday.true"))
                     @b3.checkbox(registerForm("sorting"), '_label -> Messages("sorting.label"), '_text -> Messages("sorting.true"))
-                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label", 'class -> "form-control input-lg"))
+                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("select.category"))
                     @b3.submit('class -> "btn btn-primary") {
                         <span class="glyphicon glyphicon glyphicon-ok"></span>
                         @Messages("register")

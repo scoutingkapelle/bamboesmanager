@@ -3,8 +3,9 @@ package object models {
   def categoriesTupled(categories: Seq[Category]) =
     categories.sortBy(_.name).map(category => (category.id.toString, category.name))
 
-  def groupsTupled(groups: Seq[Group]) =
-    groups.sortBy(_.name).map(group => (group.id.toString, group.name))
+  def groupsTupled(groups: Seq[Group]) = groups.sortBy(_.name).map(group => (group.id.toString, group.name))
+
+  def groupsMapped(groups: Seq[Group]) = groups.sortBy(_.name).map(g => g.id.toString -> g.name).toMap
 
   def organisationsTupled(organisations: Seq[Organisation]) =
     organisations.sortBy(_.name).map(organisation => (organisation.id.toString, organisation.name))
