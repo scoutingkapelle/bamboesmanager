@@ -54,6 +54,7 @@ category.save = Stand opslaan
 category.label = Stand verkopen
 
 registrations = Registraties
+registration = Registratie
 register = Aanmelden
 conformation = Bevestiging
 persons = Medewerkers

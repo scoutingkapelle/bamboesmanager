@@ -31,6 +31,7 @@ POST        /organisations/add            @controllers.Organisations.save
 GET         /organisations/:id            @controllers.Organisations.organisation(id)
 
 GET         /registrations                @controllers.Registrations.registrations
+GET         /registrations/:id            @controllers.Registrations.registration(id)
 
 # API
 GET         /api/categories               @controllers.Categories.all

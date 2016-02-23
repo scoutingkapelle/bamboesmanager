@@ -34,6 +34,19 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
       Ok(views.html.registrations(registrations.sortBy(_.person.name), request.identity)))
   }
 
+  def registration(id: String) = SecuredAction.async { implicit request =>
+    try {
+      val uuid = UUID.fromString(id)
+      registrationDAO.get(uuid).map {
+        case Some(registration) => Ok(views.html.registration(registration, request.identity))
+        case None => NotFound(views.html.notFound(id, Some(request.identity)))
+      }
+    } catch {
+      case _: IllegalArgumentException =>
+        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+    }
+  }
+
   def register = UserAwareAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all

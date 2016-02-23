@@ -1,15 +1,17 @@
 @(registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
     @scripts = {
-        <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.min.css"))'>
+        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.min.css"))">
         <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.min.js"))"></script>
+        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table-editable.min.js"))"></script>
+        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registrations.js")"></script>
     }
 
     @main(Messages("registrations"), Some(user), scripts) {
         <div class="container">
             <h1>@Messages("registrations")</h1>
             <div class="table-responsive">
-                <table data-toggle="table" data-id-field="id" data-search="true">
+                <table id="registrations" data-toggle="table" data-id-field="id" data-search="true">
                     <thead>
                         <tr>
                             <th data-visible="false">id</th>
