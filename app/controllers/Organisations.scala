@@ -6,8 +6,8 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.OrganisationForm
-import models.daos.OrganisationDAO
 import models._
+import models.daos.OrganisationDAO
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
 
@@ -74,15 +74,6 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         case Some(organisation) => Ok(Json.toJson(organisation))
         case None => NotFound(Json.toJson(Messages("organisation.not_found")))
       }
-    } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
-    }
-  }
-
-  def groups(id: String) = UserAwareAction.async {
-    try {
-      val uuid = UUID.fromString(id)
-      organisationDAO.groups(uuid).map(groups => Ok(Json.toJson(groupsMapped(groups))))
     } catch {
       case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }

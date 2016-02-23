@@ -1,5 +1,6 @@
 @(registerForm: Form[forms.RegisterForm.Data],
         organisations: Seq[(String, String)],
+        groups: Seq[(String, String)],
         categories: Seq[(String, String)],
         user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
@@ -28,7 +29,7 @@
                     @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
                     @b3.text(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
                     @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("select.organisation"))
-                    @b3.select(registerForm("group"), options = Nil, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("select.group"))
+                    @b3.select(registerForm("group"), options = groups, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("select.group"))
                     @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"), '_text -> Messages("friday.true"))
                     @b3.checkbox(registerForm("saturday"), '_label -> Messages("saturday.label"), '_text -> Messages("saturday.true"))
                     @b3.checkbox(registerForm("sorting"), '_label -> Messages("sorting.label"), '_text -> Messages("sorting.true"))

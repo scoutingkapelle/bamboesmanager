@@ -37,11 +37,13 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
   def register = UserAwareAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
+      groups <- groupDAO.all
       categories <- categoryDAO.all
     } yield {
       Ok(views.html.register(
         RegisterForm.form,
         models.organisationsTupled(organisations),
+        models.groupsTupled(groups),
         models.categoriesTupled(categories),
         request.identity))
     }
@@ -51,17 +53,19 @@ class Registrations @Inject()(registrationDAO: RegistrationDAO,
     RegisterForm.form.bindFromRequest.fold(
       form => for {
         organisations <- organisationDAO.all
+        groups <- groupDAO.all
         categories <- categoryDAO.all
       } yield {
         BadRequest(views.html.register(
           form,
           models.organisationsTupled(organisations),
+          models.groupsTupled(groups),
           models.categoriesTupled(categories),
           request.identity))
       },
       data => {
         try {
-          val group_id = UUID.fromString(data.group)
+          val group_id = UUID.fromString(data.group.split('#')(1))
           val category_id = UUID.fromString(data.category)
           groupDAO.get(group_id).flatMap {
             case Some(group) => categoryDAO.get(category_id).flatMap {
