@@ -1,37 +1,49 @@
 @(registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
-@main(Messages("registrations"), Some(user)) {
-    <div class="container">
-        <h1>@Messages("registrations")</h1>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <th>@Messages("name")</th>
-                    <th>@Messages("age")</th>
-                    <th>@Messages("email")</th>
-                    <th>@Messages("group")</th>
-                    <th>@Messages("organisation")</th>
-                    <th>@Messages("friday")</th>
-                    <th>@Messages("saturday")</th>
-                    <th>@Messages("sorting")</th>
-                    <th>@Messages("category")</th>
-                    <th>@Messages("team.leader")</th>
-                </tr>
-                @for(registration <- registrations) {
-                    <tr>
-                        <td>@registration.person.name</td>
-                        <td>@registration.person.age</td>
-                        <td>@registration.person.email</td>
-                        <td>@registration.person.group.name</td>
-                        <td>@registration.person.group.organisation.name</td>
-                        <td>@(if(registration.friday) Messages("yes") else Messages("no"))</td>
-                        <td>@(if(registration.saturday) Messages("yes") else Messages("no"))</td>
-                        <td>@(if(registration.sorting) Messages("yes") else Messages("no"))</td>
-                        <td>@registration.category.name</td>
-                        <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
-                    </tr>
-                }
-            </table>
+    @scripts = {
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.min.css"))'>
+        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.min.js"))"></script>
+    }
+
+    @main(Messages("registrations"), Some(user), scripts) {
+        <div class="container">
+            <h1>@Messages("registrations")</h1>
+            <div class="table-responsive">
+                <table data-toggle="table" data-id-field="id" data-search="true">
+                    <thead>
+                        <tr>
+                            <th data-visible="false">id</th>
+                            <th data-sortable="true">@Messages("name")</th>
+                            <th data-sortable="true">@Messages("age")</th>
+                            <th data-sortable="true">@Messages("email")</th>
+                            <th data-sortable="true">@Messages("group")</th>
+                            <th data-sortable="true">@Messages("organisation")</th>
+                            <th data-sortable="true">@Messages("friday")</th>
+                            <th data-sortable="true">@Messages("saturday")</th>
+                            <th data-sortable="true">@Messages("sorting")</th>
+                            <th data-sortable="true">@Messages("category")</th>
+                            <th data-sortable="true">@Messages("team.leader")</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    @for(registration <- registrations) {
+                        <tr>
+                            <td>@registration.id</td>
+                            <td>@registration.person.name</td>
+                            <td>@registration.person.age</td>
+                            <td>@registration.person.email</td>
+                            <td>@registration.person.group.name</td>
+                            <td>@registration.person.group.organisation.name</td>
+                            <td>@(if(registration.friday) Messages("yes") else Messages("no"))</td>
+                            <td>@(if(registration.saturday) Messages("yes") else Messages("no"))</td>
+                            <td>@(if(registration.sorting) Messages("yes") else Messages("no"))</td>
+                            <td>@registration.category.name</td>
+                            <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-}
+    }
