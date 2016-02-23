@@ -33,6 +33,7 @@ GET         /organisations/:id            @controllers.Organisations.organisatio
 GET         /registrations                @controllers.Registrations.registrations
 GET         /registrations/:id            @controllers.Registrations.registration(id)
 
+GET         /mail                         @controllers.Mailer.sendDistribution
 # API
 GET         /api/categories               @controllers.Categories.all
 GET         /api/categories/:id           @controllers.Categories.get(id)

@@ -1,0 +1,18 @@
+@(registration: Registration, message: String = "") {
+    <html>
+        <body>
+            <p>Beste @registration.person.name,</p>
+
+            <p>Dit jaar ben je ingedeeld bij de stand <strong>@registration.category.name</strong>
+                om te helpen verkopen@if(registration.teamLeader) { en je bent hier ook teamleider}.</p>
+
+        <p>@message</p>
+
+            <p>Tot op Koningsdag!</p>
+
+            <p>Groeten,</p>
+
+            <p>Het Actie Bamboes team</p>
+        </body>
+    </html>
+}
