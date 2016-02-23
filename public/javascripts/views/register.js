@@ -8,7 +8,7 @@ $(document).ready(function () {
     $("[name='saturday']").bootstrapSwitch();
     $("[name='sorting']").bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
-    
+
     var selected_organisation = $('#organisation').find(':selected');
     if (selected_organisation.val().length == 0) {
         $('#group option').each(function (i, option) {
