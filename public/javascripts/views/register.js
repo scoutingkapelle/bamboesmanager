@@ -1,12 +1,21 @@
 $(document).ready(function () {
 
-    $('#sorting_field').addClass('hidden');
+    $.fn.bootstrapSwitch.defaults.size = 'normal';
+    $.fn.bootstrapSwitch.defaults.onText = 'Ja';
+    $.fn.bootstrapSwitch.defaults.offText = 'Nee';
 
+    $("[name='friday']").bootstrapSwitch();
+    $("[name='saturday']").bootstrapSwitch();
+    $("[name='sorting']").bootstrapSwitch();
+    $('.checkbox label').css('padding-left', 0);
+    
     var selected_organisation = $('#organisation').find(':selected');
     if (selected_organisation.val().length == 0) {
         $('#group option').each(function (i, option) {
             $(option).addClass('hidden')
-        })
+        });
+        $('#sorting_field').addClass('hidden');
+        $('#sorting').prop('checked', false);
     } else {
         $('#group option').each(function (i, option) {
             if ($(option).val().length == 0) {
@@ -49,7 +58,8 @@ $(document).ready(function () {
 
     function updateSorting(organisation) {
         if (organisation.text() == "Scouting Kapelle" || organisation.val().length == 0) {
-            $('#sorting_field').addClass('hidden')
+            $('#sorting_field').addClass('hidden');
+            $('#sorting').prop('checked', false)
         } else {
             $('#sorting_field').removeClass('hidden')
         }
