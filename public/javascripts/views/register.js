@@ -10,12 +10,11 @@ $(document).ready(function () {
     $('.checkbox label').css('padding-left', 0);
 
     var selected_organisation = $('#organisation').find(':selected');
+    updateSorting(selected_organisation)
     if (selected_organisation.val().length == 0) {
         $('#group option').each(function (i, option) {
             $(option).addClass('hidden')
         });
-        $('#sorting_field').addClass('hidden');
-        $('#sorting').prop('checked', false);
     } else {
         $('#group option').each(function (i, option) {
             if ($(option).val().length == 0) {
