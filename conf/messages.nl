@@ -72,6 +72,8 @@ team.leader = Teamleider
 yes = Ja
 no = Nee
 
+conformation.subject = "Bevestiging van aanmelding voor Actie Bamboes 2016"
+
 select.organisation = Selecteer een vereniging
 select.group = Selecteer eerst een vereninging
 select.category = Selecteer een stand

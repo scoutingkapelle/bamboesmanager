@@ -10,8 +10,8 @@ package object models {
     organisations.sortBy(_.name).map(organisation => (organisation.id.toString, organisation.name))
 
   def fullName(firstName: String, prefix: String, surName: String) = {
-    firstName.toLowerCase.split(" ").map(_.capitalize).mkString(" ") + " " +
+    (firstName.toLowerCase.split(" ").map(_.capitalize).mkString(" ") + " " +
       prefix.toLowerCase + " " +
-      surName.toLowerCase.split(" ").map(_.capitalize).mkString(" ")
+      surName.toLowerCase.split(" ").map(_.capitalize).mkString(" ")).trim.replaceAll("( )+", " ")
   }
 }

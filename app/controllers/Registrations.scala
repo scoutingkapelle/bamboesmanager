@@ -85,13 +85,13 @@ class Registrations @Inject()(mail: Mail,
             case Some(group) => categoryDAO.get(category_id).flatMap {
               case Some(category) => {
                 val name = fullName(data.firstName, data.prefix, data.surName)
-                val person = Person(UUID.randomUUID, name, data.email, data.age, group)
+                val person = Person(UUID.randomUUID, name, data.email.toLowerCase, data.age, group)
                 personDAO.save(person).flatMap {
                   person => {
                     val registration = Registration(UUID.randomUUID, person,
                       data.friday, data.saturday, data.sorting, category, false)
                     registrationDAO.save(registration).flatMap(registration => {
-                      mail.sendConformation(registration)
+                      Future.successful(mail.sendConformation(registration, Messages("conformation.subject")))
                       Future.successful(Ok(views.html.conformation(registration, request.identity)))
                     })
                   }
