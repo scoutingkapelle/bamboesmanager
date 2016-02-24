@@ -14,9 +14,10 @@ class Mail @Inject()(mailer: MailerClient) {
   protected def conformation(registration: Registration) =
     Email(
       "Bevestiging van aanmelding voor Actie Bamboes 2016",
-      "Actie Bamboes FROM <actiebamboes@scoutingkapelle.nl>",
-      Seq(registration.person.name + " TO <" + registration.person.email + ">"),
-      bodyHtml = Some(conformationMail(registration).body)
+      "Actie Bamboes <info@actiebamboes.nl>",
+      Seq(registration.person.name + "<" + registration.person.email + ">"),
+      bodyHtml = Some(conformationMail(registration).body),
+      replyTo = Some("Actie Bamboes <actiebamboes@scoutingkapelle.nl>")
     )
 
   def sendDistribution(registrations: Seq[Registration]) {
@@ -26,8 +27,9 @@ class Mail @Inject()(mailer: MailerClient) {
   protected def distribution(registration: Registration) =
     Email(
       "Indeling voor Actie Bamboes 2016",
-      "Actie Bamboes FROM <actiebamboes@scoutingkapelle.nl>",
-      Seq(registration.person.name + " TO <" + registration.person.email + ">"),
-      bodyHtml = Some(distributionMail(registration).body)
+      "Actie Bamboes <info@actiebamboes.nl>",
+      Seq(registration.person.name + "<" + registration.person.email + ">"),
+      bodyHtml = Some(distributionMail(registration).body),
+      replyTo = Some("Actie Bamboes <actiebamboes@scoutingkapelle.nl>")
     )
 }
