@@ -12,16 +12,21 @@ import play.api.i18n.{Messages, MessagesApi}
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
-class Mailer @Inject()(mail: Mail,
-                       registrationDAO: RegistrationDAO,
-                       val messagesApi: MessagesApi,
-                       val env: Environment[User, SessionAuthenticator])
+class Email @Inject()(mail: Mail,
+                      registrationDAO: RegistrationDAO,
+                      val messagesApi: MessagesApi,
+                      val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
+
+  def email = SecuredAction.async { implicit request =>
+    Future.successful(Ok(views.html.email(request.identity)))
+  }
 
   def sendDistribution = SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations => {
       Future.successful(mail.sendDistribution(registrations, Messages("division.subject")))
-      Ok("send distribution emails")
+      val flash = ("message", Messages("distribution.succes"))
+      Redirect(routes.Email.email).flashing(flash)
     })
   }
 }

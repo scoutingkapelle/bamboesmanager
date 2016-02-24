@@ -57,7 +57,6 @@ registrations = Registraties
 registration = Registratie
 register = Aanmelden
 registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met alle details.
-conformation = Bevestiging
 persons = Medewerkers
 person = Medewerker
 friday = Vrijdag
@@ -73,7 +72,9 @@ team.leader = Teamleider
 yes = Ja
 no = Nee
 
-conformation.subject = "Bevestiging van aanmelding voor Actie Bamboes 2016"
+conformation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
+distribution.send = Verstuur indeling naar iedereen
+distribution.succes = De indeling is succesvol naar iedereen verstuurd
 
 select.organisation = Selecteer een vereniging
 select.group = Selecteer eerst een vereninging
