@@ -75,7 +75,7 @@ no = Nee
 conformation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
 distribution.subject = Definitieve indeling voor Actie Bamboes 2016
 distribution.send = Verstuur indeling naar iedereen
-distribution.succes = De indeling is succesvol naar iedereen verstuurd
+distribution.success = De indeling is succesvol naar iedereen verstuurd
 
 select.organisation = Selecteer een vereniging
 select.group = Selecteer eerst een vereninging
