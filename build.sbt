@@ -1,10 +1,12 @@
 name := "bamboesmanager"
 
-version := "1.0"
+version := "0.1.0"
 
-lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala)
+lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
 
 scalaVersion := "2.11.7"
+
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
   cache, ws, specs2 % Test, evolutions, filters,
@@ -14,18 +16,24 @@ libraryDependencies ++= Seq(
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
   "org.webjars" %% "webjars-play" % "2.4.0-1",
   "org.webjars" % "bootstrap" % "3.3.6" exclude("org.webjars", "jquery"),
-  "org.webjars" % "bootstrap-table" % "1.9.1",
-  "org.webjars" % "bootstrap-switch" % "3.3.2",
+  "org.webjars" % "bootstrap-table" % "1.9.1" exclude("org.webjars", "jquery"),
+  "org.webjars" % "bootstrap-switch" % "3.3.2" exclude("org.webjars", "jquery"),
   "org.webjars" % "jquery" % "1.9.1",
   "com.adrianhurt" %% "play-bootstrap3" % "0.4.4-P24" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
   "com.mohiva" %% "play-silhouette" % "3.0.4",
   "com.mohiva" %% "play-silhouette-testkit" % "3.0.4" % "test",
   "net.codingwell" %% "scala-guice" % "4.0.1",
-  "net.ceedubs" %% "ficus" % "1.1.2"
+  "net.ceedubs" %% "ficus" % "1.1.2",
+  "com.typesafe.play" %% "play-mailer" % "4.0.0-M1"
 )
 
-unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
+javaOptions in Universal ++= Seq(
+  s"-Dpidfile.path=/var/run/${packageName.value}/play.pid",
+  s"-Dconfig.file=/usr/share/${packageName.value}/conf/production.conf"
+)
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+rpmVendor := "wjglerum.nl"
 
-fork in run := false
+rpmRelease := "1"
+
+rpmLicense := Some("MIT")
