@@ -24,7 +24,7 @@ class Email @Inject()(mail: Mail,
 
   def sendDistribution = SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations => {
-      Future.successful(mail.sendDistribution(registrations, Messages("division.subject")))
+      Future.successful(mail.sendDistribution(registrations, Messages("distribution.subject")))
       val flash = ("message", Messages("distribution.succes"))
       Redirect(routes.Email.email).flashing(flash)
     })
