@@ -56,7 +56,7 @@ category.label = Stand verkopen
 registrations = Registraties
 registration = Registratie
 register = Aanmelden
-conformation = Bevestiging
+registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met alle details.
 persons = Medewerkers
 person = Medewerker
 friday = Vrijdag
@@ -71,6 +71,10 @@ sorting.label = Helpen sorteren
 team.leader = Teamleider
 yes = Ja
 no = Nee
+
+conformation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
+distribution.send = Verstuur indeling naar iedereen
+distribution.succes = De indeling is succesvol naar iedereen verstuurd
 
 select.organisation = Selecteer een vereniging
 select.group = Selecteer eerst een vereninging

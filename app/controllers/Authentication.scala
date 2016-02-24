@@ -19,9 +19,9 @@ import scala.concurrent.Future
 import scala.language.postfixOps
 
 class Authentication @Inject()(val messagesApi: MessagesApi,
-                                          val env: Environment[User, SessionAuthenticator],
-                                          userDAO: UserDAO,
-                                          credentialsProvider: CredentialsProvider)
+                               val env: Environment[User, SessionAuthenticator],
+                               userDAO: UserDAO,
+                               credentialsProvider: CredentialsProvider)
   extends Silhouette[User, SessionAuthenticator] {
 
   def authenticate = Action.async { implicit request =>
