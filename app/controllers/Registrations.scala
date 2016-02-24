@@ -92,7 +92,8 @@ class Registrations @Inject()(mail: Mail,
                       data.friday, data.saturday, data.sorting, category, false)
                     registrationDAO.save(registration).flatMap(registration => {
                       Future.successful(mail.sendConformation(registration, Messages("conformation.subject")))
-                      Future.successful(Ok(views.html.conformation(registration, request.identity)))
+                      val flash = ("message", Messages("registered"))
+                      Future.successful(Redirect(routes.Application.index).flashing(flash))
                     })
                   }
                 }

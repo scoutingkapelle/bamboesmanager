@@ -1,9 +1,15 @@
-@(user: Option[models.User])(implicit messages: Messages)
+@(user: Option[models.User])(implicit messages: Messages, flash: Flash)
 
-@main(Messages("title"), user) {
-    <div class="container">
-        <div class="well">
-            <h1>@Messages("title")</h1>
+    @main(Messages("title"), user) {
+        <div class="container">
+            @flash.get("message").map { message =>
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    @message
+                </div>
+            }
+            <div class="well">
+                <h1>@Messages("title")</h1>
+            </div>
         </div>
-    </div>
-}
+    }

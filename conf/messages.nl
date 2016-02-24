@@ -56,6 +56,7 @@ category.label = Stand verkopen
 registrations = Registraties
 registration = Registratie
 register = Aanmelden
+registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met alle details.
 conformation = Bevestiging
 persons = Medewerkers
 person = Medewerker
