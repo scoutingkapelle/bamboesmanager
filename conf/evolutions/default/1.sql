@@ -29,7 +29,8 @@ CREATE TABLE "registrations" (
   "friday"      BOOL NOT NULL,
   "saturday"    BOOL NOT NULL,
   "sorting"     BOOL NOT NULL,
-  "category_id" UUID REFERENCES "categories" ("id")
+  "category_id" UUID REFERENCES "categories" ("id"),
+  "team_leader" BOOL
 );
 
 CREATE TABLE "users" (
