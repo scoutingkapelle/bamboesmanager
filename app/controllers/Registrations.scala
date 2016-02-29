@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
-import forms.RegisterForm
+import forms.{RegisterForm, RegistrationForm}
 import models._
 import models.daos._
 import play.api.i18n.{Messages, MessagesApi}
@@ -38,9 +38,21 @@ class Registrations @Inject()(mail: Mail,
   def registration(id: String) = SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
-      registrationDAO.get(uuid).map {
-        case Some(registration) => Ok(views.html.registration(registration, request.identity))
-        case None => NotFound(views.html.notFound(id, Some(request.identity)))
+      println(uuid)
+      for {
+        organisations <- organisationDAO.all
+        groups <- groupDAO.all
+        categories <- categoryDAO.all
+        registration <- registrationDAO.get(uuid)
+      } yield {
+        registration match {
+          case Some(registration) => Ok(views.html.registration(
+            registration,
+            RegistrationForm.form,
+            categoriesTupled(categories),
+            request.identity))
+          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+        }
       }
     } catch {
       case _: IllegalArgumentException =>
@@ -112,6 +124,48 @@ class Registrations @Inject()(mail: Mail,
         }
       }
     )
+  }
+
+  def update(id: String) = SecuredAction.async { implicit request =>
+    try {
+      val uuid = UUID.fromString(id)
+      for {
+        registration <- registrationDAO.get(uuid)
+        categories <- categoryDAO.all
+      } yield {
+        registration match {
+          case Some(registration) =>
+            RegistrationForm.form.bindFromRequest.fold(
+              form => {
+                BadRequest(views.html.registration(
+                  registration,
+                  form,
+                  models.categoriesTupled(categories),
+                  request.identity))
+              },
+              data => {
+                categoryDAO.get(UUID.fromString(data.category)).map {
+                  case Some(category) => registrationDAO.save(
+                    registration.copy(
+                      friday = data.friday,
+                      saturday = data.saturday,
+                      sorting = data.sorting,
+                      category = category,
+                      teamLeader = data.teamLeader))
+                  case None =>
+                    val error = Messages("object.not.found") + ": " + data.category
+                    Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
+                }
+
+                Redirect(routes.Registrations.registrations)
+              })
+          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+        }
+      }
+    } catch {
+      case _: IllegalArgumentException =>
+        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+    }
   }
 
   def all = SecuredAction.async {

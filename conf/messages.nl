@@ -69,6 +69,7 @@ sorting = Sorteren
 sorting.true = Ja, ik kom helpen sorteren
 sorting.label = Helpen sorteren
 team.leader = Teamleider
+team.leader.label = Teamleider
 yes = Ja
 no = Nee
 

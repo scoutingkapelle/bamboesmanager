@@ -39,8 +39,7 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   def get(id: UUID): Future[Option[Registration]] = {
     val query = for {
-      r <- registrations if r.id === id
-      (r, c) <- registrations join categories on (_.category_id === _.id)
+      (r, c) <- registrations join categories on (_.category_id === _.id) if r.id === id
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
