@@ -68,10 +68,13 @@ saturday.label = Ophalen zaterdag
 sorting = Sorteren
 sorting.true = Ja, ik kom helpen sorteren
 sorting.label = Helpen sorteren
+selling = Verkopen
+selling.label = Helpen verkopen
 team.leader = Teamleider
 team.leader.label = Teamleider
 yes = Ja
 no = Nee
+save = Opslaan
 
 conformation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
 distribution.subject = Definitieve indeling voor Actie Bamboes 2016

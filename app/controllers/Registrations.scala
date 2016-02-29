@@ -129,39 +129,48 @@ class Registrations @Inject()(mail: Mail,
   def update(id: String) = SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
-      for {
-        registration <- registrationDAO.get(uuid)
-        categories <- categoryDAO.all
-      } yield {
-        registration match {
-          case Some(registration) =>
-            RegistrationForm.form.bindFromRequest.fold(
-              form => {
+      RegistrationForm.form.bindFromRequest.fold(
+        form => {
+          for {
+            registration <- registrationDAO.get(uuid)
+            categories <- categoryDAO.all
+          } yield {
+            registration match {
+              case Some(registration) =>
                 BadRequest(views.html.registration(
                   registration,
                   form,
                   models.categoriesTupled(categories),
                   request.identity))
-              },
-              data => {
-                categoryDAO.get(UUID.fromString(data.category)).map {
-                  case Some(category) => registrationDAO.save(
-                    registration.copy(
-                      friday = data.friday,
-                      saturday = data.saturday,
-                      sorting = data.sorting,
-                      category = category,
-                      teamLeader = data.teamLeader))
-                  case None =>
-                    val error = Messages("object.not.found") + ": " + data.category
-                    Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
-                }
-
-                Redirect(routes.Registrations.registrations)
-              })
-          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+              case None => NotFound
+            }
+          }
+        },
+        data => {
+          val category_id = UUID.fromString(data.category)
+          registrationDAO.get(uuid).flatMap {
+            case Some(registration) => categoryDAO.get(category_id).flatMap {
+              case Some(category) => {
+                val updatedRegistration = registration.copy(
+                  friday = data.friday,
+                  saturday = data.saturday,
+                  sorting = data.sorting,
+                  category = category,
+                  teamLeader = data.teamLeader)
+                registrationDAO.save(updatedRegistration).flatMap(registration => {
+                  Future.successful(Redirect(routes.Registrations.registrations))
+                })
+              }
+              case None =>
+                val error = Messages("object.not.found") + ": " + category_id
+                Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
+            }
+            case None =>
+              val error = Messages("object.not.found") + ": " + id
+              Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
+          }
         }
-      }
+      )
     } catch {
       case _: IllegalArgumentException =>
         Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
