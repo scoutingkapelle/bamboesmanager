@@ -38,10 +38,7 @@ class Registrations @Inject()(mail: Mail,
   def registration(id: String) = SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
-      println(uuid)
       for {
-        organisations <- organisationDAO.all
-        groups <- groupDAO.all
         categories <- categoryDAO.all
         registration <- registrationDAO.get(uuid)
       } yield {
@@ -142,7 +139,9 @@ class Registrations @Inject()(mail: Mail,
                   form,
                   models.categoriesTupled(categories),
                   request.identity))
-              case None => NotFound
+              case None =>
+                val error = Messages("object.not.found") + ": " + id
+                BadRequest(views.html.badRequest(error, Some(request.identity)))
             }
           }
         },
