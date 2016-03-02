@@ -1,15 +1,32 @@
 @(user: Option[models.User])(implicit messages: Messages, flash: Flash)
 
-    @main(Messages("title"), user) {
-        <div class="container">
-            @flash.get("message").map { message =>
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    @message
-                </div>
-            }
-            <div class="well">
-                <h1>@Messages("title")</h1>
+@main(Messages("title"), user) {
+    <div class="container">
+        @flash.get("message").map { message =>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @message
             </div>
+        }
+        <div class="well">
+            <h1>@Messages("title")</h1>
+
+            <p>Dit jaar vindt de jaarlijkse rommelmarkt Actie Bamboes weer plaats op Koningsdag, maandag 27 april 2015. De rommelmarkt begint om 9.15 uur en om 12.15 uur beginnen we met opruimen.</p>
+
+            <p>
+                Als medewerker kan je je opgeven via dit <a href="@routes.Registrations.register">formulier</a>,
+                je krijgt vervolgens een bevestigingsemail met de ingevulde gegevens.
+                De voorkeur die je opgeeft voor de stand om te verkopen is niet definitief,
+                over de definitieve indeling krijg je eind april bericht.
+                Als je iets wilt wijzigen dan kan je mailen naar
+                <a href="mailto:actiebamboes@@scoutingkapelle.nl" target="_top">actiebamboes@@scoutingkapelle.nl</a>.
+            </p>
+
+            <h2>Ophalen vrijdag</h2>
+            <p>Vrijdag 15 april om 18.15 uur verzamelen bij het station.</p>
+
+            <h2>Ophalen zaterdag</h2>
+            <p>Zaterdag 16 april om 9.00 uur verzamelen bij het station.</p>
         </div>
-    }
+    </div>
+}
