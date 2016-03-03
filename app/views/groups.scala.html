@@ -1,28 +1,40 @@
 @(groups: Seq[Group], user: models.User)(implicit messages: Messages)
 
-@main(Messages("groups"), Some(user)) {
-    <div class="container">
-        <h1>@Messages("groups")</h1>
-        <a href="@routes.Groups.add">
-            <button id="btn-add" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
-                @Messages("group.add")
-            </button>
-        </a>
+    @scripts = {
+        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
+        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
+        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+    }
 
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <th>@Messages("group")</th>
-                    <th>@Messages("organisation")</th>
-                </tr>
-                @for(group <- groups) {
-                    <tr>
-                        <td><a href="@routes.Groups.group(group.id.toString)">@group.name</a></td>
-                        <td>@group.organisation.name</td>
-                    </tr>
-                }
-            </table>
+    @main(Messages("groups"), Some(user), scripts) {
+        <div class="container">
+            <h1>@Messages("groups")</h1>
+            <a href="@routes.Groups.add">
+                <button id="btn-add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-plus"></span>
+                    @Messages("group.add")
+                </button>
+            </a>
+
+            <div class="table-responsive">
+                <table id="groups" data-toggle="table" data-striped="true">
+                    <thead>
+                        <tr>
+                            <th data-visible="false">id</th>
+                            <th data-sortable="true">@Messages("group")</th>
+                            <th data-sortable="true">@Messages("organisation")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(group <- groups) {
+                        <tr>
+                            <td>@group.id.toString</td>
+                            <td>@group.name</td>
+                            <td>@group.organisation.name</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-}
+    }
