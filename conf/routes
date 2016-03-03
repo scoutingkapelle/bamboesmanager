@@ -42,6 +42,10 @@ POST        /email/message/send              @controllers.Email.sendMessage
 GET         /email/list                      @controllers.Email.list
 POST        /email/list/send                 @controllers.Email.sendList
 
+GET         /statistics/friday               @controllers.Statistics.friday
+GET         /statistics/saturday             @controllers.Statistics.saturday
+GET         /statistics/sorting              @controllers.Statistics.sorting
+
 # API
 GET         /api/categories                  @controllers.Categories.all
 GET         /api/categories/:id              @controllers.Categories.get(id)
