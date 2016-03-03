@@ -38,9 +38,9 @@ GET         /email/confirmation              @controllers.Email.confirmation
 GET         /email/distribution              @controllers.Email.distribution
 GET         /email/distribution/send         @controllers.Email.sendDistribution
 GET         /email/message                   @controllers.Email.message
-GET         /email/message/send              @controllers.Email.sendMessage
+POST        /email/message/send              @controllers.Email.sendMessage
 GET         /email/list                      @controllers.Email.list
-GET         /email/list/send                 @controllers.Email.sendList
+POST        /email/list/send                 @controllers.Email.sendList
 
 # API
 GET         /api/categories                  @controllers.Categories.all
