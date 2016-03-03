@@ -34,6 +34,7 @@ group = Groep
 group.add = Groep toevoegen
 group.save = Groep opslaan
 group.select = Selecteer eerst een vereninging
+group.select.new = Selecteer een groep
 
 persons = Medewerkers
 person = Medewerker

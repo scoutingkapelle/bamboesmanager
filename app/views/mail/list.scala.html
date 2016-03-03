@@ -19,7 +19,7 @@
             @helper.form(action = routes.Email.sendList) {
                 @helper.CSRF.formField
                 @b3.text(listForm("email"), '_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg")
-                @b3.select(listForm("group"), options = groups, '_hiddenLabel -> Messages("group"), '_default -> Messages("select.group"), 'class -> "form-control input-lg")
+                @b3.select(listForm("group"), options = groups, '_hiddenLabel -> Messages("group"), '_default -> Messages("group.select.new"), 'class -> "form-control input-lg")
                 <div class="form-group">
                     <div>
                         <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
