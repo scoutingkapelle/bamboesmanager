@@ -89,6 +89,9 @@ list.send = Vestuur de lijst
 list.subject = Lijst van aanmeldingen voor Actie Bamboes 2016
 list.success = De lijst is succesvol verstuurd
 
+statistics = Verdeling
+count = Aantal
+
 error = Error!
 uuid.invalid=Error: invalid UUID
 not.found = Niet gevonden

@@ -42,9 +42,7 @@ POST        /email/message/send              @controllers.Email.sendMessage
 GET         /email/list                      @controllers.Email.list
 POST        /email/list/send                 @controllers.Email.sendList
 
-GET         /statistics/friday               @controllers.Statistics.friday
-GET         /statistics/saturday             @controllers.Statistics.saturday
-GET         /statistics/sorting              @controllers.Statistics.sorting
+GET         /statistics                      @controllers.Statistics.statistics
 
 # API
 GET         /api/categories                  @controllers.Categories.all
@@ -61,6 +59,11 @@ GET         /api/persons/:id                 @controllers.Persons.get(id)
 
 GET         /api/registrations               @controllers.Registrations.all
 GET         /api/registrations/:id           @controllers.Registrations.get(id)
+
+GET         /api/statistics/friday           @controllers.Statistics.friday
+GET         /api/statistics/saturday         @controllers.Statistics.saturday
+GET         /api/statistics/sorting          @controllers.Statistics.sorting
+GET         /api/statistics/selling          @controllers.Statistics.selling
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /webjars/*file                   controllers.WebJarAssets.at(file)

@@ -17,7 +17,6 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   private val persons = TableQuery[PersonTable]
   private val groups = TableQuery[GroupTable]
   private val organisations = TableQuery[OrganisationTable]
-  private val categories = TableQuery[CategoryTable]
 
   def friday: Future[Seq[(String, Int)]] = {
     val query = (for {
@@ -48,6 +47,19 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   def sorting: Future[Seq[(String, Int)]] = {
     val query = (for {
       r <- registrations if r.sorting
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+      o <- organisations if o.id === g.organisation_id
+    } yield o).groupBy(_.name).map {
+      case organisation => (organisation._1, organisation._2.length)
+    }
+
+    db.run(query.result).map(rows => rows.map { case statistic => statistic })
+  }
+
+  def selling: Future[Seq[(String, Int)]] = {
+    val query = (for {
+      r <- registrations if !r.category_id.isEmpty
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
