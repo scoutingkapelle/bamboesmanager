@@ -1,0 +1,17 @@
+@(registration: Registration, user: models.User)(implicit messages: Messages, flash: Flash)
+
+@main(Messages("distribution"), Some(user)) {
+    <div class="container">
+        @flash.get("message").map { message =>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @message
+            </div>
+        }
+        <div class="well">
+            <h1>@Messages("distribution.subject")</h1>
+            @mail.distributionMail(registration)
+            <a class="btn btn-lg btn-primary" href="@routes.Email.sendDistribution" role="button"><span class="glyphicon glyphicon glyphicon-ok"></span> @Messages("distribution.send")</a>
+        </div>
+    </div>
+}

@@ -34,8 +34,13 @@ GET         /registrations                   @controllers.Registrations.registra
 GET         /registrations/:id               @controllers.Registrations.registration(id)
 POST        /registrations/:id/update        @controllers.Registrations.update(id)
 
-GET         /email                           @controllers.Email.email
-GET         /email/distribution              @controllers.Email.sendDistribution
+GET         /email/confirmation              @controllers.Email.confirmation
+GET         /email/distribution              @controllers.Email.distribution
+GET         /email/distribution/send         @controllers.Email.sendDistribution
+GET         /email/message                   @controllers.Email.message
+GET         /email/message/send              @controllers.Email.sendMessage
+GET         /email/list                      @controllers.Email.list
+GET         /email/list/send                 @controllers.Email.sendList
 
 # API
 GET         /api/categories                  @controllers.Categories.all

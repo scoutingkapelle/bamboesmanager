@@ -1,11 +1,11 @@
-@(registration: Registration, message: String = "")
+@(registration: Registration)
 <html>
     <body>
         <p>Beste @registration.person.name,</p>
 
         <p>Dit jaar ben je ingedeeld bij de stand <strong>@registration.category.name</strong>
             om te helpen verkopen@{
-            if(registration.teamLeader) "en je bent hier ook teamleider"
+            if(registration.teamLeader) " en je bent hier ook teamleider"
         }.</p>
 
     <p>De meeste voorbereidingen zijn al getroffen en aan jullie de taak om de spullen zo goed mogelijk te verkopen; hoge kwaliteit voor hoge prijs! We hebben veel spullen maar let erop dat deze niet voor een stuiver verkocht worden, dit betekent niet lager dan &euro;

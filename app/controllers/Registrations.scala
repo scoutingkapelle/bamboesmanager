@@ -100,7 +100,7 @@ class Registrations @Inject()(mail: Mail,
                     val registration = Registration(UUID.randomUUID, person,
                       data.friday, data.saturday, data.sorting, category, false)
                     registrationDAO.save(registration).flatMap(registration => {
-                      Future.successful(mail.sendConformation(registration, Messages("conformation.subject")))
+                      Future.successful(mail.sendConfirmation(registration, Messages("confirmation.subject")))
                       val flash = ("message", Messages("registered"))
                       Future.successful(Redirect(routes.Application.index).flashing(flash))
                     })

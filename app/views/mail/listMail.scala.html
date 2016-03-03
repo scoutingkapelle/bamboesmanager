@@ -1,0 +1,21 @@
+@(persons: Seq[Person])
+
+<html>
+    <body>
+        <p>Beste,</p>
+
+        <p>De volgende personen hebben zich opgegeven:</p>
+
+        <ul>
+            @for(person <- persons) {
+                <li>@person.name</li>
+            }
+        </ul>
+
+        <p>Tot op Koningsdag!</p>
+
+        <p>Groeten,</p>
+
+        <p>Het Actie Bamboes team</p>
+    </body>
+</html>

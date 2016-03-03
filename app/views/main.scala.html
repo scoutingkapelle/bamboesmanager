@@ -40,7 +40,14 @@
                         <li><a href="@routes.Groups.groups">@Messages("groups")</a></li>
                         <li><a href="@routes.Categories.categories">@Messages("categories")</a></li>
                         <li><a href="@routes.Registrations.registrations">@Messages("registrations")</a></li>
-                        <li><a href="@routes.Email.email">@Messages("email")</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Messages("email") <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="@routes.Email.confirmation">@Messages("confirmation")</a></li>
+                                <li><a href="@routes.Email.distribution">@Messages("distribution")</a></li>
+                                <li><a href="@routes.Email.message">@Messages("message")</a></li>
+                                <li><a href="@routes.Email.list">@Messages("list")</a></li>
+                            </ul>
                         <li><a href="@routes.Application.dashboard">@u.name</a></li>
                         <li><a href="@routes.Application.signOut">@Messages("sign.out")</a></li>
                         }.getOrElse {

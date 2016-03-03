@@ -76,10 +76,21 @@ yes = Ja
 no = Nee
 save = Opslaan
 
-conformation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
+confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2016
+confirmation = Bevestiging
 distribution.subject = Definitieve indeling voor Actie Bamboes 2016
 distribution.send = Verstuur indeling naar iedereen
 distribution.success = De indeling is succesvol naar iedereen verstuurd
+distribution = Verdeling
+message.subject = Bericht naar iedereen versturen
+message.send = Verstuur bericht naar iedereen
+message.success = Het bericht is succesvol naar iedereen verstuurd
+message = Bericht
+subject= Onderwerp
+list = Lijst
+list.subject = Lijst van aanmeldingen voor Actie Bamboes 2016
+list.send = Vestuur de lijst
+list.success = De lijst is succesvol verstuurd
 
 select.organisation = Selecteer een vereniging
 select.group = Selecteer eerst een vereninging

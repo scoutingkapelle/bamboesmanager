@@ -3,7 +3,7 @@ package models
 import javax.inject.Inject
 
 import play.api.libs.mailer.{Email, MailerClient}
-import views.html.mail.{conformationMail, distributionMail}
+import views.html.mail.{confirmationMail, distributionMail, listMail, messageMail}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -13,16 +13,16 @@ class Mail @Inject()(mailer: MailerClient) {
   protected val from = play.Play.application.configuration.getString("email.from")
   protected val replyTo = play.Play.application.configuration.getString("email.replyTo")
 
-  def sendConformation(registration: Registration, subject: String) = Future {
-    mailer.send(conformation(registration, subject))
+  def sendConfirmation(registration: Registration, subject: String) = Future {
+    mailer.send(confirmation(registration, subject))
   }
 
-  protected def conformation(registration: Registration, subject: String) =
+  protected def confirmation(registration: Registration, subject: String) =
     Email(
       subject = subject,
       from = from,
       to = Seq(toAddress(registration.person.name, registration.person.email)),
-      bodyHtml = Some(conformationMail(registration).body),
+      bodyHtml = Some(confirmationMail(registration).body),
       bcc = Seq(replyTo),
       replyTo = Some(replyTo)
     )
@@ -43,4 +43,31 @@ class Mail @Inject()(mailer: MailerClient) {
       replyTo = Some(replyTo)
     )
 
+  def sendMessage(registrations: Seq[Registration], subject: String, content: String) = Future {
+    registrations.map(registration => mailer.send(message(registration, subject, content)))
+  }
+
+  protected def message(registration: Registration, subject: String, content: String) =
+    Email(
+      subject = subject,
+      from = from,
+      to = Seq(toAddress(registration.person.name, registration.person.email)),
+      bodyHtml = Some(messageMail(registration.person.name, content).body),
+      bcc = Seq(replyTo),
+      replyTo = Some(replyTo)
+    )
+
+  def sendList(email: String, subject: String, persons: Seq[Person]) = Future {
+    mailer.send(list(email, subject, persons))
+  }
+
+  def list(email: String, subject: String, persons: Seq[Person]) =
+    Email(
+      subject = subject,
+      from = from,
+      to = Seq(email),
+      bodyHtml = Some(listMail(persons).body),
+      bcc = Seq(replyTo),
+      replyTo = Some(replyTo)
+    )
 }
