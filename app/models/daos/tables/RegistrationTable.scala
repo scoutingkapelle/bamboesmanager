@@ -27,7 +27,7 @@ class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrati
 
   def team_leader = column[Boolean]("team_leader")
 
-  def category = foreignKey("category_fk", category_id, categories)(_.id)
+  def category = foreignKey("category_fk", category_id, categories)(_.id.?)
 
   def person = foreignKey("person_fk", person_id, persons)(_.id)
 }
