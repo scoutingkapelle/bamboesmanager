@@ -29,7 +29,7 @@
                     @b3.text(registerForm("prefix"), '_label -> Messages("prefix"), 'class -> "form-control input-lg")
                     @b3.text(registerForm("surName"), '_label -> Messages("sur.name"), 'class -> "form-control input-lg")
                     @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
-                    @b3.text(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
+                    @b3.email(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
                     @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("organisation.select"))
                     @b3.select(registerForm("group"), options = groups, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("group.select"))
                     @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"))
