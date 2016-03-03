@@ -10,13 +10,13 @@ object RegisterForm {
       "firstName" -> nonEmptyText,
       "prefix" -> text,
       "surName" -> nonEmptyText,
-      "age" -> number(min = 11),
+      "age" -> number(min = 11, max = 100),
       "email" -> email,
       "group" -> nonEmptyText,
       "friday" -> boolean,
       "saturday" -> boolean,
       "sorting" -> boolean,
-      "category" -> nonEmptyText
+      "category" -> optional(nonEmptyText)
     )(Data.apply)(Data.unapply)
   )
 
@@ -30,7 +30,7 @@ object RegisterForm {
                    friday: Boolean,
                    saturday: Boolean,
                    sorting: Boolean,
-                   category: String
+                   category: Option[String]
                  )
 
 }

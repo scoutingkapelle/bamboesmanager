@@ -25,6 +25,7 @@ categories = Stands
 category = Stand
 category.add = Stand toevoegen
 category.label = Stand verkopen
+category.none = Niet helpen verkopen
 category.save = Stand opslaan
 category.select = Selecteer een stand
 

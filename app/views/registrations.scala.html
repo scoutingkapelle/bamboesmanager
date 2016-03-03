@@ -41,7 +41,12 @@
                             <td>@(if(registration.friday) Messages("yes") else Messages("no"))</td>
                             <td>@(if(registration.saturday) Messages("yes") else Messages("no"))</td>
                             <td>@(if(registration.sorting) Messages("yes") else Messages("no"))</td>
-                            <td>@registration.category.name</td>
+                            <td>@{
+                                registration.category match {
+                                    case Some(category) => category.name
+                                    case None => Messages("category.none")
+                                }
+                            }</td>
                             <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
                         </tr>
                     }

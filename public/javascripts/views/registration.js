@@ -11,7 +11,21 @@ $(document).ready(function () {
     $("[name='teamLeader']").bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
 
-    if ($('#organisation').val() == "Scouting Kapelle") {
-        $('#sorting_field').addClass('hidden');
-    }
+    var selling = $('#selling');
+    var category = $('#category_field');
+
+    if (selling.bootstrapSwitch('state')) category.removeClass('hidden');
+    else category.addClass('hidden');
+
+    var selected = $('#category :selected').val();
+    selling.on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) {
+            category.removeClass('hidden');
+            $('#category').val(selected)
+        }
+        else {
+            category.addClass('hidden');
+            $('#category :selected').removeAttr('selected')
+        }
+    });
 });

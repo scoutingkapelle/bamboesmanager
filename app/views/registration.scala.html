@@ -34,7 +34,16 @@
                         @b3.checkbox(registrationForm("friday"), '_label -> Messages("friday.label"), 'value -> registration.friday)
                         @b3.checkbox(registrationForm("saturday"), '_label -> Messages("saturday.label"), 'value -> registration.saturday)
                         @b3.checkbox(registrationForm("sorting"), '_label -> Messages("sorting.label"), 'value -> registration.sorting)
-                        @b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", 'value -> registration.category.id)
+                        @{
+                            registration.category match {
+                                case Some(category) => Html(
+                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label"), 'value -> true).body +
+                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'value -> category.id).body)
+                                case None => Html(
+                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label")).body +
+                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select")).body)
+                            }
+                        }
                         @b3.checkbox(registrationForm("teamLeader"), '_label -> Messages("team.leader.label"), 'value -> registration.teamLeader)
                         @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
                             <span class="glyphicon glyphicon glyphicon-ok"></span>

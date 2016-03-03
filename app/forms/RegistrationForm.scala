@@ -10,11 +10,11 @@ object RegistrationForm {
       "friday" -> boolean,
       "saturday" -> boolean,
       "sorting" -> boolean,
-      "category" -> nonEmptyText,
+      "category" -> optional(nonEmptyText),
       "teamLeader" -> boolean
     )(Data.apply)(Data.unapply)
   )
 
-  case class Data(friday: Boolean, saturday: Boolean, sorting: Boolean, category: String, teamLeader: Boolean)
+  case class Data(friday: Boolean, saturday: Boolean, sorting: Boolean, category: Option[String], teamLeader: Boolean)
 
 }

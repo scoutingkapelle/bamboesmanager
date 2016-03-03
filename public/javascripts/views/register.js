@@ -10,30 +10,23 @@ $(document).ready(function () {
     $('#selling').bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
 
-
-    var not_selling = $('#category option[value="79406b6c-baef-41bd-b646-4d1bf1b1916a"]');
     var selling = $('#selling');
     var category = $('#category_field');
 
-    if (selling.bootstrapSwitch('state'))  enableSelling();
-    else disableSelling();
+    if (selling.bootstrapSwitch('state')) category.removeClass('hidden');
+    else category.addClass('hidden');
 
+    var selected = $('#category :selected').val();
     selling.on('switchChange.bootstrapSwitch', function (event, state) {
-        if (state) enableSelling();
-        else disableSelling();
+        if (state) {
+            category.removeClass('hidden');
+            $('#category').val(selected)
+        }
+        else {
+            category.addClass('hidden');
+            $('#category :selected').removeAttr('selected')
+        }
     });
-
-    function enableSelling() {
-        not_selling.addClass('hidden');
-        not_selling.prop('selected', false)
-        category.removeClass('hidden')
-    }
-
-    function disableSelling() {
-        not_selling.removeClass('hidden');
-        not_selling.prop('selected', true);
-        category.addClass('hidden')
-    }
 
     var selected_organisation = $('#organisation').find(':selected');
     updateSorting(selected_organisation);
