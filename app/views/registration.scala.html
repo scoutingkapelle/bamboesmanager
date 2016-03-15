@@ -45,6 +45,8 @@
                             }
                         }
                         @b3.checkbox(registrationForm("teamLeader"), '_label -> Messages("team.leader.label"), 'value -> registration.teamLeader)
+                        @b3.checkbox(registrationForm("bbq"), '_label -> Messages("bbq.label"), 'value -> registration.bbq)
+                        @b3.checkbox(registrationForm("bbqPartner"), '_label -> Messages("bbq.partner.label"), 'value -> registration.bbqPartner)
                         @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
                             <span class="glyphicon glyphicon glyphicon-ok"></span>
                             @Messages("save")

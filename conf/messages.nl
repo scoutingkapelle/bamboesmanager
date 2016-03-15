@@ -48,6 +48,7 @@ organisation.select = Selecteer een vereniging
 registrations = Registraties
 registration = Registratie
 register = Aanmelden
+register.info = Aanmelden als medewerker
 registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met alle details.
 
 friday = Vrijdag
@@ -64,6 +65,11 @@ selling.label = Helpen verkopen
 
 team.leader = Teamleider
 team.leader.label = Teamleider
+
+bbq = BBQ
+bbq.label = BBQ bij feest
+bbq.partner = Partner BBQ
+bbq.partner.label = Partner bij BBQ
 
 yes = Ja
 no = Nee

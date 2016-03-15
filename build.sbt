@@ -1,10 +1,12 @@
 name := "bamboesmanager"
 
-version := "0.3.2"
+version := "0.4.0"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
 
-scalaVersion := "2.11.7"
+routesGenerator := InjectedRoutesGenerator
+
+scalaVersion := "2.11.8"
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 

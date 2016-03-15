@@ -15,15 +15,10 @@
             <li>Groep: @registration.person.group.name</li>
             <li>Ophalen vrijdag: @if(registration.friday) {Ja} else {Nee}</li>
             <li>Ophalen zaterdag: @if(registration.saturday) {Ja} else {Nee}</li>
-            @if(registration.sorting) {
-                <li>Helpen sorteren: Ja</li>
-            }
-            @{
-                registration.category match {
-                    case Some(category) => <li>Voorkeur stand: {category.name}</li>
-                    case None => <li>Helpen verkopen: Nee</li>
-                }
-            }
+            @{if(registration.sorting) {<li>Helpen sorteren: Ja</li>}}
+            @{registration.category.map(cat => <li>Voorkeur stand: {cat.name}</li>).getOrElse(<li>Helpen verkopen: Nee</li>)}
+            @{if(registration.bbq) {<li>BBQ bij feest: Ja</li>}}
+            @{if(registration.bbqPartner) {<li>Partner bij BBQ: Ja</li>}}
         </ul>
 
         <p>Klopt er iets niet? Beantwoordt dan deze mail met de juiste gegevens, wij passen het vervolgens voor je aan.</p>

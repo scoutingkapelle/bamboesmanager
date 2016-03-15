@@ -9,6 +9,8 @@ $(document).ready(function () {
     $("[name='sorting']").bootstrapSwitch();
     $("[name='selling']").bootstrapSwitch();
     $("[name='teamLeader']").bootstrapSwitch();
+    $("[name='bbq']").bootstrapSwitch();
+    $("[name='bbqPartner']").bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
 
     var selling = $('#selling');

@@ -1,11 +1,11 @@
 @(statistics: Map[String, Map[String, Int]], user: models.User)(implicit messages: Messages)
 
 @main(Messages("statistics"), Some(user)) {
-    <div class="container">
+    <div class="container row-eq-height">
         <h1>@Messages("statistics")</h1>
 
         @for(statistic <- statistics) {
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <h2>@statistic._1</h2>
                 <table class="table table-striped table-bordered">
                     <tr>

@@ -30,7 +30,9 @@ CREATE TABLE "registrations" (
   "saturday"    BOOL NOT NULL,
   "sorting"     BOOL NOT NULL,
   "category_id" UUID REFERENCES "categories" ("id"),
-  "team_leader" BOOL
+  "team_leader" BOOL,
+  "bbq"         BOOL,
+  "bbq_partner" BOOL
 );
 
 CREATE TABLE "users" (

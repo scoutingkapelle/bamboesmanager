@@ -70,4 +70,30 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
     db.run(query.result).map(rows => rows.map { case statistic => statistic })
   }
 
+  def bbq: Future[Seq[(String, Int)]] = {
+    val query = (for {
+      r <- registrations if r.bbq
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+      o <- organisations if o.id === g.organisation_id
+    } yield o).groupBy(_.name).map {
+      case organisation => (organisation._1, organisation._2.length)
+    }
+
+    db.run(query.result).map(rows => rows.map { case statistic => statistic })
+  }
+
+  def bbqPartner: Future[Seq[(String, Int)]] = {
+    val query = (for {
+      r <- registrations if r.bbq_partner
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+      o <- organisations if o.id === g.organisation_id
+    } yield o).groupBy(_.name).map {
+      case organisation => (organisation._1, organisation._2.length)
+    }
+
+    db.run(query.result).map(rows => rows.map { case statistic => statistic })
+  }
+
 }

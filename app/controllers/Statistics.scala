@@ -9,6 +9,7 @@ import models.daos._
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
 
+import scala.collection.immutable.ListMap
 import scala.concurrent.ExecutionContext.Implicits._
 
 class Statistics @Inject()(statisticsDAO: StatisticsDAO,
@@ -22,12 +23,16 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
       saturday <- statisticsDAO.saturday
       sorting <- statisticsDAO.sorting
       selling <- statisticsDAO.selling
+      bbq <- statisticsDAO.bbq
+      bbqPartner <- statisticsDAO.bbqPartner
     } yield {
-      val statistics = Map(
+      val statistics = ListMap(
         Messages("friday") -> friday.sortBy(_._1).toMap,
         Messages("saturday") -> saturday.sortBy(_._1).toMap,
         Messages("sorting") -> sorting.sortBy(_._1).toMap,
-        Messages("selling") -> selling.sortBy(_._1).toMap
+        Messages("selling") -> selling.sortBy(_._1).toMap,
+        Messages("bbq") -> bbq.sortBy(_._1).toMap,
+        Messages("bbq.partner") -> bbqPartner.sortBy(_._1).toMap
       )
       Ok(views.html.statistics(statistics, request.identity))
     }

@@ -33,7 +33,7 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
       case (r, p, g, o, c) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader, r.bbq, r.bbq_partner)
     })
   }
 
@@ -49,7 +49,7 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
       case (r, p, g, o, c) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader, r.bbq, r.bbq_partner)
     })
   }
 
@@ -64,10 +64,9 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
       registration.friday,
       registration.saturday,
       registration.sorting,
-      registration.category match {
-        case Some(category) => Some(category.id)
-        case None => None
-      },
-      registration.teamLeader
+      registration.category.map(cat => cat.id),
+      registration.teamLeader,
+      registration.bbq,
+      registration.bbqPartner
     )
 }

@@ -4,28 +4,45 @@ $(document).ready(function () {
     $.fn.bootstrapSwitch.defaults.onText = 'Ja';
     $.fn.bootstrapSwitch.defaults.offText = 'Nee';
 
-    $('#friday').bootstrapSwitch();
-    $('#saturday').bootstrapSwitch();
-    $('#sorting').bootstrapSwitch();
-    $('#selling').bootstrapSwitch();
+    var friday = $('#friday');
+    var saturday = $('#saturday');
+    var sorting = $('#sorting');
+    var selling = $('#selling');
+    var bbq = $('#bbq');
+    var bbqPartner = $('#bbqPartner');
+
+    friday.bootstrapSwitch();
+    saturday.bootstrapSwitch();
+    sorting.bootstrapSwitch();
+    selling.bootstrapSwitch();
+    bbq.bootstrapSwitch();
+    bbqPartner.bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
 
-    var selling = $('#selling');
-    var category = $('#category_field');
+    var categoryField = $('#category_field');
+    var bbqPartnerField = $('#bbqPartner_field');
 
-    if (selling.bootstrapSwitch('state')) category.removeClass('hidden');
-    else category.addClass('hidden');
+    if (selling.bootstrapSwitch('state')) categoryField.removeClass('hidden');
+    else categoryField.addClass('hidden');
+
+    if (bbq.bootstrapSwitch('state')) bbqPartnerField.removeClass('hidden');
+    else bbqPartnerField.addClass('hidden');
 
     var selected = $('#category :selected').val();
     selling.on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
-            category.removeClass('hidden');
+            categoryField.removeClass('hidden');
             $('#category').val(selected)
         }
         else {
-            category.addClass('hidden');
+            categoryField.addClass('hidden');
             $('#category :selected').removeAttr('selected')
         }
+    });
+
+    bbq.on('switchChange.bootstrapSwitch', function (event, state) {
+        if (state) bbqPartnerField.removeClass('hidden');
+        else bbqPartnerField.addClass('hidden')
     });
 
     var selected_organisation = $('#organisation').find(':selected');
