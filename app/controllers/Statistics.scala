@@ -13,6 +13,7 @@ import scala.collection.immutable.ListMap
 import scala.concurrent.ExecutionContext.Implicits._
 
 class Statistics @Inject()(statisticsDAO: StatisticsDAO,
+                           organisationDAO: OrganisationDAO,
                            val messagesApi: MessagesApi,
                            val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
@@ -25,14 +26,15 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
       selling <- statisticsDAO.selling
       bbq <- statisticsDAO.bbq
       bbqPartner <- statisticsDAO.bbqPartner
+      organisations <- organisationDAO.all
     } yield {
       val statistics = ListMap(
-        Messages("friday") -> friday.sortBy(_._1).toMap,
-        Messages("saturday") -> saturday.sortBy(_._1).toMap,
-        Messages("sorting") -> sorting.sortBy(_._1).toMap,
-        Messages("selling") -> selling.sortBy(_._1).toMap,
-        Messages("bbq") -> bbq.sortBy(_._1).toMap,
-        Messages("bbq.partner") -> bbqPartner.sortBy(_._1).toMap
+        Messages("friday") -> fill(organisations, friday),
+        Messages("saturday") -> fill(organisations, saturday),
+        Messages("sorting") -> fill(organisations, sorting),
+        Messages("selling") -> fill(organisations, selling),
+        Messages("bbq") -> fill(organisations, bbq),
+        Messages("bbq.partner") -> fill(organisations, bbqPartner)
       )
       Ok(views.html.statistics(statistics, request.identity))
     }
@@ -53,4 +55,7 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
   def selling = SecuredAction.async { implicit request =>
     statisticsDAO.selling.map(statistics => Ok(Json.toJson(statistics.toMap)))
   }
+
+  def fill(organisations: Seq[Organisation], statistic: Seq[(String, Int)]): Map[String, Int] =
+    organisations.map(organisation => (organisation.name, statistic.toMap.getOrElse(organisation.name, 0))).toMap
 }
