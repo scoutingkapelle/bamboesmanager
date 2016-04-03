@@ -1,6 +1,6 @@
 name := "bamboesmanager"
 
-version := "0.4.2"
+version := "0.4.3"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
 
