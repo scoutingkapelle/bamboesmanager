@@ -93,10 +93,10 @@ $(document).ready(function () {
 
     function updateSorting(organisation) {
         if (organisation.text() == "Scouting Kapelle" || organisation.val().length == 0) {
-            $('#sorting_field').addClass('hidden');
+            $('#sorting_wrapper').addClass('hidden');
             $('#sorting').prop('checked', false)
         } else {
-            $('#sorting_field').removeClass('hidden')
+            $('#sorting_wrapper').removeClass('hidden')
         }
     }
 });
