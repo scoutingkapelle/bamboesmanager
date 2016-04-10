@@ -24,7 +24,9 @@ class Groups @Inject()(groupDAO: GroupDAO,
   implicit val groupWrites = Json.writes[Group]
 
   def groups = SecuredAction.async { implicit request =>
-    groupDAO.all.map(groups => Ok(views.html.groups(groups.sortBy(_.name), request.identity)))
+    groupDAO.all.map(groups =>
+      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), request.identity))
+    )
   }
 
   def group(id: String) = SecuredAction.async { implicit request =>
