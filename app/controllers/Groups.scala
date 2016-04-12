@@ -7,7 +7,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.GroupForm
 import models._
-import models.daos.{GroupDAO, OrganisationDAO}
+import models.daos.{RegistrationDAO, GroupDAO, OrganisationDAO}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.{Json, Writes}
 
@@ -16,6 +16,7 @@ import scala.concurrent.Future
 
 class Groups @Inject()(groupDAO: GroupDAO,
                        organisationDAO: OrganisationDAO,
+                       registrationDAO: RegistrationDAO,
                        val messagesApi: MessagesApi,
                        val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
@@ -33,11 +34,11 @@ class Groups @Inject()(groupDAO: GroupDAO,
     try {
       val uuid = UUID.fromString(id)
       for {
-        persons <- groupDAO.persons(uuid)
+        persons <- registrationDAO.all(uuid)
         group <- groupDAO.get(uuid)
       } yield {
         group match {
-          case Some(group) => Ok(views.html.group(group, persons.sortBy(_.name), request.identity))
+          case Some(group) => Ok(views.html.group(group, persons.sortBy(_.person.name), request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }

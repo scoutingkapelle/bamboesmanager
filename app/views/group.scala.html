@@ -1,23 +1,36 @@
-@(group: Group, persons: Seq[Person], user: models.User)(implicit messages: Messages)
+@(group: Group, registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
-    @main(group.name, Some(user)) {
+    @scripts = {
+
+        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
+        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
+        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+    }
+
+    @main(group.name, Some(user), scripts) {
         <div class="container">
             <h1>@(group.organisation.name + ": " + group.name)</h1>
 
             <div class="table-responsive">
-                <table class="table table-striped">
-                    <tr>
-                        <th>@Messages("person")</th>
-                        <th>@Messages("age")</th>
-                        <th>@Messages("email")</th>
-                    </tr>
-                    @for(person <- persons) {
+                <table id="group" data-toggle="table" data-striped="true">
+                    <thead>
                         <tr>
-                            <td>@person.name</td>
-                            <td>@person.age</td>
-                            <td>@person.email</td>
+                            <th data-visible="false">id</th>
+                            <th>@Messages("person")</th>
+                            <th>@Messages("age")</th>
+                            <th>@Messages("email")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(registration <- registrations) {
+                        <tr>
+                            <td>@registration.id</td>
+                            <td>@registration.person.name</td>
+                            <td>@registration.person.age</td>
+                            <td>@registration.person.email</td>
                         </tr>
                     }
+                    </tbody>
                 </table>
             </div>
         </div>
