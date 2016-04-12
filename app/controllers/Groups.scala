@@ -34,7 +34,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
     try {
       val uuid = UUID.fromString(id)
       for {
-        persons <- registrationDAO.all(uuid)
+        persons <- registrationDAO.group(uuid)
         group <- groupDAO.get(uuid)
       } yield {
         group match {

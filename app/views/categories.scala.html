@@ -1,26 +1,38 @@
 @(categories: Seq[Category], user: models.User)(implicit messages: Messages)
 
-@main(Messages("categories"), Some(user)) {
-    <div class="container">
-        <h1>@Messages("categories")</h1>
-        <a href="@routes.Categories.add">
-            <button id="btn-add" type="button" class="btn btn-default">
-                <span class="glyphicon glyphicon glyphicon-plus"></span>
-                @Messages("category.add")
-            </button>
-        </a>
+    @scripts = {
+        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
+        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
+        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+    }
 
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <th>@Messages("category")</th>
-                </tr>
-                @for(category <- categories) {
-                    <tr>
-                        <td>@category.name</td>
-                    </tr>
-                }
-            </table>
+    @main(Messages("categories"), Some(user), scripts) {
+        <div class="container">
+            <h1>@Messages("categories")</h1>
+            <a href="@routes.Categories.add">
+                <button id="btn-add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-plus"></span>
+                    @Messages("category.add")
+                </button>
+            </a>
+
+            <div class="table-responsive">
+                <table id="categories" data-toggle="table" data-striped="true">
+                    <thead>
+                        <tr>
+                            <th data-visible="false">id</th>
+                            <th>@Messages("category")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for(category <- categories) {
+                        <tr>
+                            <td>@category.id</td>
+                            <td>@category.name</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-}
+    }
