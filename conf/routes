@@ -2,70 +2,72 @@
 # This file defines all application routes (Higher priority routes first)
 
 # Home page
-GET         /                                @controllers.Application.index
-GET         /register                        @controllers.Registrations.register
-POST        /register                        @controllers.Registrations.save
+GET         /                                 @controllers.Application.index
+GET         /register                         @controllers.Registrations.register
+POST        /register                         @controllers.Registrations.save
 
 # Authentiaction
-GET         /signin                          @controllers.Application.signIn
-GET         /signout                         @controllers.Application.signOut
-GET         /signup                          @controllers.Application.signUp
-POST        /signup                          @controllers.SignUp.signUp
-POST        /authenticate                    @controllers.Authentication.authenticate
+GET         /signin                           @controllers.Application.signIn
+GET         /signout                          @controllers.Application.signOut
+GET         /signup                           @controllers.Application.signUp
+POST        /signup                           @controllers.SignUp.signUp
+POST        /authenticate                     @controllers.Authentication.authenticate
 
 # Admin pages
-GET         /dashboard                       @controllers.Application.dashboard
+GET         /dashboard                        @controllers.Application.dashboard
 
-GET         /categories                      @controllers.Categories.categories
-GET         /categories/add                  @controllers.Categories.add
-POST        /categories/add                  @controllers.Categories.save
-GET         /categories/:id                  @controllers.Categories.category(id)
+GET         /categories                       @controllers.Categories.categories
+GET         /categories/add                   @controllers.Categories.add
+POST        /categories/add                   @controllers.Categories.save
+GET         /categories/:id                   @controllers.Categories.category(id)
 
-GET         /groups                          @controllers.Groups.groups
-GET         /groups/add                      @controllers.Groups.add
-POST        /groups/add                      @controllers.Groups.save
-GET         /groups/:id                      @controllers.Groups.group(id)
+GET         /groups                           @controllers.Groups.groups
+GET         /groups/add                       @controllers.Groups.add
+POST        /groups/add                       @controllers.Groups.save
+GET         /groups/:id                       @controllers.Groups.group(id)
 
-GET         /organisations                   @controllers.Organisations.organisations
-GET         /organisations/add               @controllers.Organisations.add
-POST        /organisations/add               @controllers.Organisations.save
-GET         /organisations/:id               @controllers.Organisations.organisation(id)
+GET         /organisations                    @controllers.Organisations.organisations
+GET         /organisations/add                @controllers.Organisations.add
+POST        /organisations/add                @controllers.Organisations.save
+GET         /organisations/:id                @controllers.Organisations.organisation(id)
 
-GET         /registrations                   @controllers.Registrations.registrations
-GET         /registrations/:id               @controllers.Registrations.registration(id)
-POST        /registrations/:id/update        @controllers.Registrations.update(id)
+GET         /registrations                    @controllers.Registrations.registrations
+GET         /registrations/:id                @controllers.Registrations.registration(id)
+POST        /registrations/:id/update         @controllers.Registrations.update(id)
 
-GET         /email/confirmation              @controllers.Email.confirmation
-GET         /email/distribution              @controllers.Email.distribution
-GET         /email/distribution/send         @controllers.Email.sendDistribution
-GET         /email/message                   @controllers.Email.message
-POST        /email/message/send              @controllers.Email.sendMessage
-GET         /email/list                      @controllers.Email.list
-POST        /email/list/send                 @controllers.Email.sendList
+GET         /email/confirmation               @controllers.Email.confirmation
+GET         /email/distribution               @controllers.Email.distribution
+GET         /email/distribution/send          @controllers.Email.sendDistribution
+GET         /email/message                    @controllers.Email.message
+POST        /email/message/send               @controllers.Email.sendMessage
+GET         /email/list                       @controllers.Email.list
+POST        /email/list/send                  @controllers.Email.sendList
 
-GET         /statistics                      @controllers.Statistics.statistics
+GET         /statistics                       @controllers.Statistics.statistics
 
 # API
-GET         /api/categories                  @controllers.Categories.all
-GET         /api/categories/:id              @controllers.Categories.get(id)
+GET         /api/categories                   @controllers.Categories.all
+GET         /api/categories/:id               @controllers.Categories.get(id)
 
-GET         /api/groups                      @controllers.Groups.all
-GET         /api/groups/:id                  @controllers.Groups.get(id)
+GET         /api/groups                       @controllers.Groups.all
+GET         /api/groups/:id                   @controllers.Groups.get(id)
 
-GET         /api/organisations               @controllers.Organisations.all
-GET         /api/organisations/:id           @controllers.Organisations.get(id)
+GET         /api/organisations                @controllers.Organisations.all
+GET         /api/organisations/:id            @controllers.Organisations.get(id)
 
-GET         /api/persons                     @controllers.Persons.all
-GET         /api/persons/:id                 @controllers.Persons.get(id)
+GET         /api/persons                      @controllers.Persons.all
+GET         /api/persons/:id                  @controllers.Persons.get(id)
 
-GET         /api/registrations               @controllers.Registrations.all
-GET         /api/registrations/:id           @controllers.Registrations.get(id)
+GET         /api/registrations                @controllers.Registrations.all
+GET         /api/registrations/:id            @controllers.Registrations.get(id)
 
-GET         /api/statistics/friday           @controllers.Statistics.friday
-GET         /api/statistics/saturday         @controllers.Statistics.saturday
-GET         /api/statistics/sorting          @controllers.Statistics.sorting
-GET         /api/statistics/selling          @controllers.Statistics.selling
+GET         /api/statistics/friday            @controllers.Statistics.friday
+GET         /api/statistics/saturday          @controllers.Statistics.saturday
+GET         /api/statistics/sorting           @controllers.Statistics.sorting
+GET         /api/statistics/selling           @controllers.Statistics.selling
+GET         /api/statistics/bbq               @controllers.Statistics.bbq
+GET         /api/statistics/bbqpartner        @controllers.Statistics.bbqPartner
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /webjars/*file                   controllers.WebJarAssets.at(file)
-GET         /assets/*file                    controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                    controllers.WebJarAssets.at(file)
+GET         /assets/*file                     controllers.Assets.at(path="/public", file)

@@ -30,7 +30,7 @@ class Persons @Inject()(personDAO: PersonDAO,
     try {
       personDAO.get(UUID.fromString(id)).map {
         case Some(person) => Ok(Json.toJson(person))
-        case None => NotFound(Messages("person.not_found"))
+        case None => NotFound(Json.toJson(Messages("person.not_found")))
       }
     } catch {
       case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))

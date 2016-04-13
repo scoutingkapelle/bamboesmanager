@@ -224,7 +224,7 @@ class Registrations @Inject()(mail: Mail,
     try {
       registrationDAO.get(UUID.fromString(id)).map {
         case Some(registration) => Ok(Json.toJson(registration))
-        case None => NotFound(Messages("registration.not_found"))
+        case None => NotFound(Json.toJson(Messages("registration.not_found")))
       }
     } catch {
       case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
