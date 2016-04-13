@@ -9,7 +9,7 @@
 
     @main(group.name, Some(user), scripts) {
         <div class="container">
-            <h1>@(group.organisation.name + ": " + group.name)</h1>
+            <h1>@(group.organisation.name + ": " + group.name) <small>@registrations.size @Messages("results")</small></h1>
 
             <div class="table-responsive">
                 <table id="group" data-toggle="table" data-striped="true">

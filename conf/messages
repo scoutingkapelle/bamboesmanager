@@ -98,6 +98,7 @@ list.success = De lijst is succesvol verstuurd
 statistics = Verdeling
 count = Aantal
 total = Totaal
+results = Resultaten
 
 error = Error!
 uuid.invalid=Error: invalid UUID

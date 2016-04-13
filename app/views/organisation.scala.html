@@ -8,7 +8,7 @@
 
     @main(organisation.name, Some(user), scripts) {
         <div class="container">
-            <h1>@organisation.name</h1>
+            <h1>@organisation.name <small>@groups.size @Messages("results")</small></h1>
             <div class="table-responsive">
                 <table id="groups" data-toggle="table" data-striped="true">
                     <thead>
