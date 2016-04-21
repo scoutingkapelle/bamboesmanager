@@ -6,7 +6,7 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.CategoryForm
-import models.daos.{CategoryDAO, RegistrationDAO}
+import models.daos.{StatisticsDAO, CategoryDAO, RegistrationDAO}
 import models.{Category, User}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
@@ -16,6 +16,7 @@ import scala.concurrent.Future
 
 class Categories @Inject()(categoryDAO: CategoryDAO,
                            registrationDAO: RegistrationDAO,
+                           statisticsDAO: StatisticsDAO,
                            val messagesApi: MessagesApi,
                            val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
@@ -23,7 +24,14 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
   implicit val categoryWrites = Json.writes[Category]
 
   def categories = SecuredAction.async { implicit request =>
-    categoryDAO.all.map(categories => Ok(views.html.categories(categories.sortBy(_.name), request.identity)))
+    for {
+      categories <- categoryDAO.all
+      stats <- statisticsDAO.category
+      teamLeaders <- categoryDAO.teamLeaders
+    } yield {
+      val tls = teamLeaders.groupBy(_._1).map(cat => cat._1 -> cat._2.map(_._2).mkString(", "))
+      Ok(views.html.categories(categories.sortBy(_.name), stats.toMap, tls, request.identity))
+    }
   }
 
   def category(id: String) = SecuredAction.async { implicit request =>

@@ -64,6 +64,7 @@ selling = Verkopen
 selling.label = Helpen verkopen
 
 team.leader = Teamleider
+team.leaders = Teamleider(s)
 team.leader.label = Teamleider
 
 bbq = BBQ
@@ -97,6 +98,7 @@ list.success = De lijst is succesvol verstuurd
 
 statistics = Verdeling
 count = Aantal
+count.volunteers = Aantal medewerkers
 total = Totaal
 results = Resultaten
 
