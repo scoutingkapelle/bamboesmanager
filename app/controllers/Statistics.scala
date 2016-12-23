@@ -40,6 +40,9 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
     }
   }
 
+  def fill(organisations: Seq[Organisation], statistic: Seq[(String, Int)]): Map[String, Int] =
+    organisations.map(organisation => (organisation.name, statistic.toMap.getOrElse(organisation.name, 0))).toMap
+
   def friday = SecuredAction.async { implicit request =>
     statisticsDAO.friday.map(statistics => Ok(Json.toJson(statistics.toMap)))
   }
@@ -63,7 +66,4 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
   def bbqPartner = SecuredAction.async { implicit request =>
     statisticsDAO.bbqPartner.map(statistics => Ok(Json.toJson(statistics.toMap)))
   }
-
-  def fill(organisations: Seq[Organisation], statistic: Seq[(String, Int)]): Map[String, Int] =
-    organisations.map(organisation => (organisation.name, statistic.toMap.getOrElse(organisation.name, 0))).toMap
 }

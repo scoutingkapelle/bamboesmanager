@@ -5,8 +5,8 @@ import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import models.User
 import models.daos._
-import models.{Group, Organisation, Person, User}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json._
 
@@ -17,10 +17,6 @@ class Persons @Inject()(personDAO: PersonDAO,
                         val messagesApi: MessagesApi,
                         val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
-
-  implicit val organisationWrites: Writes[Organisation] = Json.writes[Organisation]
-  implicit val groupWrites: Writes[Group] = Json.writes[Group]
-  implicit val personWrites: Writes[Person] = Json.writes[Person]
 
   def all = SecuredAction.async {
     personDAO.all.map(persons => Ok(Json.toJson(persons)))

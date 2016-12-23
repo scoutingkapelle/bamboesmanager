@@ -12,4 +12,5 @@ object CategoryForm {
   )
 
   case class Data(name: String)
+
 }

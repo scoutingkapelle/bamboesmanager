@@ -19,8 +19,6 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
                               val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
-  implicit val organisationWrites = Json.writes[Organisation]
-
   def organisations = SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
       Ok(views.html.organisations(organisations.sortBy(_.name), request.identity)))
@@ -34,7 +32,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         organisation <- organisationDAO.get(uuid)
       } yield {
         organisation match {
-          case Some(organisation) => Ok(views.html.organisation(organisation, groups.sortBy(_.name), request.identity))
+          case Some(o) => Ok(views.html.organisation(o, groups.sortBy(_.name), request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
@@ -54,7 +52,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
       data => {
         val organisation = Organisation(UUID.randomUUID, data.name)
         for {
-          org <- organisationDAO.save(organisation)
+          _ <- organisationDAO.save(organisation)
           groups <- organisationDAO.groups(organisation.id)
         } yield {
           Ok(views.html.organisation(organisation, groups, request.identity))

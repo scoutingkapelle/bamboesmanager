@@ -33,15 +33,13 @@ class Authentication @Inject()(val messagesApi: MessagesApi,
           val result = Redirect(routes.Application.dashboard())
           userDAO.retrieve(loginInfo).flatMap {
             case Some(user) =>
-              env.authenticatorService.create(loginInfo).map {
-                case authenticator => authenticator
-              }.flatMap { authenticator =>
+              env.authenticatorService.create(loginInfo).flatMap { authenticator =>
                 env.eventBus.publish(LoginEvent(user, request, request2Messages))
                 env.authenticatorService.init(authenticator).flatMap { v =>
                   env.authenticatorService.embed(v, result)
                 }
               }
-            case None => Future.failed(new IdentityNotFoundException("Couldn't find user"))
+            case None => Future.failed(new IdentityNotFoundException(Messages("user.not_found")))
           }
         }.recover {
           case e: ProviderException =>

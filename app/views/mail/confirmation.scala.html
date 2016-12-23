@@ -1,10 +1,10 @@
 @(registration: Registration, user: models.User)(implicit messages: Messages)
 
-@main(Messages("confirmation"), Some(user)) {
-    <div class="container">
-        <div class="well">
-            <h1>@Messages("confirmation.subject")</h1>
-            @mail.confirmationMail(registration)
+    @main(Messages("confirmation"), Some(user)) {
+        <div class="container">
+            <div class="well">
+                <h1>@Messages("confirmation.subject")</h1>
+                @mail.confirmationMail(registration)
+            </div>
         </div>
-    </div>
-}
+    }

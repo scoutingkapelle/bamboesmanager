@@ -12,4 +12,5 @@ object OrganisationForm {
   )
 
   case class Data(name: String)
+
 }

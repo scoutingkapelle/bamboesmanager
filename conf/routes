@@ -33,15 +33,15 @@ GET         /organisations/:id                @controllers.Organisations.organis
 
 GET         /registrations                    @controllers.Registrations.registrations
 GET         /registrations/:id                @controllers.Registrations.registration(id)
-POST        /registrations/:id/update         @controllers.Registrations.update(id)
+POST        /registrations/:id                @controllers.Registrations.update(id)
 
 GET         /email/confirmation               @controllers.Email.confirmation
 GET         /email/distribution               @controllers.Email.distribution
-GET         /email/distribution/send          @controllers.Email.sendDistribution
+POST        /email/distribution               @controllers.Email.sendDistribution
 GET         /email/message                    @controllers.Email.message
-POST        /email/message/send               @controllers.Email.sendMessage
+POST        /email/message                    @controllers.Email.sendMessage
 GET         /email/list                       @controllers.Email.list
-POST        /email/list/send                  @controllers.Email.sendList
+POST        /email/list                       @controllers.Email.sendList
 
 GET         /statistics                       @controllers.Statistics.statistics
 

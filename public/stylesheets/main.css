@@ -37,7 +37,7 @@ html, body {
 }
 
 /* Lastly, apply responsive CSS fixes as necessary */
-@media ( max-width : 767px) {
+@media ( max-width: 767px) {
     #footer {
         margin-left: -20px;
         padding-left: 20px;

@@ -27,8 +27,6 @@ class Mail @Inject()(mailer: MailerClient) {
       replyTo = Some(replyTo)
     )
 
-  protected def toAddress(name: String, email: String) = name + " <" + email + ">"
-
   def sendDistribution(registrations: Seq[Registration], subject: String) = Future {
     registrations.map(registration => mailer.send(distribution(registration, subject)))
   }
@@ -56,6 +54,8 @@ class Mail @Inject()(mailer: MailerClient) {
       bcc = Seq(replyTo),
       replyTo = Some(replyTo)
     )
+
+  protected def toAddress(name: String, email: String) = name + " <" + email + ">"
 
   def sendList(email: String, subject: String, persons: Seq[Person]) = Future {
     mailer.send(list(email, subject, persons))

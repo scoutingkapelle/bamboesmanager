@@ -31,7 +31,7 @@ class SignUp @Inject()(val messagesApi: MessagesApi,
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userDAO.retrieve(loginInfo).flatMap {
           case Some(user) =>
-            Future.successful(Redirect(routes.Application.signUp).flashing("error" -> Messages("user.exists")))
+            Future.successful(Redirect(routes.Application.signUp()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
             val user = User(

@@ -20,8 +20,6 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
                            val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
-  implicit val categoryWrites = Json.writes[Category]
-
   def categories = SecuredAction.async { implicit request =>
     categoryDAO.all.map(categories => Ok(views.html.categories(categories.sortBy(_.name), request.identity)))
   }
@@ -34,7 +32,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
         category <- categoryDAO.get(uuid)
       } yield {
         category match {
-          case Some(category) => Ok(views.html.category(category, registrations, request.identity))
+          case Some(c) => Ok(views.html.category(c, registrations, request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
@@ -52,7 +50,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
       form => Future.successful(BadRequest(views.html.categoryAdd(form, request.identity))),
       data => {
         val category = Category(UUID.randomUUID, data.name)
-        categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories))
+        categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories()))
       }
     )
   }

@@ -15,16 +15,35 @@
             <li>Groep: @registration.person.group.name</li>
             <li>Ophalen vrijdag: @if(registration.friday) {Ja} else {Nee}</li>
             <li>Ophalen zaterdag: @if(registration.saturday) {Ja} else {Nee}</li>
-            @{if(registration.sorting) {<li>Helpen sorteren: Ja</li>}}
-            @{registration.category.map(cat => <li>Voorkeur stand: {cat.name}</li>).getOrElse(<li>Helpen verkopen: Nee</li>)}
-            @{if(registration.bbq) {<li>BBQ bij feest: Ja</li>}}
-            @{if(registration.bbqPartner) {<li>Partner bij BBQ: Ja</li>}}
+            @{
+                if(registration.sorting) {
+                        <li>Helpen sorteren: Ja</li>
+                }
+            }
+            @{
+                registration.category.map(cat => <li>
+                Voorkeur stand:
+                {cat.name}
+                </li>).getOrElse(<li>Helpen verkopen: Nee</li>)
+            }
+            @{
+                if(registration.bbq) {
+                        <li>BBQ bij feest: Ja</li>
+                }
+            }
+            @{
+                if(registration.bbqPartner) {
+                        <li>Partner bij BBQ: Ja</li>
+                }
+            }
         </ul>
 
-        @{if(registration.bbqPartner){
-            <p>Het bedrag van 10 euro voor de BBQ voor uw partner kunt u overmaken op onderstaande rekening gegevens</p>
-            <p>IBAN: NL30RABO0331532905 T.A.V. I. Vleugel</p>
-        }}
+        @{
+            if(registration.bbqPartner) {
+                    <p>Het bedrag van 10 euro voor de BBQ voor uw partner kunt u overmaken op onderstaande rekening gegevens</p>
+                    <p>IBAN: NL30RABO0331532905 T.A.V. I. Vleugel</p>
+            }
+        }
 
         <p>Klopt er iets niet? Beantwoordt dan deze mail met de juiste gegevens, wij passen het vervolgens voor je aan.</p>
 

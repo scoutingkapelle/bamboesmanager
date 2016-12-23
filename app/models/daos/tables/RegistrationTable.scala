@@ -12,7 +12,7 @@ class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrati
   val categories = TableQuery[CategoryTable]
   val persons = TableQuery[PersonTable]
 
-  def * = (id, person_id, friday, saturday, sorting, category_id, team_leader, bbq, bbq_partner)<>(DBRegistration.tupled, DBRegistration.unapply)
+  def * = (id, person_id, friday, saturday, sorting, category_id, team_leader, bbq, bbq_partner) <> (DBRegistration.tupled, DBRegistration.unapply)
 
   def friday = column[Boolean]("friday")
 
@@ -30,9 +30,9 @@ class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrati
 
   def bbq_partner = column[Boolean]("bbq_partner")
 
-  def category = foreignKey("category_fk", category_id, categories)(_.id.?)
-
   def category_id = column[Option[UUID]]("category_id")
+
+  def category = foreignKey("category_fk", category_id, categories)(_.id.?)
 
   def person = foreignKey("person_fk", person_id, persons)(_.id)
 }

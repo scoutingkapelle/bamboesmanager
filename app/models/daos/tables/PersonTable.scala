@@ -10,7 +10,7 @@ case class DBPerson(id: UUID, name: String, email: String, age: Int, group_id: U
 class PersonTable(tag: Tag) extends Table[DBPerson](tag, "persons") {
   val organisations = TableQuery[OrganisationTable]
 
-  def * = (id, name, email, age, group_id) <>(DBPerson.tupled, DBPerson.unapply)
+  def * = (id, name, email, age, group_id) <> (DBPerson.tupled, DBPerson.unapply)
 
   def name = column[String]("name")
 
@@ -20,7 +20,7 @@ class PersonTable(tag: Tag) extends Table[DBPerson](tag, "persons") {
 
   def id = column[UUID]("id", O.PrimaryKey)
 
-  def group_id = column[UUID]("group_id")
-
   def group = foreignKey("group_fk", group_id, organisations)(_.id)
+
+  def group_id = column[UUID]("group_id")
 }

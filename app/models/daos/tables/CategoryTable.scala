@@ -7,7 +7,7 @@ import slick.driver.PostgresDriver.api._
 import slick.lifted.Tag
 
 class CategoryTable(tag: Tag) extends Table[Category](tag, "categories") {
-  def * = (id, name) <>(Category.tupled, Category.unapply)
+  def * = (id, name) <> (Category.tupled, Category.unapply)
 
   def id = column[UUID]("id", O.PrimaryKey)
 

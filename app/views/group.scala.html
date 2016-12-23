@@ -1,7 +1,6 @@
 @(group: Group, registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
     @scripts = {
-
         <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
         <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
         <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>

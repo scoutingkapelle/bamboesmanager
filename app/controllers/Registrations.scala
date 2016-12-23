@@ -24,12 +24,6 @@ class Registrations @Inject()(mail: Mail,
                               val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
-  implicit val organisationWrites: Writes[Organisation] = Json.writes[Organisation]
-  implicit val groupWrites: Writes[Group] = Json.writes[Group]
-  implicit val personWrites: Writes[Person] = Json.writes[Person]
-  implicit val categoryWrites: Writes[Category] = Json.writes[Category]
-  implicit val registrationWrites: Writes[Registration] = Json.writes[Registration]
-
   def registrations = SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations =>
       Ok(views.html.registrations(registrations.sortBy(_.person.name), request.identity)))
@@ -43,8 +37,8 @@ class Registrations @Inject()(mail: Mail,
         registration <- registrationDAO.get(uuid)
       } yield {
         registration match {
-          case Some(registration) => Ok(views.html.registration(
-            registration,
+          case Some(r) => Ok(views.html.registration(
+            r,
             RegistrationForm.form,
             categoriesTupled(categories),
             request.identity))
@@ -93,39 +87,37 @@ class Registrations @Inject()(mail: Mail,
             case Some(group) =>
               val name = fullName(data.firstName, data.prefix, data.surName)
               val p = Person(UUID.randomUUID, name, data.email.toLowerCase, data.age, group)
-              personDAO.save(p).flatMap {
-                case person =>
-                  data.category match {
-                    case Some(category) =>
-                      try {
-                        val category_id = UUID.fromString(category)
-                        categoryDAO.get(category_id).flatMap {
-                          case Some(cat) =>
-                            val registration = Registration(UUID.randomUUID, person, data.friday, data.saturday,
-                              data.sorting, Some(cat), teamLeader = false, data.bbq, data.bbq && data.bbqPartner)
-                            registrationDAO.save(registration).flatMap(registration => {
-                              Future.successful(mail.sendConfirmation(registration, Messages("confirmation.subject")))
-                              val flash = ("message", Messages("registered"))
-                              Future.successful(Redirect(routes.Application.index).flashing(flash))
-                            })
-                          case None =>
-                            val error = Messages("object.not.found") + ": " + category_id
-                            Future.successful(BadRequest(views.html.badRequest(error, request.identity)))
-                        }
-                      } catch {
-                        case _: IllegalArgumentException =>
-                          Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), request.identity)))
+              personDAO.save(p).flatMap { person =>
+                data.category match {
+                  case Some(category) =>
+                    try {
+                      val category_id = UUID.fromString(category)
+                      categoryDAO.get(category_id).flatMap {
+                        case Some(cat) =>
+                          val registration = Registration(UUID.randomUUID, person, data.friday, data.saturday,
+                            data.sorting, Some(cat), teamLeader = false, data.bbq, data.bbq && data.bbqPartner)
+                          registrationDAO.save(registration).flatMap(registration => {
+                            Future.successful(mail.sendConfirmation(registration, Messages("confirmation.subject")))
+                            val flash = ("message", Messages("registered"))
+                            Future.successful(Redirect(routes.Application.index()).flashing(flash))
+                          })
+                        case None =>
+                          val error = Messages("object.not.found") + ": " + category_id
+                          Future.successful(BadRequest(views.html.badRequest(error, request.identity)))
                       }
-                    case None =>
-                      val registration = Registration(UUID.randomUUID, person, data.friday, data.saturday,
-                        data.sorting, None, teamLeader = false, data.bbq, data.bbq && data.bbqPartner)
-                      registrationDAO.save(registration).flatMap(registration => {
-                        Future.successful(mail.sendConfirmation(registration, Messages("conformation.subject")))
-                        val flash = ("message", Messages("registered"))
-                        println("teset")
-                        Future.successful(Redirect(routes.Application.index).flashing(flash))
-                      })
-                  }
+                    } catch {
+                      case _: IllegalArgumentException =>
+                        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), request.identity)))
+                    }
+                  case None =>
+                    val registration = Registration(UUID.randomUUID, person, data.friday, data.saturday,
+                      data.sorting, None, teamLeader = false, data.bbq, data.bbq && data.bbqPartner)
+                    registrationDAO.save(registration).flatMap(registration => {
+                      Future.successful(mail.sendConfirmation(registration, Messages("conformation.subject")))
+                      val flash = ("message", Messages("registered"))
+                      Future.successful(Redirect(routes.Application.index()).flashing(flash))
+                    })
+                }
               }
             case None =>
               val error = Messages("object.not.found") + ": " + group_id
@@ -149,9 +141,9 @@ class Registrations @Inject()(mail: Mail,
             categories <- categoryDAO.all
           } yield {
             registration match {
-              case Some(registration) =>
+              case Some(r) =>
                 BadRequest(views.html.registration(
-                  registration,
+                  r,
                   form,
                   models.categoriesTupled(categories),
                   request.identity))
@@ -165,23 +157,22 @@ class Registrations @Inject()(mail: Mail,
           registrationDAO.get(uuid).flatMap {
             case Some(registration) =>
               data.category match {
-                case Some(category) => {
+                case Some(category) =>
                   try {
                     val category_id = UUID.fromString(category)
                     categoryDAO.get(category_id).flatMap {
-                      case Some(category) => {
+                      case Some(c) =>
                         val updatedRegistration = registration.copy(
                           friday = data.friday,
                           saturday = data.saturday,
                           sorting = data.sorting,
-                          category = Some(category),
+                          category = Some(c),
                           teamLeader = data.teamLeader,
                           bbq = data.bbq,
                           bbqPartner = data.bbq && data.bbqPartner)
                         registrationDAO.save(updatedRegistration).flatMap(registration => {
-                          Future.successful(Redirect(routes.Registrations.registrations))
+                          Future.successful(Redirect(routes.Registrations.registrations()))
                         })
-                      }
                       case None =>
                         val error = Messages("object.not.found") + ": " + category
                         Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
@@ -190,7 +181,6 @@ class Registrations @Inject()(mail: Mail,
                     case _: IllegalArgumentException =>
                       Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
                   }
-                }
                 case None =>
                   val updatedRegistration = registration.copy(
                     friday = data.friday,
@@ -201,7 +191,7 @@ class Registrations @Inject()(mail: Mail,
                     bbq = data.bbq,
                     bbqPartner = data.bbq && data.bbqPartner)
                   registrationDAO.save(updatedRegistration).flatMap(registration => {
-                    Future.successful(Redirect(routes.Registrations.registrations))
+                    Future.successful(Redirect(routes.Registrations.registrations()))
                   })
               }
             case None =>
@@ -217,17 +207,17 @@ class Registrations @Inject()(mail: Mail,
   }
 
   def all = SecuredAction.async {
-    registrationDAO.all.map(registrations => Ok(Json.toJson(registrations)))
+    registrationDAO.all.map(registrations => Ok(Json.toJson(Map("registrations" -> registrations))))
   }
 
   def get(id: String) = SecuredAction.async {
     try {
       registrationDAO.get(UUID.fromString(id)).map {
-        case Some(registration) => Ok(Json.toJson(registration))
-        case None => NotFound(Json.toJson(Messages("registration.not_found")))
+        case Some(registration) => Ok(Json.toJson(Map("registration" -> registration)))
+        case None => NotFound(Json.toJson(Map("error" -> Messages("registration.not_found"))))
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Map("error" -> Messages("uuid.invalid")))))
     }
   }
 }

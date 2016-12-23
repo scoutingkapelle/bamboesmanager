@@ -5,6 +5,7 @@
         <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
         <script type="application/javascript" src="@routes.Assets.at("javascripts/views/organisations.js")"></script>
     }
+
     @main(Messages("organisations"), Some(user), scripts) {
         <div class="container">
             <h1>@Messages("organisations") <small>@organisations.size @Messages("results")</small></h1>

@@ -55,16 +55,12 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     * The context.
     */
   trait Context extends Scope {
-
     /**
-      * A fake Guice module.
+      * The application.
       */
-    class FakeModule extends AbstractModule with ScalaModule {
-      def configure() = {
-        bind[Environment[User, SessionAuthenticator]].toInstance(env)
-      }
-    }
-
+    lazy val application = new GuiceApplicationBuilder()
+      .overrides(new FakeModule)
+      .build()
     /**
       * An identity.
       */
@@ -80,10 +76,13 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     implicit val env: Environment[User, SessionAuthenticator] = new FakeEnvironment[User, SessionAuthenticator](Seq(LoginInfo("credentials", identity.email) -> identity))
 
     /**
-      * The application.
+      * A fake Guice module.
       */
-    lazy val application = new GuiceApplicationBuilder()
-      .overrides(new FakeModule)
-      .build()
+    class FakeModule extends AbstractModule with ScalaModule {
+      def configure() = {
+        bind[Environment[User, SessionAuthenticator]].toInstance(env)
+      }
+    }
   }
+
 }

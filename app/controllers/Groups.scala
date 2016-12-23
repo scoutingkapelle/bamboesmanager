@@ -7,9 +7,9 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.GroupForm
 import models._
-import models.daos.{RegistrationDAO, GroupDAO, OrganisationDAO}
+import models.daos.{GroupDAO, OrganisationDAO, RegistrationDAO}
 import play.api.i18n.{Messages, MessagesApi}
-import play.api.libs.json.{Json, Writes}
+import play.api.libs.json.Json
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -20,9 +20,6 @@ class Groups @Inject()(groupDAO: GroupDAO,
                        val messagesApi: MessagesApi,
                        val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
-
-  implicit val organisationWrites: Writes[Organisation] = Json.writes[Organisation]
-  implicit val groupWrites = Json.writes[Group]
 
   def groups = SecuredAction.async { implicit request =>
     groupDAO.all.map(groups =>
@@ -38,7 +35,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
         group <- groupDAO.get(uuid)
       } yield {
         group match {
-          case Some(group) => Ok(views.html.group(group, persons.sortBy(_.person.name), request.identity))
+          case Some(g) => Ok(views.html.group(g, persons.sortBy(_.person.name), request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
@@ -60,12 +57,11 @@ class Groups @Inject()(groupDAO: GroupDAO,
           BadRequest(views.html.groupAdd(form, organisationsTupled(organisations), request.identity)))
       },
       data => {
-        for {
-          organisation <- organisationDAO.get(UUID.fromString(data.organisation_id))
-          group = Group(UUID.randomUUID, data.name, organisation.get)
-          _ <- groupDAO.save(group)
-        } yield {
-          Redirect(routes.Groups.group(group.id.toString))
+        organisationDAO.get(UUID.fromString(data.organisation_id)).flatMap {
+          case Some(organisation) =>
+            val group = Group(UUID.randomUUID, data.name, organisation)
+            groupDAO.save(group).map(_ => Redirect(routes.Groups.group(group.id.toString)))
+          case None => Future(BadRequest(views.html.notFound(data.organisation_id, Some(request.identity))))
         }
       }
     )
