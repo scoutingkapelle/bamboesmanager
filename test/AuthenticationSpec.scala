@@ -14,14 +14,16 @@ import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 
+import scala.concurrent.Future
+
 /**
   * Test case for the [[controllers.Application]] class.
   */
 class AuthenticationSpec extends PlaySpecification with Mockito {
   sequential
 
-  "The `index` action" should {
-    "redirect to login page if user is unauthorized" in new Context {
+//  "The `index` action" should {
+    /*"redirect to login page if user is unauthorized" in new Context {
       new WithApplication(application) {
         val Some(redirectResult) = route(FakeRequest(routes.Application.dashboard())
           .withAuthenticator[SessionAuthenticator](LoginInfo("invalid", "invalid"))
@@ -38,9 +40,9 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
         contentType(unauthorizedResult) must beSome("text/html")
         contentAsString(unauthorizedResult) must contain("Inloggen")
       }
-    }
+    }*/
 
-    "return 200 if user is authorized" in new Context {
+    /*"return 200 if user is authorized" in new Context {
       new WithApplication(application) {
         val Some(result) = route(FakeRequest(routes.Application.index())
           .withAuthenticator[SessionAuthenticator](LoginInfo("credentials", identity.email)
@@ -48,8 +50,8 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
 
         status(result) must beEqualTo(OK)
       }
-    }
-  }
+    }*/
+//  }
 
   /**
     * The context.
