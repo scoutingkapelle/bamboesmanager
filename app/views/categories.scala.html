@@ -1,4 +1,7 @@
-@(categories: Seq[Category], user: models.User)(implicit messages: Messages)
+@(categories: Seq[Category],
+        counts: Map[Option[java.util.UUID], Int],
+        teamLeaders: Map[Option[java.util.UUID], String],
+        user: models.User)(implicit messages: Messages)
 
     @scripts = {
         <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
@@ -22,6 +25,8 @@
                         <tr>
                             <th data-visible="false">id</th>
                             <th>@Messages("category")</th>
+                            <th>@Messages("count.volunteers")</th>
+                            <th>@Messages("team.leaders")</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +34,8 @@
                         <tr>
                             <td>@category.id</td>
                             <td>@category.name</td>
+                            <td>@counts.getOrElse(Some(category.id), 0)</td>
+                            <td>@teamLeaders.get(Some(category.id))</td>
                         </tr>
                     }
                     </tbody>

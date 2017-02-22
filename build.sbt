@@ -1,6 +1,6 @@
 name := "bamboesmanager"
 
-version := "0.5.1"
+version := "0.5.4"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
 
@@ -42,6 +42,7 @@ rpmRelease := "1"
 rpmLicense := Some("MIT")
 
 rpmGroup := Some("Scouting Kapelle")
+<<<<<<< HEAD
 
 scalacOptions ++= Seq(
   "-target:jvm-1.8",
@@ -56,3 +57,5 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard",
   "-Ywarn-unused"
 )
+=======
+>>>>>>> f5e6532f7a3de416cb55073fa4880bae35327967

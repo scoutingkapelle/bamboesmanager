@@ -1,5 +1,6 @@
 package models.daos
 
+import java.util.UUID
 import javax.inject.Inject
 
 import models.daos.tables._
@@ -7,7 +8,6 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
@@ -28,7 +28,7 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       organisation => (organisation._1, organisation._2.length)
     }
 
-    db.run(query.result).map(rows => rows.map(statistic => statistic ))
+    db.run(query.result)
   }
 
   def saturday: Future[Seq[(String, Int)]] = {
@@ -38,10 +38,10 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
     } yield o).groupBy(_.name).map {
-       organisation => (organisation._1, organisation._2.length)
+      organisation => (organisation._1, organisation._2.length)
     }
 
-    db.run(query.result).map(rows => rows.map(statistic => statistic))
+    db.run(query.result)
   }
 
   def sorting: Future[Seq[(String, Int)]] = {
@@ -51,10 +51,10 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
     } yield o).groupBy(_.name).map {
-       organisation => (organisation._1, organisation._2.length)
+      organisation => (organisation._1, organisation._2.length)
     }
 
-    db.run(query.result).map(rows => rows.map(statistic => statistic))
+    db.run(query.result)
   }
 
   def selling: Future[Seq[(String, Int)]] = {
@@ -67,6 +67,14 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       organisation => (organisation._1, organisation._2.length)
     }
 
-    db.run(query.result).map(rows => rows.map(statistic => statistic))
+    db.run(query.result)
+  }
+
+  def category: Future[Seq[(Option[UUID], Int)]] = {
+    val q = registrations.groupBy(_.category_id).map {
+      r => (r._1, r._2.length)
+    }
+
+    db.run(q.result)
   }
 }
