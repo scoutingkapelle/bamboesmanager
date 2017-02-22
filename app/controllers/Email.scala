@@ -26,7 +26,7 @@ class Email @Inject()(mail: Mail,
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
     val category = Category(UUID.randomUUID, Messages("category"))
-    val registration = Registration(UUID.randomUUID, person, true, true, true, Some(category), true, true, true)
+    val registration = Registration(UUID.randomUUID, person, true, true, true, Some(category), true)
     Future.successful(Ok(views.html.mail.confirmation(registration, request.identity)))
   }
 
@@ -35,11 +35,11 @@ class Email @Inject()(mail: Mail,
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
     val category = Category(UUID.randomUUID, Messages("category"))
-    val registration = Registration(UUID.randomUUID, person, true, true, true, Some(category), true, true, true)
+    val registration = Registration(UUID.randomUUID, person, true, true, true, Some(category), true)
     Future.successful(Ok(views.html.mail.distribution(registration, request.identity)))
   }
 
-  def sendDistribution = SecuredAction.async { implicit request =>
+  def sendDistribution = SecuredAction.async {
     registrationDAO.all.map(registrations => {
       Future.successful(mail.sendDistribution(registrations, Messages("distribution.subject")))
       val flash = ("message", Messages("distribution.success"))
@@ -92,7 +92,7 @@ class Email @Inject()(mail: Mail,
           )
         } catch {
           case _: IllegalArgumentException =>
-            Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+            Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
         }
       }
     )

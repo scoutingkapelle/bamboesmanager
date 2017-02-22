@@ -41,7 +41,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
       }
     } catch {
       case _: IllegalArgumentException =>
-        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
@@ -61,7 +61,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
           case Some(organisation) =>
             val group = Group(UUID.randomUUID, data.name, organisation)
             groupDAO.save(group).map(_ => Redirect(routes.Groups.group(group.id.toString)))
-          case None => Future(BadRequest(views.html.notFound(data.organisation_id, Some(request.identity))))
+          case None => Future.successful(BadRequest(views.html.notFound(data.organisation_id, Some(request.identity))))
         }
       }
     )
@@ -79,7 +79,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
         case None => NotFound(Json.toJson(Messages("group.not_found")))
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }
   }
 }

@@ -4,74 +4,59 @@
         categories: Seq[(String, String)],
         user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
-    @scripts = {
-        <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap3/bootstrap-switch.min.css"))'>
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/register.js")"></script>
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-switch.min.js"))"></script>
-    }
+@scripts = {
+    <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap3/bootstrap-switch.min.css"))'>
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/register.js")"></script>
+    <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-switch.min.js"))"></script>
+}
 
-    @implicitFieldConstructor = @{
-        b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
-    }
+@implicitFieldConstructor = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
+}
 
-    @main(Messages("register"), user, scripts) {
-        <div class="container">
-            <div class="well">
-                @request.flash.get("error").map { msg =>
-                    <div class="alert alert-danger alert-error">
-                        <a href="#" class="close" data-dismiss="alert">&times;</a>
-                        <strong>@Messages("error")</strong> @msg
+@main(Messages("register"), user, scripts) {
+    <div class="container">
+        <div class="well">
+            @request.flash.get("error").map { msg =>
+                <div class="alert alert-danger alert-error">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>@Messages("error")</strong> @msg
+                </div>
+            }
+            <fieldset>
+                <legend>@Messages("register.info")</legend>
+                @b3.form(action = routes.Registrations.save) {
+                    @helper.CSRF.formField
+                    @b3.text(registerForm("firstName"), '_label -> Messages("firstname"), 'class -> "form-control input-lg")
+                    @b3.text(registerForm("prefix"), '_label -> Messages("prefix"), 'class -> "form-control input-lg")
+                    @b3.text(registerForm("surName"), '_label -> Messages("surname"), 'class -> "form-control input-lg")
+                    @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
+                    @b3.email(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
+
+                    <hr>
+                    @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("organisation.select"))
+                    @b3.select(registerForm("group"), options = groups, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("group.select"))
+
+                    <hr>
+                    @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"))
+                    <span class="help-block col-md-offset-2">@Messages("friday.text")</span>
+                    @b3.checkbox(registerForm("saturday"), '_label -> Messages("saturday.label"))
+                    <span class="help-block col-md-offset-2">@Messages("saturday.text")</span>
+                    <div id="sorting_wrapper">
+                        @b3.checkbox(registerForm("sorting"), '_label -> Messages("sorting.label"))
+                        <span class="help-block col-md-offset-2">@Messages("sorting.text")</span>
                     </div>
-                }
-                <fieldset>
-                    <legend>@Messages("register.info")</legend>
-                    @b3.form(action = routes.Registrations.save) {
-                        @helper.CSRF.formField
-                        @b3.text(registerForm("firstName"), '_label -> Messages("first.name"), 'class -> "form-control input-lg")
-                        @b3.text(registerForm("prefix"), '_label -> Messages("prefix"), 'class -> "form-control input-lg")
-                        @b3.text(registerForm("surName"), '_label -> Messages("sur.name"), 'class -> "form-control input-lg")
-                        @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
-                        @b3.email(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
+                    @b3.checkbox(registerForm("selling"), '_label -> Messages("selling.label"))
+                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"))
+                    <span class="help-block col-md-offset-2">@Messages("selling.text")</span>
 
-                        <hr>
-                        @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("organisation.select"))
-                        @b3.select(registerForm("group"), options = groups, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("group.select"))
-
-                        <hr>
-                        @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"))
-                        <span class="help-block col-md-offset-2">
-                            Vrijdag 15 april om 18.15 uur verzamelen bij het station.</span>
-                        @b3.checkbox(registerForm("saturday"), '_label -> Messages("saturday.label"))
-                        <span class="help-block col-md-offset-2">
-                            Zaterdag 16 april om 9.00 uur verzamelen bij het station.</span>
-                        <div id="sorting_wrapper">
-                            @b3.checkbox(registerForm("sorting"), '_label -> Messages("sorting.label"))
-                            <span class="help-block col-md-offset-2">
-                                Maandag 18 april en dinsdag 19 april vanaf 19.00 uur.</span>
-                        </div>
-                        @b3.checkbox(registerForm("selling"), '_label -> Messages("selling.label"))
-                        @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"))
-                        <span class="help-block col-md-offset-2">
-                            Woensdag 27 april om 7.00 uur beginnen met klaarzetten op de parkeerplaats bij het zwembad.</span>
-
-                        <hr>
-                        @b3.checkbox(registerForm("bbq"), '_label -> Messages("bbq.label"))
-                        @b3.checkbox(registerForm("bbqPartner"), '_label -> Messages("bbq.partner.label"))
-                        <span class="help-block col-md-offset-2">
-                            Vrijdag avond 29 april organiseren we een BBQ om het 50 jarig bestaan van de Rommelmarkt gezamenlijk te vieren.
-                            De BBQ start om 18:00 uur en eindigt om 24:00 uur. (voor 10 tot 15 jaar 20:30 uur).
-                            <br>
-                            Wil je graag iemand meenemen zoals je partner, dan kun je dat aangeven op het inschrijfformulier.
-                            Hier zijn dan wel kosten aan verbonden (10 euro).
-                        </span>
-
-                        <hr>
-                        @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
-                            <span class="glyphicon glyphicon glyphicon-ok"></span>
-                            @Messages("register")
-                        }
+                    <hr>
+                    @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
+                        <span class="glyphicon glyphicon glyphicon-ok"></span>
+                        @Messages("register")
                     }
-                </fieldset>
-            </div>
+                }
+            </fieldset>
         </div>
-    }
+    </div>
+}

@@ -6,6 +6,7 @@ import com.mohiva.play.silhouette.api.{Environment, LogoutEvent, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms._
 import models.User
+import org.joda.time.format.DateTimeFormat
 import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
@@ -23,14 +24,14 @@ class Application @Inject()(val messagesApi: MessagesApi, val env: Environment[U
 
   def signIn = UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.Application.index()))
+      case Some(_) => Future.successful(Redirect(routes.Application.index()))
       case None => Future.successful(Ok(views.html.signIn(SignInForm.form)))
     }
   }
 
   def signUp = UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(user) => Future.successful(Redirect(routes.Application.index()))
+      case Some(_) => Future.successful(Redirect(routes.Application.index()))
       case None => Future.successful(Ok(views.html.signUp(SignUpForm.form)))
     }
   }

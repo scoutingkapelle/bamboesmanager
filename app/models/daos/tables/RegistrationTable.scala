@@ -5,14 +5,13 @@ import java.util.UUID
 import slick.driver.PostgresDriver.api._
 import slick.lifted.Tag
 
-case class DBRegistration(id: UUID, person_id: UUID, friday: Boolean, saturday: Boolean, sorting: Boolean,
-                          category_id: Option[UUID], team_leader: Boolean, bbq: Boolean, bbq_partner: Boolean)
+case class DBRegistration(id: UUID, person_id: UUID, friday: Boolean, saturday: Boolean, sorting: Boolean, category_id: Option[UUID], team_leader: Boolean)
 
 class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrations") {
   val categories = TableQuery[CategoryTable]
   val persons = TableQuery[PersonTable]
 
-  def * = (id, person_id, friday, saturday, sorting, category_id, team_leader, bbq, bbq_partner) <> (DBRegistration.tupled, DBRegistration.unapply)
+  def * = (id, person_id, friday, saturday, sorting, category_id, team_leader) <> (DBRegistration.tupled, DBRegistration.unapply)
 
   def friday = column[Boolean]("friday")
 
@@ -25,10 +24,6 @@ class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrati
   def person_id = column[UUID]("person_id")
 
   def team_leader = column[Boolean]("team_leader")
-
-  def bbq = column[Boolean]("bbq")
-
-  def bbq_partner = column[Boolean]("bbq_partner")
 
   def category_id = column[Option[UUID]]("category_id")
 

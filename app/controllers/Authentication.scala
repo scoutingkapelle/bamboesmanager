@@ -16,7 +16,6 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.mvc.Action
 
 import scala.concurrent.Future
-import scala.language.postfixOps
 
 class Authentication @Inject()(val messagesApi: MessagesApi,
                                val env: Environment[User, SessionAuthenticator],
@@ -42,7 +41,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi,
             case None => Future.failed(new IdentityNotFoundException(Messages("user.not_found")))
           }
         }.recover {
-          case e: ProviderException =>
+          case _: ProviderException =>
             Redirect(routes.Application.signIn()).flashing("error" -> Messages("invalid.credentials"))
         }
       }

@@ -37,12 +37,12 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
         }
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }
   }
 
   def add = SecuredAction.async { implicit request =>
-    Future(Ok(views.html.categoryAdd(CategoryForm.form, request.identity)))
+    Future.successful(Ok(views.html.categoryAdd(CategoryForm.form, request.identity)))
   }
 
   def save = SecuredAction.async { implicit request =>
@@ -67,7 +67,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
         case None => NotFound(Json.toJson(Messages("category.not_found")))
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }
   }
 }

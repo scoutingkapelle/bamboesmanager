@@ -3,26 +3,36 @@ package models
 import javax.inject.Inject
 
 import play.api.libs.mailer.{Email, MailerClient}
+import play.api.{Configuration, Environment}
 import views.html.mail.{confirmationMail, distributionMail, listMail, messageMail}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class Mail @Inject()(mailer: MailerClient) {
+class Mail @Inject()(mailer: MailerClient, configuration: Configuration, env: Environment) {
 
-  protected val from = play.Play.application.configuration.getString("email.from")
-  protected val replyTo = play.Play.application.configuration.getString("email.replyTo")
+  private val from = configuration.getString("email.from").getOrElse("info@example.com")
+  private val replyTo = configuration.getString("email.replyTo").getOrElse("info@example.com")
 
   def sendConfirmation(registration: Registration, subject: String) = Future {
     mailer.send(confirmation(registration, subject))
   }
 
-  protected def confirmation(registration: Registration, subject: String) =
+  private def confirmation(registration: Registration, subject: String) =
+    email(
+      subject = subject,
+      to = Seq(toAddress(registration.person.name, registration.person.email)),
+      bodyHtml = Some(confirmationMail(registration).body)
+    )
+
+  private def toAddress(name: String, email: String) = s"$name <$email>"
+
+  private def email(subject: String, to: Seq[String], bodyHtml: Option[String]) =
     Email(
       subject = subject,
       from = from,
-      to = Seq(toAddress(registration.person.name, registration.person.email)),
-      bodyHtml = Some(confirmationMail(registration).body),
+      to = to,
+      bodyHtml = bodyHtml,
       bcc = Seq(replyTo),
       replyTo = Some(replyTo)
     )
@@ -31,43 +41,32 @@ class Mail @Inject()(mailer: MailerClient) {
     registrations.map(registration => mailer.send(distribution(registration, subject)))
   }
 
-  protected def distribution(registration: Registration, subject: String) =
-    Email(
+  private def distribution(registration: Registration, subject: String) =
+    email(
       subject = subject,
-      from = from,
       to = Seq(toAddress(registration.person.name, registration.person.email)),
-      bodyHtml = Some(distributionMail(registration).body),
-      bcc = Seq(replyTo),
-      replyTo = Some(replyTo)
+      bodyHtml = Some(distributionMail(registration).body)
     )
 
   def sendMessage(registrations: Seq[Registration], subject: String, content: String) = Future {
     registrations.map(registration => mailer.send(message(registration, subject, content)))
   }
 
-  protected def message(registration: Registration, subject: String, content: String) =
-    Email(
+  private def message(registration: Registration, subject: String, content: String) =
+    email(
       subject = subject,
-      from = from,
       to = Seq(toAddress(registration.person.name, registration.person.email)),
-      bodyHtml = Some(messageMail(registration.person.name, content).body),
-      bcc = Seq(replyTo),
-      replyTo = Some(replyTo)
+      bodyHtml = Some(messageMail(registration.person.name, content).body)
     )
-
-  protected def toAddress(name: String, email: String) = name + " <" + email + ">"
 
   def sendList(email: String, subject: String, persons: Seq[Person]) = Future {
     mailer.send(list(email, subject, persons))
   }
 
-  def list(email: String, subject: String, persons: Seq[Person]) =
-    Email(
+  private def list(emailAdress: String, subject: String, persons: Seq[Person]) =
+    email(
       subject = subject,
-      from = from,
-      to = Seq(email),
-      bodyHtml = Some(listMail(persons).body),
-      bcc = Seq(replyTo),
-      replyTo = Some(replyTo)
+      to = Seq(emailAdress),
+      bodyHtml = Some(listMail(persons).body)
     )
 }

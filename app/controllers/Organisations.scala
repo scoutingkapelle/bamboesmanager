@@ -38,12 +38,12 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
       }
     } catch {
       case _: IllegalArgumentException =>
-        Future(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
   def add = SecuredAction.async { implicit request =>
-    Future(Ok(views.html.organisationAdd(OrganisationForm.form, request.identity)))
+    Future.successful(Ok(views.html.organisationAdd(OrganisationForm.form, request.identity)))
   }
 
   def save = SecuredAction.async { implicit request =>
@@ -73,7 +73,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         case None => NotFound(Json.toJson(Messages("organisation.not_found")))
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }
   }
 }

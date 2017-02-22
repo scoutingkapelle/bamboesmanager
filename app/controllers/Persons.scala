@@ -29,7 +29,7 @@ class Persons @Inject()(personDAO: PersonDAO,
         case None => NotFound(Json.toJson(Messages("person.not_found")))
       }
     } catch {
-      case _: IllegalArgumentException => Future(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
     }
   }
 }

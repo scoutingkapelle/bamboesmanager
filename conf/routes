@@ -65,8 +65,6 @@ GET         /api/statistics/friday            @controllers.Statistics.friday
 GET         /api/statistics/saturday          @controllers.Statistics.saturday
 GET         /api/statistics/sorting           @controllers.Statistics.sorting
 GET         /api/statistics/selling           @controllers.Statistics.selling
-GET         /api/statistics/bbq               @controllers.Statistics.bbq
-GET         /api/statistics/bbqpartner        @controllers.Statistics.bbqPartner
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /webjars/*file                    controllers.WebJarAssets.at(file)

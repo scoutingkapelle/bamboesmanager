@@ -12,7 +12,6 @@ case class Group(id: UUID, name: String, organisation: Organisation)
 
 case class Category(id: UUID, name: String)
 
-case class Registration(id: UUID, person: Person, friday: Boolean, saturday: Boolean, sorting: Boolean,
-                        category: Option[Category], teamLeader: Boolean, bbq: Boolean, bbqPartner: Boolean)
+case class Registration(id: UUID, person: Person, friday: Boolean, saturday: Boolean, sorting: Boolean, category: Option[Category], teamLeader: Boolean)
 
 case class User(id: UUID, name: String, email: String) extends Identity

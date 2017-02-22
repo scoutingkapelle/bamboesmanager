@@ -16,9 +16,7 @@ object RegisterForm {
       "friday" -> boolean,
       "saturday" -> boolean,
       "sorting" -> boolean,
-      "category" -> optional(nonEmptyText),
-      "bbq" -> boolean,
-      "bbqPartner" -> boolean
+      "category" -> optional(nonEmptyText)
     )(Data.apply)(Data.unapply)
   )
 
@@ -32,9 +30,6 @@ object RegisterForm {
                    friday: Boolean,
                    saturday: Boolean,
                    sorting: Boolean,
-                   category: Option[String],
-                   bbq: Boolean,
-                   bbqPartner: Boolean
+                   category: Option[String]
                  )
-
 }

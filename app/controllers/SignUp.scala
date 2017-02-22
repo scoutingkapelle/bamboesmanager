@@ -30,7 +30,7 @@ class SignUp @Inject()(val messagesApi: MessagesApi,
       data => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userDAO.retrieve(loginInfo).flatMap {
-          case Some(user) =>
+          case Some(_) =>
             Future.successful(Redirect(routes.Application.signUp()).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
@@ -41,7 +41,7 @@ class SignUp @Inject()(val messagesApi: MessagesApi,
             )
             for {
               user <- userDAO.save(user)
-              authInfo <- authInfoRepository.add(loginInfo, authInfo)
+              _ <- authInfoRepository.add(loginInfo, authInfo)
               authenticator <- env.authenticatorService.create(loginInfo)
               value <- env.authenticatorService.init(authenticator)
               result <- env.authenticatorService.embed(value, Redirect(routes.Application.dashboard()))
