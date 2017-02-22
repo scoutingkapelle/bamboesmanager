@@ -3,9 +3,9 @@ dashboard = Dashboard
 home = Home
 
 name = Naam
-first.name = Voornaam
+firstname = Voornaam
 prefix = Tussenvoegsel
-sur.name = Achternaam
+surname = Achternaam
 age = Leeftijd
 email = Email
 password = Wachtwoord
