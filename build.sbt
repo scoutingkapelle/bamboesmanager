@@ -10,6 +10,10 @@ scalaVersion := "2.11.8"
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
+resolvers += "Typesafe Ivy releases" at "https://repo.typesafe.com/typesafe/ivy-releases"
+
+resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
+
 libraryDependencies ++= Seq(
   cache, ws, specs2 % Test, evolutions, filters,
   "com.typesafe.play" %% "play-slick" % "2.0.2",
