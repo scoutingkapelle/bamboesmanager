@@ -34,19 +34,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-mailer" % "5.0.0"
 )
 
-javaOptions in Universal ++= Seq(
-  s"-Dpidfile.path=/var/run/${packageName.value}/play.pid",
-  s"-Dconfig.file=/usr/share/${packageName.value}/conf/production.conf"
-)
-
-rpmVendor := "wjglerum.nl"
-
-rpmRelease := "1"
-
-rpmLicense := Some("MIT")
-
-rpmGroup := Some("Scouting Kapelle")
-
 scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-encoding", "UTF-8",
