@@ -1,11 +1,10 @@
-package filters
+package utils
 
-import javax.inject._
+import javax.inject.Inject
 
 import play.api.Environment
-import play.api.http.HttpFilters
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.mvc._
+import play.api.mvc.{Filter, RequestHeader, Result, Results}
 
 import scala.concurrent.Future
 
@@ -16,8 +15,4 @@ class TLSFilter @Inject()(env: Environment) extends Filter {
     else
       nextFilter(requestHeader).map(_.withHeaders("Strict-Transport-Security" -> "max-age=31536000"))
   }
-}
-
-class Filters @Inject()(tls: TLSFilter) extends HttpFilters {
-  val filters = Seq(tls)
 }
