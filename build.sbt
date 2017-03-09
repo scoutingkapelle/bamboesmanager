@@ -35,7 +35,6 @@ libraryDependencies ++= Seq(
 )
 
 scalacOptions ++= Seq(
-  "-target:jvm-1.8",
   "-encoding", "UTF-8",
   "-feature",
   "-unchecked",
@@ -44,6 +43,5 @@ scalacOptions ++= Seq(
   "-Yno-adapted-args",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard",
-  "-Ywarn-unused"
+  "-Ywarn-value-discard"
 )
