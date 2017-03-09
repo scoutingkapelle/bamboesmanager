@@ -28,7 +28,7 @@ class Application @Inject()(val messagesApi: MessagesApi, val env: Environment[U
     }
   }
 
-  def signUp = UserAwareAction.async { implicit request =>
+  def signUp = SecuredAction.async { implicit request =>
     request.identity match {
       case Some(_) => Future.successful(Redirect(routes.Application.index()))
       case None => Future.successful(Ok(views.html.signUp(SignUpForm.form)))
