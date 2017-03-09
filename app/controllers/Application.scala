@@ -6,7 +6,6 @@ import com.mohiva.play.silhouette.api.{Environment, LogoutEvent, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms._
 import models.User
-import org.joda.time.format.DateTimeFormat
 import play.api.i18n.MessagesApi
 
 import scala.concurrent.Future
