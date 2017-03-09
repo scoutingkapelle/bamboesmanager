@@ -62,7 +62,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
   }
 
   def all = SecuredAction.async {
-    organisationDAO.all.map(organisations => Ok(Json.toJson(organisations)))
+    organisationDAO.all.map(organisations => Ok(Json.toJson(organisations.sortBy(_.name))))
   }
 
   def get(id: String) = SecuredAction.async {

@@ -64,7 +64,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
   }
 
   def all = SecuredAction.async {
-    categoryDAO.all.map(categories => Ok(Json.toJson(categories)))
+    categoryDAO.all.map(categories => Ok(Json.toJson(categories.sortBy(_.name))))
   }
 
   def get(id: String) = SecuredAction.async {

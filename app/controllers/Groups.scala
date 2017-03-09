@@ -68,7 +68,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
   }
 
   def all = SecuredAction.async {
-    groupDAO.all.map(groups => Ok(Json.toJson(groups)))
+    groupDAO.all.map(groups => Ok(Json.toJson(groups.sortBy(_.name))))
   }
 
   def get(id: String) = SecuredAction.async {
