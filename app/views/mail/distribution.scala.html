@@ -1,4 +1,4 @@
-@(registration: Registration, user: models.User)(implicit messages: Messages, flash: Flash)
+@(registration: Registration, user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
     @main(Messages("distribution"), Some(user)) {
         <div class="container">
@@ -11,7 +11,17 @@
             <div class="well">
                 <h1>@Messages("distribution.subject")</h1>
                 @mail.distributionMail(registration)
-                <a class="btn btn-lg btn-primary" href="@routes.Email.sendDistribution" role="button"><span class="glyphicon glyphicon glyphicon-ok"></span> @Messages("distribution.send")</a>
+                @helper.form(action = routes.Email.sendDistribution) {
+                    @helper.CSRF.formField
+                    <div class="form-group">
+                        <div>
+                            <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
+                                <span class="glyphicon glyphicon glyphicon-ok"></span>
+                                @Messages("distribution.send")
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     }
