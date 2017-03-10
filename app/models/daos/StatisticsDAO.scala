@@ -8,8 +8,8 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends HasDatabaseConfigProvider[JdbcProfile] {
 
@@ -71,10 +71,48 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
   }
 
   def category: Future[Seq[(Option[UUID], Int)]] = {
-    val q = registrations.groupBy(_.category_id).map {
-      r => (r._1, r._2.length)
+    val query = registrations.groupBy(_.category_id).map {
+      case (id, r) => (id, r.length)
     }
 
-    db.run(q.result)
+    db.run(query.result)
+  }
+
+  def group: Future[Map[UUID, Int]] = {
+    val query = (for {
+      r <- registrations
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+    } yield g).groupBy(_.id).map {
+      case (i, r) => (i, r.length)
+    }
+
+    db.run(query.result).map(_.toMap)
+  }
+
+  def organisation(id: UUID): Future[Map[UUID, Int]] = {
+    val query = (for {
+      r <- registrations
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+      o <- organisations if o.id === p.group_id && o.id === id
+    } yield g).groupBy(_.id).map {
+      case (i, r) => (i, r.length)
+    }
+
+    db.run(query.result).map(_.toMap)
+  }
+
+  def organisation: Future[Map[UUID, Int]] = {
+    val query = (for {
+      r <- registrations
+      p <- persons if p.id === r.person_id
+      g <- groups if g.id === p.group_id
+      o <- organisations if o.id === p.group_id
+    } yield o).groupBy(_.id).map {
+      case (i, r) => (i, r.length)
+    }
+
+    db.run(query.result).map(_.toMap)
   }
 }

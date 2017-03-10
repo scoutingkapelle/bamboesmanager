@@ -1,4 +1,4 @@
-@(organisations: Seq[Organisation], user: models.User)(implicit messages: Messages)
+@(organisations: Seq[Organisation], stats: Map[java.util.UUID, Int], user: models.User)(implicit messages: Messages)
 
     @scripts = {
         <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
@@ -22,6 +22,7 @@
                         <tr>
                             <th data-visible="false">id</th>
                             <th>@Messages("organisation")</th>
+                            <th>@Messages("count.volunteers")</th>
                         </tr>
                     </thead>
 
@@ -30,6 +31,7 @@
                         <tr>
                             <td>@organisation.id</td>
                             <td>@organisation.name</td>
+                            <td>@stats.getOrElse(organisation.id, 0)</td>
                         </tr>
                     }
                     </tbody>

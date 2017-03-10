@@ -7,7 +7,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.OrganisationForm
 import models._
-import models.daos.OrganisationDAO
+import models.daos.{OrganisationDAO, StatisticsDAO}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
 
@@ -15,13 +15,18 @@ import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
 class Organisations @Inject()(organisationDAO: OrganisationDAO,
+                              statisticsDAO: StatisticsDAO,
                               val messagesApi: MessagesApi,
                               val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
   def organisations = SecuredAction.async { implicit request =>
-    organisationDAO.all.map(organisations =>
-      Ok(views.html.organisations(organisations.sortBy(_.name), request.identity)))
+    for {
+      organisations <- organisationDAO.all
+      stats <- statisticsDAO.organisation
+    } yield {
+      Ok(views.html.organisations(organisations.sortBy(_.name), stats, request.identity))
+    }
   }
 
   def organisation(id: String) = SecuredAction.async { implicit request =>
@@ -30,9 +35,10 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
       for {
         groups <- organisationDAO.groups(uuid)
         organisation <- organisationDAO.get(uuid)
+        stats <- statisticsDAO.organisation(uuid)
       } yield {
         organisation match {
-          case Some(o) => Ok(views.html.organisation(o, groups.sortBy(_.name), request.identity))
+          case Some(o) => Ok(views.html.organisation(o, groups.sortBy(_.name), stats, request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
@@ -54,8 +60,9 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         for {
           _ <- organisationDAO.save(organisation)
           groups <- organisationDAO.groups(organisation.id)
+          stats <- statisticsDAO.organisation(organisation.id)
         } yield {
-          Ok(views.html.organisation(organisation, groups, request.identity))
+          Ok(views.html.organisation(organisation, groups, stats, request.identity))
         }
       }
     )

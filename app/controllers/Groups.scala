@@ -7,7 +7,7 @@ import com.mohiva.play.silhouette.api.{Environment, Silhouette}
 import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import forms.GroupForm
 import models._
-import models.daos.{GroupDAO, OrganisationDAO, RegistrationDAO}
+import models.daos.{GroupDAO, OrganisationDAO, RegistrationDAO, StatisticsDAO}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
 
@@ -17,14 +17,18 @@ import scala.concurrent.Future
 class Groups @Inject()(groupDAO: GroupDAO,
                        organisationDAO: OrganisationDAO,
                        registrationDAO: RegistrationDAO,
+                       statisticsDAO: StatisticsDAO,
                        val messagesApi: MessagesApi,
                        val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
   def groups = SecuredAction.async { implicit request =>
-    groupDAO.all.map(groups =>
-      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), request.identity))
-    )
+    for {
+      groups <- groupDAO.all
+      stats <- statisticsDAO.group
+    } yield {
+      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), stats, request.identity))
+    }
   }
 
   def group(id: String) = SecuredAction.async { implicit request =>
