@@ -95,7 +95,7 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       r <- registrations
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
-      o <- organisations if o.id === p.group_id && o.id === id
+      o <- organisations if o.id === g.organisation_id && o.id === id
     } yield g).groupBy(_.id).map {
       case (i, r) => (i, r.length)
     }
@@ -108,7 +108,7 @@ class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProv
       r <- registrations
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
-      o <- organisations if o.id === p.group_id
+      o <- organisations if o.id === g.organisation_id
     } yield o).groupBy(_.id).map {
       case (i, r) => (i, r.length)
     }
