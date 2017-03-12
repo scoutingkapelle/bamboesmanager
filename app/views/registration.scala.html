@@ -37,11 +37,11 @@
                         @{
                             registration.category match {
                                 case Some(category) => Html(
-                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label"), 'value -> true).body +
-                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'value -> category.id).body)
+                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label"), 'checked -> true).body +
+                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'value -> category.id, 'required -> false).body)
                                 case None => Html(
                                     b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label")).body +
-                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select")).body)
+                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'required -> false).body)
                             }
                         }
                         @b3.checkbox(registrationForm("teamLeader"), '_label -> Messages("team.leader.label"), 'checked -> registration.teamLeader)

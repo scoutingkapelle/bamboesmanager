@@ -47,7 +47,7 @@
                         <span class="help-block col-md-offset-2">@Messages("sorting.text")</span>
                     </div>
                     @b3.checkbox(registerForm("selling"), '_label -> Messages("selling.label"))
-                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"))
+                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'required -> false)
                     <span class="help-block col-md-offset-2">@Messages("selling.text")</span>
 
                     <hr>
