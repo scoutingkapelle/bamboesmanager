@@ -13,12 +13,12 @@ import scala.concurrent.Future
 class Application @Inject()(val messagesApi: MessagesApi, val env: Environment[User, SessionAuthenticator])
   extends Silhouette[User, SessionAuthenticator] {
 
-  def index = UserAwareAction.async { implicit request =>
-    Future.successful(Ok(views.html.index(request.identity)))
+  def index = UserAwareAction { implicit request =>
+    Ok(views.html.index(request.identity))
   }
 
-  def dashboard = SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.dashboard(request.identity)))
+  def dashboard = SecuredAction { implicit request =>
+    Ok(views.html.dashboard(request.identity))
   }
 
   def signIn = UserAwareAction.async { implicit request =>
@@ -28,8 +28,8 @@ class Application @Inject()(val messagesApi: MessagesApi, val env: Environment[U
     }
   }
 
-  def signUp = SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.signUp(SignUpForm.form)))
+  def signUp = SecuredAction { implicit request =>
+    Ok(views.html.signUp(SignUpForm.form))
   }
 
   def signOut = SecuredAction.async { implicit request =>

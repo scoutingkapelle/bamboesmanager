@@ -24,11 +24,10 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
   def categories = SecuredAction.async { implicit request =>
     for {
       categories <- categoryDAO.all
-      stats <- statisticsDAO.category
+      statistics <- statisticsDAO.category
       teamLeaders <- categoryDAO.teamLeaders
     } yield {
-      val tls = teamLeaders.groupBy(_._1).map(cat => cat._1 -> cat._2.map(_._2).mkString(", "))
-      Ok(views.html.categories(categories.sortBy(_.name), stats.toMap, tls, request.identity))
+      Ok(views.html.categories(categories.sortBy(_.name), statistics, teamLeaders, request.identity))
     }
   }
 

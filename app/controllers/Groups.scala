@@ -25,9 +25,9 @@ class Groups @Inject()(groupDAO: GroupDAO,
   def groups = SecuredAction.async { implicit request =>
     for {
       groups <- groupDAO.all
-      stats <- statisticsDAO.group
+      statistics <- statisticsDAO.group
     } yield {
-      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), stats, request.identity))
+      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), statistics, request.identity))
     }
   }
 

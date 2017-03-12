@@ -23,9 +23,9 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
   def organisations = SecuredAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
-      stats <- statisticsDAO.organisation
+      statistics <- statisticsDAO.organisation
     } yield {
-      Ok(views.html.organisations(organisations.sortBy(_.name), stats, request.identity))
+      Ok(views.html.organisations(organisations.sortBy(_.name), statistics, request.identity))
     }
   }
 

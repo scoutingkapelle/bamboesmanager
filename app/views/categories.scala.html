@@ -1,6 +1,6 @@
 @(categories: Seq[Category],
-        counts: Map[Option[java.util.UUID], Int],
-        teamLeaders: Map[Option[java.util.UUID], String],
+        counts: Map[java.util.UUID, Int],
+        teamLeaders: Map[java.util.UUID, String],
         user: models.User)(implicit messages: Messages)
 
     @scripts = {
@@ -34,8 +34,8 @@
                         <tr>
                             <td>@category.id</td>
                             <td>@category.name</td>
-                            <td>@counts.getOrElse(Some(category.id), 0)</td>
-                            <td>@teamLeaders.get(Some(category.id))</td>
+                            <td>@counts.getOrElse(category.id, 0)</td>
+                            <td>@teamLeaders.get(category.id)</td>
                         </tr>
                     }
                     </tbody>

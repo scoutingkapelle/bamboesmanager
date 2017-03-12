@@ -9,6 +9,7 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.driver.JdbcProfile
 import slick.driver.PostgresDriver.api._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
@@ -24,12 +25,16 @@ class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   def save(category: Category) = db.run(categories.insertOrUpdate(category))
 
-  def teamLeaders: Future[Seq[(Option[UUID], String)]] = {
+  def teamLeaders: Future[Map[UUID, String]] = {
     val query = for {
       r <- registrations if r.team_leader
       p <- persons if r.person_id === p.id
     } yield (r.category_id, p.name)
 
-    db.run(query.result)
+    db.run(query.result).map { results =>
+      results.collect {
+        case (Some(category), teamLeaders) => category -> teamLeaders
+      }.toMap
+    }
   }
 }

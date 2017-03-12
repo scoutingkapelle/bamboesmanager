@@ -37,22 +37,22 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
     }
   }
 
-  private def fill(organisations: Seq[Organisation], statistic: Seq[(String, Int)]): Map[String, Int] =
-    organisations.map(organisation => (organisation.name, statistic.toMap.getOrElse(organisation.name, 0))).toMap
+  private def fill(organisations: Seq[Organisation], statistic: Map[String, Int]): Map[String, Int] =
+    organisations.map(organisation => (organisation.name, statistic.getOrElse(organisation.name, 0))).toMap
 
   def friday: Action[AnyContent] = SecuredAction.async { implicit request =>
-    statisticsDAO.friday.map(statistics => Ok(Json.toJson(statistics.toMap)))
+    statisticsDAO.friday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
   def saturday: Action[AnyContent] = SecuredAction.async { implicit request =>
-    statisticsDAO.saturday.map(statistics => Ok(Json.toJson(statistics.toMap)))
+    statisticsDAO.saturday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
   def sorting: Action[AnyContent] = SecuredAction.async { implicit request =>
-    statisticsDAO.sorting.map(statistics => Ok(Json.toJson(statistics.toMap)))
+    statisticsDAO.sorting.map(statistics => Ok(Json.toJson(statistics)))
   }
 
   def selling: Action[AnyContent] = SecuredAction.async { implicit request =>
-    statisticsDAO.selling.map(statistics => Ok(Json.toJson(statistics.toMap)))
+    statisticsDAO.selling.map(statistics => Ok(Json.toJson(statistics)))
   }
 }
