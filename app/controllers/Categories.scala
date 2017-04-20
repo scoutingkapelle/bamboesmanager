@@ -39,7 +39,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
         category <- categoryDAO.get(uuid)
       } yield {
         category match {
-          case Some(c) => Ok(views.html.category(c, registrations, request.identity))
+          case Some(c) => Ok(views.html.category(c, registrations.sortBy(_.person.name), request.identity))
           case None => NotFound(views.html.notFound(id, Some(request.identity)))
         }
       }
