@@ -1,3 +1,5 @@
+@this(main: views.html.main)
+
 @(registration: Registration, user: models.User)(implicit messages: Messages)
 
     @main(Messages("confirmation"), Some(user)) {

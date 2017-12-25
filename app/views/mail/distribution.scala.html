@@ -1,4 +1,6 @@
-@(registration: Registration, user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
+@this(main: views.html.main)
+
+ @(registration: Registration, user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
     @main(Messages("distribution"), Some(user)) {
         <div class="container">

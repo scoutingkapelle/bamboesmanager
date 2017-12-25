@@ -6,11 +6,12 @@ import javax.inject.Inject
 import models._
 import models.daos.tables.{DBPerson, GroupTable, OrganisationTable, PersonTable}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.driver.JdbcProfile
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.JdbcProfile
+import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.language.implicitConversions
 
 class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   extends HasDatabaseConfigProvider[JdbcProfile] {
@@ -47,7 +48,7 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     })
   }
 
-  def save(person: Person): Future[Person] = db.run(persons.insertOrUpdate(toDBPerson(person))).map(_ => person)
+  def save(person: Person): Future[Person] = db.run(persons.insertOrUpdate(person)).map(_ => person)
 
-  def toDBPerson(person: Person) = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
+  implicit private def toDBPerson(person: Person): DBPerson = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
 }

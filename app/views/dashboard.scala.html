@@ -1,3 +1,5 @@
+@this(main: views.html.main)
+
 @(user: models.User)(implicit messages: Messages)
 
     @main(Messages("dashboard"), Some(user)) {

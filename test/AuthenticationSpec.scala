@@ -1,5 +1,3 @@
-package controllers
-
 import java.util.UUID
 
 import com.google.inject.AbstractModule
@@ -12,9 +10,7 @@ import org.specs2.mock.Mockito
 import org.specs2.specification.Scope
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.concurrent.Execution.Implicits._
-import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
-
-import scala.concurrent.Future
+import play.api.test.PlaySpecification
 
 /**
   * Test case for the [[controllers.Application]] class.
@@ -60,7 +56,7 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     /**
       * The application.
       */
-    lazy val application = new GuiceApplicationBuilder()
+    private lazy val application = new GuiceApplicationBuilder()
       .overrides(new FakeModule)
       .build()
     /**
@@ -81,7 +77,7 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
       * A fake Guice module.
       */
     class FakeModule extends AbstractModule with ScalaModule {
-      def configure() = {
+      def configure(): Unit = {
         bind[Environment[User, SessionAuthenticator]].toInstance(env)
       }
     }

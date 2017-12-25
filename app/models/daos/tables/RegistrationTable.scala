@@ -2,14 +2,14 @@ package models.daos.tables
 
 import java.util.UUID
 
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.PostgresProfile.api._
 import slick.lifted.Tag
 
 case class DBRegistration(id: UUID, person_id: UUID, friday: Boolean, saturday: Boolean, sorting: Boolean, category_id: Option[UUID], team_leader: Boolean)
 
 class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrations") {
-  val categories = TableQuery[CategoryTable]
-  val persons = TableQuery[PersonTable]
+  private val categories = TableQuery[CategoryTable]
+  private val persons = TableQuery[PersonTable]
 
   def * = (id, person_id, friday, saturday, sorting, category_id, team_leader) <> (DBRegistration.tupled, DBRegistration.unapply)
 

@@ -3,13 +3,14 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
-import com.mohiva.play.silhouette.api.{Environment, Silhouette}
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import com.mohiva.play.silhouette.api.Silhouette
 import forms.CategoryForm
-import models.daos.{StatisticsDAO, CategoryDAO, RegistrationDAO}
-import models.{Category, User}
-import play.api.i18n.{Messages, MessagesApi}
+import models.Category
+import models.daos.{CategoryDAO, RegistrationDAO, StatisticsDAO}
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -17,21 +18,26 @@ import scala.concurrent.Future
 class Categories @Inject()(categoryDAO: CategoryDAO,
                            registrationDAO: RegistrationDAO,
                            statisticsDAO: StatisticsDAO,
-                           val messagesApi: MessagesApi,
-                           val env: Environment[User, SessionAuthenticator])
-  extends Silhouette[User, SessionAuthenticator] {
+                           components: ControllerComponents,
+                           silhouette: Silhouette[DefaultEnv],
+                           categoriesTemplate: views.html.categories,
+                           categoryTemplate: views.html.category,
+                           categoryAddTemplate: views.html.categoryAdd,
+                           notFoundTemplate: views.html.notFound,
+                           badRequestTemplate: views.html.badRequest)
+  extends AbstractController(components) with I18nSupport {
 
-  def categories = SecuredAction.async { implicit request =>
+  def categories = silhouette.SecuredAction.async { implicit request =>
     for {
       categories <- categoryDAO.all
       statistics <- statisticsDAO.category
       teamLeaders <- categoryDAO.teamLeaders
     } yield {
-      Ok(views.html.categories(categories.sortBy(_.name), statistics, teamLeaders, request.identity))
+      Ok(categoriesTemplate(categories.sortBy(_.name), statistics, teamLeaders, request.identity))
     }
   }
 
-  def category(id: String) = SecuredAction.async { implicit request =>
+  def category(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -39,22 +45,23 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
         category <- categoryDAO.get(uuid)
       } yield {
         category match {
-          case Some(c) => Ok(views.html.category(c, registrations.sortBy(_.person.name), request.identity))
-          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+          case Some(c) => Ok(categoryTemplate(c, registrations.sortBy(_.person.name), request.identity))
+          case None => NotFound(notFoundTemplate(id, Some(request.identity)))
         }
       }
     } catch {
-      case _: IllegalArgumentException => Future.successful(BadRequest(Json.toJson(Messages("uuid.invalid"))))
+      case _: IllegalArgumentException =>
+        Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
-  def add = SecuredAction.async { implicit request =>
-    Future.successful(Ok(views.html.categoryAdd(CategoryForm.form, request.identity)))
+  def add = silhouette.SecuredAction.async { implicit request =>
+    Future.successful(Ok(categoryAddTemplate(CategoryForm.form, request.identity)))
   }
 
-  def save = SecuredAction.async { implicit request =>
+  def save = silhouette.SecuredAction.async { implicit request =>
     CategoryForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.categoryAdd(form, request.identity))),
+      form => Future.successful(BadRequest(categoryAddTemplate(form, request.identity))),
       data => {
         val category = Category(UUID.randomUUID, data.name)
         categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories()))
@@ -62,11 +69,11 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     )
   }
 
-  def all = SecuredAction.async {
+  def all = silhouette.SecuredAction.async {
     categoryDAO.all.map(categories => Ok(Json.toJson(categories.sortBy(_.name))))
   }
 
-  def get(id: String) = SecuredAction.async {
+  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       categoryDAO.get(uuid).map {

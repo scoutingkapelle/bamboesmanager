@@ -6,27 +6,29 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.PasswordHasher
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import com.mohiva.play.silhouette.impl.providers._
 import forms.SignUpForm
 import models.User
 import models.daos.UserDAO
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.mvc.Action
+import org.webjars.play.WebJarsUtil
+import play.api.i18n.{I18nSupport, Messages}
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
+import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
-class SignUp @Inject()(val messagesApi: MessagesApi,
-                       val env: Environment[User, SessionAuthenticator],
-                       userDAO: UserDAO,
+class SignUp @Inject()(userDAO: UserDAO,
                        authInfoRepository: AuthInfoRepository,
-                       passwordHasher: PasswordHasher)
-  extends Silhouette[User, SessionAuthenticator] {
+                       passwordHasher: PasswordHasher,
+                       components: ControllerComponents,
+                       silhouette: Silhouette[DefaultEnv],
+                       signUpTemplate: views.html.signUp)
+  extends AbstractController(components) with I18nSupport {
 
   def signUp = Action.async { implicit request =>
     SignUpForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.signUp(form))),
+      form => Future.successful(BadRequest(signUpTemplate(form))),
       data => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userDAO.retrieve(loginInfo).flatMap {
@@ -42,12 +44,12 @@ class SignUp @Inject()(val messagesApi: MessagesApi,
             for {
               user <- userDAO.save(user)
               _ <- authInfoRepository.add(loginInfo, authInfo)
-              authenticator <- env.authenticatorService.create(loginInfo)
-              value <- env.authenticatorService.init(authenticator)
-              result <- env.authenticatorService.embed(value, Redirect(routes.Application.dashboard()))
+              authenticator <- silhouette.env.authenticatorService.create(loginInfo)
+              value <- silhouette.env.authenticatorService.init(authenticator)
+              result <- silhouette.env.authenticatorService.embed(value, Redirect(routes.Application.dashboard()))
             } yield {
-              env.eventBus.publish(SignUpEvent(user, request, request2Messages))
-              env.eventBus.publish(LoginEvent(user, request, request2Messages))
+              silhouette.env.eventBus.publish(SignUpEvent(user, request))
+              silhouette.env.eventBus.publish(LoginEvent(user, request))
               result
             }
         }

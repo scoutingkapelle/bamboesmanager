@@ -1,3 +1,5 @@
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
+
 @(registerForm: Form[forms.RegisterForm.Data],
         organisations: Seq[(String, String)],
         groups: Seq[(String, String)],
@@ -5,9 +7,9 @@
         user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
 @scripts = {
-    <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap3/bootstrap-switch.min.css"))'>
+    @Html(webJarsUtil.css("bootstrap3/bootstrap-switch.min.css"))
+    @Html(webJarsUtil.script("bootstrap-switch.min.js"))
     <script type="application/javascript" src="@routes.Assets.at("javascripts/views/register.js")"></script>
-    <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-switch.min.js"))"></script>
 }
 
 @implicitFieldConstructor = @{

@@ -2,24 +2,25 @@ package controllers
 
 import javax.inject.Inject
 
-import com.mohiva.play.silhouette.api.{Environment, Silhouette}
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import com.mohiva.play.silhouette.api.Silhouette
 import models._
 import models.daos._
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
 import scala.collection.immutable.ListMap
 import scala.concurrent.ExecutionContext.Implicits._
 
 class Statistics @Inject()(statisticsDAO: StatisticsDAO,
                            organisationDAO: OrganisationDAO,
-                           val messagesApi: MessagesApi,
-                           val env: Environment[User, SessionAuthenticator])
-  extends Silhouette[User, SessionAuthenticator] {
+                           components: ControllerComponents,
+                           silhouette: Silhouette[DefaultEnv],
+                           statisticsTemplate: views.html.statistics)
+  extends AbstractController(components) with I18nSupport {
 
-  def statistics: Action[AnyContent] = SecuredAction.async { implicit request =>
+  def statistics = silhouette.SecuredAction.async { implicit request =>
     for {
       friday <- statisticsDAO.friday
       saturday <- statisticsDAO.saturday
@@ -33,26 +34,26 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
         Messages("sorting") -> fill(organisations, sorting),
         Messages("selling") -> fill(organisations, selling)
       )
-      Ok(views.html.statistics(statistics, request.identity))
+      Ok(statisticsTemplate(statistics, request.identity))
     }
   }
 
   private def fill(organisations: Seq[Organisation], statistic: Map[String, Int]): Map[String, Int] =
     organisations.map(organisation => (organisation.name, statistic.getOrElse(organisation.name, 0))).toMap
 
-  def friday: Action[AnyContent] = SecuredAction.async { implicit request =>
+  def friday = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.friday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def saturday: Action[AnyContent] = SecuredAction.async { implicit request =>
+  def saturday = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.saturday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def sorting: Action[AnyContent] = SecuredAction.async { implicit request =>
+  def sorting = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.sorting.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def selling: Action[AnyContent] = SecuredAction.async { implicit request =>
+  def selling = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.selling.map(statistics => Ok(Json.toJson(statistics)))
   }
 }

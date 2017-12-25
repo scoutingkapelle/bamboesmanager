@@ -1,6 +1,6 @@
 name := "bamboesmanager"
 
-version := "0.5.4"
+version := "0.6.0-SNAPSHOT"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
 
@@ -15,23 +15,28 @@ resolvers += "Typesafe Ivy releases" at "https://repo.typesafe.com/typesafe/ivy-
 resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
 
 libraryDependencies ++= Seq(
-  cache, ws, specs2 % Test, evolutions, filters,
-  "com.typesafe.play" %% "play-slick" % "1.1.1",
-  "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1",
-  "com.h2database" % "h2" % "1.4.193",
+  ehcache, ws, specs2 % Test, evolutions, filters, guice,
+  "com.typesafe.play" %% "play-slick" % "3.0.0",
+  "com.typesafe.play" %% "play-slick-evolutions" % "3.0.0",
+  "com.typesafe.play" %% "play-json" % "2.6.0",
+  "com.h2database" % "h2" % "1.4.196",
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
-  "org.webjars" %% "webjars-play" % "2.4.0-1",
-  "org.webjars" % "bootstrap" % "3.3.6" exclude("org.webjars", "jquery"),
+  "org.webjars" %% "webjars-play" % "2.6.1",
+  "org.webjars" % "bootstrap" % "3.3.5" exclude("org.webjars", "jquery"),
   "org.webjars" % "bootstrap-table" % "1.9.1" exclude("org.webjars", "jquery"),
   "org.webjars" % "bootstrap-switch" % "3.3.2" exclude("org.webjars", "jquery"),
   "org.webjars.bower" % "tableExport.jquery.plugin" % "1.1.4" exclude("org.webjars.bower", "jquery") exclude("org.webjars.bower", "jspdf") exclude("org.webjars.bower", "jspdf-autotable") exclude("org.webjars.bower", "file-saver.js"),
   "org.webjars" % "jquery" % "1.9.1",
-  "com.adrianhurt" %% "play-bootstrap" % "1.1-P24-B3" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
-  "com.mohiva" %% "play-silhouette" % "3.0.4",
-  "com.mohiva" %% "play-silhouette-testkit" % "3.0.4" % "test",
+  "com.adrianhurt" %% "play-bootstrap" % "1.2-P26-B3" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
+  "com.mohiva" %% "play-silhouette" % "5.0.0",
+  "com.mohiva" %% "play-silhouette-persistence" % "5.0.0",
+  "com.mohiva" %% "play-silhouette-crypto-jca" % "5.0.0",
+  "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.0",
+  "com.mohiva" %% "play-silhouette-testkit" % "5.0.0" % "test",
   "net.codingwell" %% "scala-guice" % "4.0.1",
   "com.iheart" %% "ficus" % "1.4.0",
-  "com.typesafe.play" %% "play-mailer" % "4.0.0"
+  "com.typesafe.play" %% "play-mailer" % "6.0.1",
+  "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
 )
 
 scalacOptions ++= Seq(

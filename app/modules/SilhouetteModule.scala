@@ -1,24 +1,30 @@
 package modules
 
-
+import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Provides}
+import com.mohiva.play.silhouette.api.crypto._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.services._
 import com.mohiva.play.silhouette.api.util._
-import com.mohiva.play.silhouette.api.{Environment, EventBus}
+import com.mohiva.play.silhouette.api.{Environment, EventBus, Silhouette, SilhouetteProvider}
+import com.mohiva.play.silhouette.crypto.{JcaCrypter, JcaCrypterSettings, JcaSigner, JcaSignerSettings}
 import com.mohiva.play.silhouette.impl.authenticators._
-import com.mohiva.play.silhouette.impl.daos.DelegableAuthInfoDAO
 import com.mohiva.play.silhouette.impl.providers._
-import com.mohiva.play.silhouette.impl.repositories.DelegableAuthInfoRepository
+import com.mohiva.play.silhouette.impl.providers.state.{CsrfStateItemHandler, CsrfStateSettings}
 import com.mohiva.play.silhouette.impl.util._
-import models.User
-import models.daos._
+import com.mohiva.play.silhouette.password.{BCryptPasswordHasher, BCryptSha256PasswordHasher}
+import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
+import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
+import models.daos.{PasswordInfoDAO, UserDAO}
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._
 import net.codingwell.scalaguice.ScalaModule
 import play.api.Configuration
-import play.api.libs.concurrent.Execution.Implicits._
 import play.api.libs.ws.WSClient
+import play.api.mvc.SessionCookieBaker
+import utils.DefaultEnv
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
   * The Guice module which wires all Silhouette dependencies.
@@ -28,7 +34,8 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   /**
     * Configures the module.
     */
-  def configure = {
+  override def configure(): Unit = {
+    bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordInfoDAO]
     bind[CacheLayer].to[PlayCacheLayer]
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
@@ -50,18 +57,19 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   /**
     * Provides the Silhouette environment.
     *
-    * @param userDAO              The user service implementation.
+    * @param userService          The user service implementation.
     * @param authenticatorService The authentication service implementation.
     * @param eventBus             The event bus instance.
     * @return The Silhouette environment.
     */
   @Provides
-  def provideEnvironment(userDAO: UserDAO,
-                         authenticatorService: AuthenticatorService[SessionAuthenticator],
-                         eventBus: EventBus): Environment[User, SessionAuthenticator] = {
+  def provideEnvironment(
+                          userService: UserDAO,
+                          authenticatorService: AuthenticatorService[SessionAuthenticator],
+                          eventBus: EventBus): Environment[DefaultEnv] = {
 
-    Environment[User, SessionAuthenticator](
-      userDAO,
+    Environment[DefaultEnv](
+      userService,
       authenticatorService,
       Seq(),
       eventBus
@@ -69,20 +77,17 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   }
 
   /**
-    * Provides the authenticator service.
+    * Provides the crypter for the authenticator.
     *
-    * @param fingerprintGenerator The fingerprint generator implementation.
-    * @return The authenticator service.
+    * @param configuration The Play configuration.
+    * @return The crypter for the authenticator.
     */
   @Provides
-  def provideAuthenticatorService(fingerprintGenerator: FingerprintGenerator,
-                                  idGenerator: IDGenerator,
-                                  configuration: Configuration,
-                                  clock: Clock): AuthenticatorService[SessionAuthenticator] = {
+  @Named("authenticator-crypter")
+  def provideAuthenticatorCrypter(configuration: Configuration): Crypter = {
+    val config = configuration.underlying.as[JcaCrypterSettings]("silhouette.authenticator.crypter")
 
-    val config = configuration.underlying.as[SessionAuthenticatorSettings]("silhouette.authenticator")
-    new SessionAuthenticatorService(config, fingerprintGenerator, clock)
-
+    new JcaCrypter(config)
   }
 
   /**
@@ -97,15 +102,50 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   }
 
   /**
+    * Provides the authenticator service.
+    *
+    * @param crypter              The crypter implementation.
+    * @param fingerprintGenerator The fingerprint generator implementation.
+    * @param configuration        The Play configuration.
+    * @param clock                The clock instance.
+    * @return The authenticator service.
+    */
+  @Provides
+  def provideAuthenticatorService(
+                                   @Named("authenticator-crypter") crypter: Crypter,
+                                   fingerprintGenerator: FingerprintGenerator,
+                                   sessionCookieBaker: SessionCookieBaker,
+                                   configuration: Configuration,
+                                   clock: Clock): AuthenticatorService[SessionAuthenticator] = {
+
+    val config = configuration.underlying.as[SessionAuthenticatorSettings]("silhouette.authenticator")
+    val authenticatorEncoder = new CrypterAuthenticatorEncoder(crypter)
+
+    new SessionAuthenticatorService(config, fingerprintGenerator, authenticatorEncoder, sessionCookieBaker, clock)
+  }
+
+  /**
+    * Provides the password hasher registry.
+    *
+    * @return The password hasher registry.
+    */
+  @Provides
+  def providePasswordHasherRegistry(): PasswordHasherRegistry = {
+    PasswordHasherRegistry(new BCryptSha256PasswordHasher(), Seq(new BCryptPasswordHasher()))
+  }
+
+  /**
     * Provides the credentials provider.
     *
-    * @param authInfoRepository The auth info repository implementation.
-    * @param passwordHasher     The default password hasher implementation.
+    * @param authInfoRepository     The auth info repository implementation.
+    * @param passwordHasherRegistry The password hasher registry.
     * @return The credentials provider.
     */
   @Provides
-  def provideCredentialsProvider(authInfoRepository: AuthInfoRepository,
-                                 passwordHasher: PasswordHasher): CredentialsProvider = {
-    new CredentialsProvider(authInfoRepository, passwordHasher, Seq(passwordHasher))
+  def provideCredentialsProvider(
+                                  authInfoRepository: AuthInfoRepository,
+                                  passwordHasherRegistry: PasswordHasherRegistry): CredentialsProvider = {
+
+    new CredentialsProvider(authInfoRepository, passwordHasherRegistry)
   }
 }

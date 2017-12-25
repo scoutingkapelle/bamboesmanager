@@ -1,8 +1,12 @@
-@(organisations: Seq[Organisation], statistics: Map[java.util.UUID, Int], user: models.User)(implicit messages: Messages)
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
+
+@(organisations: Seq[Organisation],
+        statistics: Map[java.util.UUID, Int],
+        user: models.User)(implicit messages: Messages)
 
     @scripts = {
-        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
+        @Html(webJarsUtil.css("bootstrap-table.css"))
+        @Html(webJarsUtil.script("bootstrap-table.js"))
         <script type="application/javascript" src="@routes.Assets.at("javascripts/views/organisations.js")"></script>
     }
 

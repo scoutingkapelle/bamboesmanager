@@ -1,38 +1,42 @@
-@(category: Category, registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-    @scripts = {
-        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
-    }
+@(category: Category,
+        registrations: Seq[Registration],
+        user: models.User)(implicit messages: Messages)
 
-    @main(category.name, Some(user), scripts) {
-        <div class="container">
-            <h1>@(category.name) <small>@registrations.size @Messages("results")</small></h1>
+@scripts = {
+    @Html(webJarsUtil.css("bootstrap-table.css"))
+    @Html(webJarsUtil.script("bootstrap-table.js"))
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+}
 
-            <div class="table-responsive">
-                <table id="group" data-toggle="table" data-striped="true">
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th>@Messages("person")</th>
-                            <th>@Messages("age")</th>
-                            <th>@Messages("email")</th>
-                            <th>@Messages("team.leader")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @for(registration <- registrations) {
-                        <tr>
-                            <td>@registration.id</td>
-                            <td>@registration.person.name</td>
-                            <td>@registration.person.age</td>
-                            <td>@registration.person.email</td>
-                            <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+@main(category.name, Some(user), scripts) {
+    <div class="container">
+        <h1>@(category.name) <small>@registrations.size @Messages("results")</small></h1>
+
+        <div class="table-responsive">
+            <table id="group" data-toggle="table" data-striped="true">
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th>@Messages("person")</th>
+                        <th>@Messages("age")</th>
+                        <th>@Messages("email")</th>
+                        <th>@Messages("team.leader")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(registration <- registrations) {
+                    <tr>
+                        <td>@registration.id</td>
+                        <td>@registration.person.name</td>
+                        <td>@registration.person.age</td>
+                        <td>@registration.person.email</td>
+                        <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}

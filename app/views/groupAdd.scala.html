@@ -1,6 +1,10 @@
 @import b3.inline.fieldConstructor
 
-@(groupForm: Form[forms.GroupForm.Data], organisations: Seq[(String, String)], user: models.User)(implicit request: RequestHeader, messages: Messages)
+@this(main: views.html.main)
+
+@(groupForm: Form[forms.GroupForm.Data],
+    organisations: Seq[(String, String)],
+    user: models.User)(implicit request: RequestHeader, messages: Messages)
 
     @main(Messages("group.add"), Some(user)) {
         @request.flash.get("error").map { msg =>

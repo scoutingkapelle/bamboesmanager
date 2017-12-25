@@ -6,8 +6,8 @@ import javax.inject.Inject
 import models.Category
 import models.daos.tables.{CategoryTable, PersonTable, RegistrationTable}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.driver.JdbcProfile
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.JdbcProfile
+import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -23,7 +23,7 @@ class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   def get(id: UUID): Future[Option[Category]] = db.run(categories.filter(_.id === id).result.headOption)
 
-  def save(category: Category) = db.run(categories.insertOrUpdate(category))
+  def save(category: Category): Future[Int] = db.run(categories.insertOrUpdate(category))
 
   def teamLeaders: Future[Map[UUID, String]] = {
     val query = for {

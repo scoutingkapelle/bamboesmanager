@@ -1,5 +1,7 @@
 @import b3.inline.fieldConstructor
 
+@this(main: views.html.main)
+
 @(messageForm: Form[forms.MessageForm.Data], user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
     @main(Messages("message"), Some(user)) {

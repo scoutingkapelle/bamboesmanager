@@ -8,13 +8,13 @@ import com.mohiva.play.silhouette.api.services.IdentityService
 import models.User
 import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits._
 
 class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends IdentityService[User] with DAOSlick {
 
-  import driver.api._
+  import profile.api._
 
   def find(id: UUID): Future[Option[User]] = db.run(users.filter(_.id === id).result.headOption)
 

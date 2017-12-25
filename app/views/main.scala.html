@@ -1,4 +1,8 @@
-@(title: String, user: Option[models.User] = None, scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
+@this(webJarsUtil: org.webjars.play.WebJarsUtil)
+
+@(title: String,
+        user: Option[models.User] = None,
+        scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
 
 <!DOCTYPE html>
 
@@ -10,11 +14,13 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/actiebamboes.png")">
 
         <link rel="stylesheet" href='@routes.Assets.at("stylesheets/main.css")'>
-        <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("css/bootstrap.min.css"))'>
 
         <script type='text/javascript' src='@routes.Assets.at("javascripts/analytics.js")'></script>
-        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
-        <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.js"))'></script>
+
+        @Html(webJarsUtil.css("css/bootstrap.min.css"))
+        @Html(webJarsUtil.script("jquery.min.js"))
+        @Html(webJarsUtil.script("bootstrap.min.js"))
+
         @scripts
     </head>
 

@@ -3,13 +3,14 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
-import com.mohiva.play.silhouette.api.{Environment, Silhouette}
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import com.mohiva.play.silhouette.api.Silhouette
 import forms.{RegisterForm, RegistrationForm}
 import models._
 import models.daos._
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json._
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -20,16 +21,21 @@ class Registrations @Inject()(mail: Mail,
                               groupDAO: GroupDAO,
                               categoryDAO: CategoryDAO,
                               personDAO: PersonDAO,
-                              val messagesApi: MessagesApi,
-                              val env: Environment[User, SessionAuthenticator])
-  extends Silhouette[User, SessionAuthenticator] {
+                              components: ControllerComponents,
+                              silhouette: Silhouette[DefaultEnv],
+                              registrationsTemplate: views.html.registrations,
+                              registrationTemplate: views.html.registration,
+                              registerTemplate: views.html.register,
+                              notFoundTemplate: views.html.notFound,
+                              badRequestTemplate: views.html.badRequest)
+  extends AbstractController(components) with I18nSupport {
 
-  def registrations = SecuredAction.async { implicit request =>
+  def registrations = silhouette.SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations =>
-      Ok(views.html.registrations(registrations.sortBy(_.person.name), request.identity)))
+      Ok(registrationsTemplate(registrations.sortBy(_.person.name), request.identity)))
   }
 
-  def registration(id: String) = SecuredAction.async { implicit request =>
+  def registration(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -37,27 +43,27 @@ class Registrations @Inject()(mail: Mail,
         registration <- registrationDAO.get(uuid)
       } yield {
         registration match {
-          case Some(r) => Ok(views.html.registration(
+          case Some(r) => Ok(registrationTemplate(
             r,
             RegistrationForm.form,
             categoriesTupled(categories),
             request.identity))
-          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+          case None => NotFound(notFoundTemplate(id, Some(request.identity)))
         }
       }
     } catch {
       case _: IllegalArgumentException =>
-        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+        Future.successful(BadRequest(notFoundTemplate(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
-  def register = UserAwareAction.async { implicit request =>
+  def register = silhouette.UserAwareAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
       groups <- groupDAO.all
       categories <- categoryDAO.all
     } yield {
-      Ok(views.html.register(
+      Ok(registerTemplate(
         RegisterForm.form,
         models.organisationsTupled(organisations),
         models.groupsTupled(groups),
@@ -66,14 +72,14 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def save = UserAwareAction.async { implicit request =>
+  def save = silhouette.UserAwareAction.async { implicit request =>
     RegisterForm.form.bindFromRequest.fold(
       form => for {
         organisations <- organisationDAO.all
         groups <- groupDAO.all
         categories <- categoryDAO.all
       } yield {
-        BadRequest(views.html.register(
+        BadRequest(registerTemplate(
           form,
           models.organisationsTupled(organisations),
           models.groupsTupled(groups),
@@ -103,11 +109,11 @@ class Registrations @Inject()(mail: Mail,
                           })
                         case None =>
                           val error = Messages("object.not.found") + ": " + category_id
-                          Future.successful(BadRequest(views.html.badRequest(error, request.identity)))
+                          Future.successful(BadRequest(badRequestTemplate(error, request.identity)))
                       }
                     } catch {
                       case _: IllegalArgumentException =>
-                        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), request.identity)))
+                        Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), request.identity)))
                     }
                   case None =>
                     val registration = Registration(UUID.randomUUID, person, data.friday, data.saturday,
@@ -121,17 +127,17 @@ class Registrations @Inject()(mail: Mail,
               }
             case None =>
               val error = Messages("object.not.found") + ": " + group_id
-              Future.successful(BadRequest(views.html.badRequest(error, request.identity)))
+              Future.successful(BadRequest(badRequestTemplate(error, request.identity)))
           }
         } catch {
           case _: IllegalArgumentException =>
-            Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), request.identity)))
+            Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), request.identity)))
         }
       }
     )
   }
 
-  def update(id: String) = SecuredAction.async { implicit request =>
+  def update(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       RegistrationForm.form.bindFromRequest.fold(
@@ -142,14 +148,14 @@ class Registrations @Inject()(mail: Mail,
           } yield {
             registration match {
               case Some(r) =>
-                BadRequest(views.html.registration(
+                BadRequest(registrationTemplate(
                   r,
                   form,
                   models.categoriesTupled(categories),
                   request.identity))
               case None =>
                 val error = Messages("object.not.found") + ": " + id
-                BadRequest(views.html.badRequest(error, Some(request.identity)))
+                BadRequest(badRequestTemplate(error, Some(request.identity)))
             }
           }
         },
@@ -173,11 +179,11 @@ class Registrations @Inject()(mail: Mail,
                         )
                       case None =>
                         val error = Messages("object.not.found") + ": " + category
-                        Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
+                        Future.successful(BadRequest(badRequestTemplate(error, Some(request.identity))))
                     }
                   } catch {
                     case _: IllegalArgumentException =>
-                      Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+                      Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
                   }
                 case None =>
                   val updatedRegistration = registration.copy(
@@ -186,27 +192,27 @@ class Registrations @Inject()(mail: Mail,
                     sorting = data.sorting,
                     category = None,
                     teamLeader = data.teamLeader)
-                  registrationDAO.save(updatedRegistration).flatMap(registration => {
+                  registrationDAO.save(updatedRegistration).flatMap(_ => {
                     Future.successful(Redirect(routes.Registrations.registrations()))
                   })
               }
             case None =>
               val error = Messages("object.not.found") + ": " + id
-              Future.successful(BadRequest(views.html.badRequest(error, Some(request.identity))))
+              Future.successful(BadRequest(badRequestTemplate(error, Some(request.identity))))
           }
         }
       )
     } catch {
       case _: IllegalArgumentException =>
-        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+        Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
-  def all = SecuredAction.async {
+  def all = silhouette.SecuredAction.async {
     registrationDAO.all.map(registrations => Ok(Json.toJson(Map("registrations" -> registrations))))
   }
 
-  def get(id: String) = SecuredAction.async {
+  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       registrationDAO.get(UUID.fromString(id)).map {
         case Some(registration) => Ok(Json.toJson(Map("registration" -> registration)))

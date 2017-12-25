@@ -1,45 +1,47 @@
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
+
 @(categories: Seq[Category],
         counts: Map[java.util.UUID, Int],
         teamLeaders: Map[java.util.UUID, String],
         user: models.User)(implicit messages: Messages)
 
-    @scripts = {
-        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
-    }
+@scripts = {
+    @Html(webJarsUtil.css("bootstrap-table.css"))
+    @Html(webJarsUtil.script("bootstrap-table.js"))
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+}
 
-    @main(Messages("categories"), Some(user), scripts) {
-        <div class="container">
-            <h1>@Messages("categories") <small>@categories.size @Messages("results")</small></h1>
-            <a href="@routes.Categories.add">
-                <button id="btn-add" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon glyphicon-plus"></span>
-                    @Messages("category.add")
-                </button>
-            </a>
+@main(Messages("categories"), Some(user), scripts) {
+    <div class="container">
+        <h1>@Messages("categories") <small>@categories.size @Messages("results")</small></h1>
+        <a href="@routes.Categories.add">
+            <button id="btn-add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                @Messages("category.add")
+            </button>
+        </a>
 
-            <div class="table-responsive">
-                <table id="categories" data-toggle="table" data-striped="true">
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th>@Messages("category")</th>
-                            <th>@Messages("count.volunteers")</th>
-                            <th>@Messages("team.leaders")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @for(category <- categories) {
-                        <tr>
-                            <td>@category.id</td>
-                            <td>@category.name</td>
-                            <td>@counts.getOrElse(category.id, 0)</td>
-                            <td>@teamLeaders.get(category.id)</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-responsive">
+            <table id="categories" data-toggle="table" data-striped="true">
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th>@Messages("category")</th>
+                        <th>@Messages("count.volunteers")</th>
+                        <th>@Messages("team.leaders")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(category <- categories) {
+                    <tr>
+                        <td>@category.id</td>
+                        <td>@category.name</td>
+                        <td>@counts.getOrElse(category.id, 0)</td>
+                        <td>@teamLeaders.get(category.id)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}

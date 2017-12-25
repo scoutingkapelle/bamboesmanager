@@ -5,37 +5,37 @@ import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.util.Credentials
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers._
 import forms.SignInForm
-import models.User
 import models.daos.UserDAO
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.mvc.Action
+import play.api.i18n.{I18nSupport, Messages}
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
+import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
-class Authentication @Inject()(val messagesApi: MessagesApi,
-                               val env: Environment[User, SessionAuthenticator],
+class Authentication @Inject()(credentialsProvider: CredentialsProvider,
                                userDAO: UserDAO,
-                               credentialsProvider: CredentialsProvider)
-  extends Silhouette[User, SessionAuthenticator] {
+                               components: ControllerComponents,
+                               silhouette: Silhouette[DefaultEnv],
+                               signInTemplate: views.html.signIn)
+  extends AbstractController(components) with I18nSupport {
 
   def authenticate = Action.async { implicit request =>
     SignInForm.form.bindFromRequest.fold(
-      form => Future.successful(BadRequest(views.html.signIn(form))),
+      form => Future.successful(BadRequest(signInTemplate(form))),
       data => {
         val credentials = Credentials(data.email, data.password)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
           val result = Redirect(routes.Application.dashboard())
           userDAO.retrieve(loginInfo).flatMap {
             case Some(user) =>
-              env.authenticatorService.create(loginInfo).flatMap { authenticator =>
-                env.eventBus.publish(LoginEvent(user, request, request2Messages))
-                env.authenticatorService.init(authenticator).flatMap { v =>
-                  env.authenticatorService.embed(v, result)
+              silhouette.env.authenticatorService.create(loginInfo).flatMap { authenticator =>
+                silhouette.env.eventBus.publish(LoginEvent(user, request))
+                silhouette.env.authenticatorService.init(authenticator).flatMap { v =>
+                  silhouette.env.authenticatorService.embed(v, result)
                 }
               }
             case None => Future.failed(new IdentityNotFoundException(Messages("user.not_found")))

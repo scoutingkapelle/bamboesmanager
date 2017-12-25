@@ -1,5 +1,7 @@
 @import b3.inline.fieldConstructor
 
+@this(main: views.html.main)
+
 @(listForm: Form[forms.ListForm.Data], groups: Seq[(String, String)], persons: Seq[Person], user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
     @main(Messages("list"), Some(user)) {

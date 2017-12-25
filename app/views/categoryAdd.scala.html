@@ -1,5 +1,7 @@
 @import b3.inline.fieldConstructor
 
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
+
 @(categoryForm: Form[forms.CategoryForm.Data], user: models.User)(implicit request: RequestHeader, messages: Messages)
 
     @main(Messages("category.add"), Some(user)) {

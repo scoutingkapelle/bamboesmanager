@@ -3,13 +3,14 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
-import com.mohiva.play.silhouette.api.{Environment, Silhouette}
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import com.mohiva.play.silhouette.api.Silhouette
 import forms.GroupForm
 import models._
 import models.daos.{GroupDAO, OrganisationDAO, RegistrationDAO, StatisticsDAO}
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
+import play.api.mvc.{AbstractController, ControllerComponents}
+import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
@@ -18,20 +19,25 @@ class Groups @Inject()(groupDAO: GroupDAO,
                        organisationDAO: OrganisationDAO,
                        registrationDAO: RegistrationDAO,
                        statisticsDAO: StatisticsDAO,
-                       val messagesApi: MessagesApi,
-                       val env: Environment[User, SessionAuthenticator])
-  extends Silhouette[User, SessionAuthenticator] {
+                       components: ControllerComponents,
+                       silhouette: Silhouette[DefaultEnv],
+                       groupsTemplate: views.html.groups,
+                       groupTemplate: views.html.group,
+                       groupAddTemplate: views.html.groupAdd,
+                       notFoundTemplate: views.html.notFound,
+                       badRequestTemplate: views.html.badRequest)
+  extends AbstractController(components) with I18nSupport {
 
-  def groups = SecuredAction.async { implicit request =>
+  def groups = silhouette.SecuredAction.async { implicit request =>
     for {
       groups <- groupDAO.all
       statistics <- statisticsDAO.group
     } yield {
-      Ok(views.html.groups(groups.sortBy(group => (group.organisation.name, group.name)), statistics, request.identity))
+      Ok(groupsTemplate(groups.sortBy(group => (group.organisation.name, group.name)), statistics, request.identity))
     }
   }
 
-  def group(id: String) = SecuredAction.async { implicit request =>
+  def group(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -39,43 +45,43 @@ class Groups @Inject()(groupDAO: GroupDAO,
         group <- groupDAO.get(uuid)
       } yield {
         group match {
-          case Some(g) => Ok(views.html.group(g, persons.sortBy(_.person.name), request.identity))
-          case None => NotFound(views.html.notFound(id, Some(request.identity)))
+          case Some(g) => Ok(groupTemplate(g, persons.sortBy(_.person.name), request.identity))
+          case None => NotFound(notFoundTemplate(id, Some(request.identity)))
         }
       }
     } catch {
       case _: IllegalArgumentException =>
-        Future.successful(BadRequest(views.html.badRequest(Messages("uuid.invalid"), Some(request.identity))))
+        Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
     }
   }
 
-  def add = SecuredAction.async { implicit request =>
+  def add = silhouette.SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
-      Ok(views.html.groupAdd(GroupForm.form, organisationsTupled(organisations), request.identity)))
+      Ok(groupAddTemplate(GroupForm.form, organisationsTupled(organisations), request.identity)))
   }
 
-  def save = SecuredAction.async { implicit request =>
+  def save = silhouette.SecuredAction.async { implicit request =>
     GroupForm.form.bindFromRequest.fold(
       form => {
         organisationDAO.all.map(organisations =>
-          BadRequest(views.html.groupAdd(form, organisationsTupled(organisations), request.identity)))
+          BadRequest(groupAddTemplate(form, organisationsTupled(organisations), request.identity)))
       },
       data => {
         organisationDAO.get(UUID.fromString(data.organisation_id)).flatMap {
           case Some(organisation) =>
             val group = Group(UUID.randomUUID, data.name, organisation)
             groupDAO.save(group).map(_ => Redirect(routes.Groups.group(group.id.toString)))
-          case None => Future.successful(BadRequest(views.html.notFound(data.organisation_id, Some(request.identity))))
+          case None => Future.successful(BadRequest(notFoundTemplate(data.organisation_id, Some(request.identity))))
         }
       }
     )
   }
 
-  def all = SecuredAction.async {
+  def all = silhouette.SecuredAction.async {
     groupDAO.all.map(groups => Ok(Json.toJson(groups.sortBy(_.name))))
   }
 
-  def get(id: String) = SecuredAction.async {
+  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       groupDAO.get(uuid).map {

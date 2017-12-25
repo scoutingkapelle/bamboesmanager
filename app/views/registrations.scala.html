@@ -1,10 +1,12 @@
+@this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
+
 @(registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
     @scripts = {
-        <link rel="stylesheet" href="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.css"))">
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table.js"))"></script>
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap-table-export.js"))"></script>
-        <script type="application/javascript" src="@routes.WebJarAssets.at(WebJarAssets.locate("tableExport.min.js"))"></script>
+        @Html(webJarsUtil.css("bootstrap-table.css"))
+        @Html(webJarsUtil.script("bootstrap-table.js"))
+        @Html(webJarsUtil.script("bootstrap-table-export.js"))
+        @Html(webJarsUtil.script("tableExport.min.js"))
         <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registrations.js")"></script>
     }
 

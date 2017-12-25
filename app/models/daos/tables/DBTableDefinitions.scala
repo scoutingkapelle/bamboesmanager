@@ -3,13 +3,13 @@ package models.daos.tables
 import java.util.UUID
 
 import models.User
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
 trait DBTableDefinitions {
-  protected val driver: JdbcProfile
+  protected val profile: JdbcProfile
 
-  import driver.api._
+  import profile.api._
 
   val users = TableQuery[Users]
   val passwords = TableQuery[Passwords]

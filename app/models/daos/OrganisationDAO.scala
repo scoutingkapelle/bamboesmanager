@@ -6,8 +6,8 @@ import javax.inject.Inject
 import models.daos.tables.{GroupTable, OrganisationTable}
 import models.{Group, Organisation}
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.driver.JdbcProfile
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.JdbcProfile
+import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -33,5 +33,5 @@ class OrganisationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   def get(id: UUID): Future[Option[Organisation]] = db.run(organisations.filter(_.id === id).result.headOption)
 
-  def save(organisation: Organisation) = db.run(organisations.insertOrUpdate(organisation))
+  def save(organisation: Organisation): Future[Int] = db.run(organisations.insertOrUpdate(organisation))
 }

@@ -1,5 +1,7 @@
 @import b3.inline.fieldConstructor
 
+@this(main: views.html.main)
+
 @(signInForm: Form[forms.SignUpForm.Data])(implicit request: RequestHeader, messages: Messages)
 
     @main(Messages("sign.up")) {
