@@ -53,20 +53,20 @@ registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met a
 
 friday = Vrijdag
 friday.label = Ophalen vrijdag
-friday.text = Vrijdag 20 april om 18.15 uur verzamelen bij het station.
+friday.text = Vrijdag 12 april om 18.15 uur verzamelen bij het station.
 
 saturday = Zaterdag
 saturday.label = Ophalen zaterdag
-saturday.text = Zaterdag 21 april om 9.15 uur verzamelen bij het station.
+saturday.text = Zaterdag 13 april om 9.15 uur verzamelen bij het station.
 
 sorting = Sorteren
 sorting.label = Helpen sorteren
-sorting.text = Maandag 23 april en dinsdag 24 april vanaf 19.00 uur.
+sorting.text = Maandag 22 april en dinsdag 23 april vanaf 19.00 uur.
 
 selling = Verkopen
 selling.label = Helpen verkopen
-selling.text =  Vrijdag 27 april om 7.00 uur beginnen met klaarzetten op de parkeerplaats bij het zwembad.
-selling.date = vrijdag 27 april 2018
+selling.text =  Zaterdag 27 april om 7.00 uur beginnen met klaarzetten op de parkeerplaats bij het zwembad.
+selling.date = zaterdag 27 april 2019
 
 team.leader = Teamleider
 team.leaders = Teamleider(s)
@@ -84,11 +84,11 @@ save = Opslaan
 subject= Onderwerp
 
 confirmation = Bevestiging
-confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2018
+confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2019
 
 distribution = Verdeling
 distribution.send = Verstuur indeling naar iedereen
-distribution.subject = Definitieve indeling voor Actie Bamboes 2018
+distribution.subject = Definitieve indeling voor Actie Bamboes 2019
 distribution.success = De indeling is succesvol naar iedereen verstuurd
 
 message = Bericht
@@ -98,7 +98,7 @@ message.success = Het bericht is succesvol naar iedereen verstuurd
 
 list = Lijst
 list.send = Vestuur de lijst
-list.subject = Lijst van aanmeldingen voor Actie Bamboes 2018
+list.subject = Lijst van aanmeldingen voor Actie Bamboes 2019
 list.success = De lijst is succesvol verstuurd
 
 statistics = Verdeling
