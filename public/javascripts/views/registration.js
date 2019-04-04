@@ -28,4 +28,8 @@ $(document).ready(function () {
             $('#category option:selected').val([]);
         }
     });
+
+    $('#delete-registration').on('submit', function () {
+       return confirm('Weet je het zeker?')
+    });
 });

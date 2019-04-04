@@ -52,7 +52,7 @@
                             @Messages("save")
                         }
                     }
-                    @b3.form(action = routes.Registrations.delete(registration.id.toString)) {
+                    @b3.form(action = routes.Registrations.delete(registration.id.toString), 'id -> "delete-registration") {
                         @helper.CSRF.formField
                         @b3.submit('class -> "btn btn-lg btn-danger btn-block") {
                             <span class="glyphicon glyphicon glyphicon-remove"></span>
