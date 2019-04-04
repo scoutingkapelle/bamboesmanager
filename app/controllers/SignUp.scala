@@ -26,7 +26,7 @@ class SignUp @Inject()(userDAO: UserDAO,
                        signUpTemplate: views.html.signUp)
   extends AbstractController(components) with I18nSupport {
 
-  def signUp = Action.async { implicit request =>
+  def signUp = silhouette.SecuredAction.async { implicit request =>
     SignUpForm.form.bindFromRequest.fold(
       form => Future.successful(BadRequest(signUpTemplate(form))),
       data => {
