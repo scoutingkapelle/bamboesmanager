@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
         else {
             categoryField.addClass('hidden');
-            $('#category :selected').removeAttr('selected')
+            $('#category :selected').prop("selected", false);
         }
     });
 
