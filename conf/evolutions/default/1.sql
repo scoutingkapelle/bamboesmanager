@@ -30,9 +30,7 @@ CREATE TABLE "registrations" (
   "saturday"    BOOL NOT NULL,
   "sorting"     BOOL NOT NULL,
   "category_id" UUID REFERENCES "categories" ("id"),
-  "team_leader" BOOL,
-  "bbq"         BOOL,
-  "bbq_partner" BOOL
+  "team_leader" BOOL
 );
 
 CREATE TABLE "users" (
@@ -45,5 +43,5 @@ CREATE TABLE "passwords" (
   "hash"     VARCHAR NOT NULL,
   "password" VARCHAR NOT NULL,
   "salt"     VARCHAR,
-  "email"    VARCHAR PRIMARY KEY REFERENCES "users" (email)
+  "email"    VARCHAR PRIMARY KEY REFERENCES "users" ("email")
 );
