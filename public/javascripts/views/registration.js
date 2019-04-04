@@ -25,7 +25,7 @@ $(document).ready(function () {
         }
         else {
             category.addClass('hidden');
-            $('#category :selected').prop("selected", false);
+            $('#category option:selected').val([]);
         }
     });
 });

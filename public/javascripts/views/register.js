@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
         else {
             categoryField.addClass('hidden');
-            $('#category :selected').prop("selected", false);
+            $('#category option:selected').val([]);
         }
     });
 
