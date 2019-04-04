@@ -89,6 +89,11 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   def save(registration: Registration): Future[Registration] =
     db.run(registrations.insertOrUpdate(toDBRegistration(registration))).map(_ => registration)
 
+  def delete(id: UUID): Future[Int] = {
+    val query = registrations.filter(_.id === id).delete
+    db.run(query)
+  }
+
   implicit private def toDBRegistration(registration: Registration): DBRegistration =
     DBRegistration(
       registration.id,

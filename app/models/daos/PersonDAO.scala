@@ -50,5 +50,10 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   def save(person: Person): Future[Person] = db.run(persons.insertOrUpdate(person)).map(_ => person)
 
+  def delete(id: UUID): Future[Int] = {
+    val query = persons.filter(_.id === id).delete
+    db.run(query)
+  }
+
   implicit private def toDBPerson(person: Person): DBPerson = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
 }

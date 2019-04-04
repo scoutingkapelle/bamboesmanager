@@ -34,6 +34,7 @@ GET         /organisations/:id              controllers.Organisations.organisati
 GET         /registrations                  controllers.Registrations.registrations
 GET         /registrations/:id              controllers.Registrations.registration(id)
 POST        /registrations/:id              controllers.Registrations.update(id)
+POST        /registrations/:id/delete       controllers.Registrations.delete(id)
 
 GET         /email/confirmation             controllers.Email.confirmation
 GET         /email/distribution             controllers.Email.distribution

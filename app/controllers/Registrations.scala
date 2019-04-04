@@ -1,10 +1,10 @@
 package controllers
 
 import java.util.UUID
-import javax.inject.Inject
 
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.{RegisterForm, RegistrationForm}
+import javax.inject.Inject
 import models._
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
@@ -202,6 +202,23 @@ class Registrations @Inject()(mail: Mail,
           }
         }
       )
+    } catch {
+      case _: IllegalArgumentException =>
+        Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
+    }
+  }
+
+  def delete(id: String) = silhouette.SecuredAction.async { implicit request =>
+    try {
+      val uuid = UUID.fromString(id)
+      registrationDAO.get(uuid).flatMap {
+        case Some(registration) =>
+          for {
+            _ <- registrationDAO.delete(uuid)
+            _ <- personDAO.delete(registration.person.id)
+          } yield Redirect(routes.Registrations.registrations())
+        case None =>  Future.successful(NotFound(notFoundTemplate(id, Some(request.identity))))
+      }
     } catch {
       case _: IllegalArgumentException =>
         Future.successful(BadRequest(badRequestTemplate(Messages("uuid.invalid"), Some(request.identity))))
