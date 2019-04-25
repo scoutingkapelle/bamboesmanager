@@ -12,7 +12,7 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 resolvers += "Typesafe Ivy releases" at "https://repo.typesafe.com/typesafe/ivy-releases"
 
-resolvers += "Atlassian Releases" at "https://maven.atlassian.com/public/"
+resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
