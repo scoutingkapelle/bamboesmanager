@@ -1,29 +1,44 @@
-import org.junit.runner._
-import org.specs2.mutable._
-import org.specs2.runner._
+import controllers.Application
+import org.scalatestplus.play._
+import org.scalatestplus.play.guice._
 import play.api.test.Helpers._
 import play.api.test._
 
 /**
   * Add your spec here.
   * You can mock out a whole application including requests, plugins etc.
-  * For more information, consult the wiki.
+  *
+  * For more information, see https://www.playframework.com/documentation/latest/ScalaTestingWithScalaTest
   */
-@RunWith(classOf[JUnitRunner])
-class ApplicationSpec extends Specification {
+class ApplicationSpec extends PlaySpec with GuiceOneAppPerTest with Injecting {
 
-  "Application" should {
+  "HomeController GET" should {
 
-    "send NotFound on a not found request" in new WithApplication {
-      status(route(FakeRequest(GET, "/boum")).get) must equalTo(NOT_FOUND)
+    /*"render the index page from a new instance of controller" in {
+      val controller = inject[Application]
+      val home = controller.index().apply(FakeRequest(GET, "/"))
+
+      status(home) mustBe OK
+      contentType(home) mustBe Some("text/html")
+      contentAsString(home) must include("Welcome to Play")
     }
 
-    "render the dashboard page" in new WithApplication {
-      val home = route(FakeRequest(GET, "/")).get
+    "render the index page from the application" in {
+      val controller = inject[Application]
+      val home = controller.index().apply(FakeRequest(GET, "/"))
 
-      status(home) must equalTo(OK)
-      contentType(home) must beSome.which(_ == "text/html")
-      contentAsString(home) must contain("Actie Bamboes")
+      status(home) mustBe OK
+      contentType(home) mustBe Some("text/html")
+      contentAsString(home) must include("Welcome to Play")
     }
+
+    "render the index page from the router" in {
+      val request = FakeRequest(GET, "/")
+      val home = route(app, request).get
+
+      status(home) mustBe OK
+      contentType(home) mustBe Some("text/html")
+      contentAsString(home) must include("Welcome to Play")
+    }*/
   }
 }

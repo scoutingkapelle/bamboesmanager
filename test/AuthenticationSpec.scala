@@ -2,63 +2,69 @@ import java.util.UUID
 
 import com.google.inject.AbstractModule
 import com.mohiva.play.silhouette.api.{Environment, LoginInfo}
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
 import com.mohiva.play.silhouette.test._
 import models.User
 import net.codingwell.scalaguice.ScalaModule
 import org.specs2.mock.Mockito
 import org.specs2.specification.Scope
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.libs.concurrent.Execution.Implicits._
-import play.api.test.PlaySpecification
+import play.api.test.CSRFTokenHelper._
+import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
+import utils.DefaultEnv
+
+import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
-  * Test case for the [[controllers.Application]] class.
+  * Test case for the [[controllers.Authentication]] class.
   */
 class AuthenticationSpec extends PlaySpecification with Mockito {
   sequential
 
-//  "The `index` action" should {
-    /*"redirect to login page if user is unauthorized" in new Context {
+  /*"The `index` action" should {
+    "redirect to login page if user is unauthorized" in new Context {
       new WithApplication(application) {
-        val Some(redirectResult) = route(FakeRequest(routes.Application.dashboard())
-          .withAuthenticator[SessionAuthenticator](LoginInfo("invalid", "invalid"))
+        val Some(redirectResult) = route(app, FakeRequest()
+          .withAuthenticator[User](LoginInfo("invalid", "invalid"))
         )
 
         status(redirectResult) must be equalTo SEE_OTHER
 
         val redirectURL = redirectLocation(redirectResult).getOrElse("")
-        redirectURL must contain(routes.Application.signIn().toString())
+        redirectURL must contain(routes.SignInController.view().toString)
 
-        val Some(unauthorizedResult) = route(FakeRequest(GET, redirectURL))
+        val Some(unauthorizedResult) = route(app, addCSRFToken(FakeRequest(GET, redirectURL)))
 
         status(unauthorizedResult) must be equalTo OK
         contentType(unauthorizedResult) must beSome("text/html")
-        contentAsString(unauthorizedResult) must contain("Inloggen")
+        contentAsString(unauthorizedResult) must contain("Silhouette - Sign In")
       }
-    }*/
+    }
 
-    /*"return 200 if user is authorized" in new Context {
+    "return 200 if user is authorized" in new Context {
       new WithApplication(application) {
-        val Some(result) = route(FakeRequest(routes.Application.index())
-          .withAuthenticator[SessionAuthenticator](LoginInfo("credentials", identity.email)
-        ))
+        val Some(result) = route(app, addCSRFToken(FakeRequest(routes.ApplicationController.index())
+          .withAuthenticator[User](identity))
+        )
 
         status(result) must beEqualTo(OK)
       }
-    }*/
-//  }
+    }
+  }*/
 
   /**
     * The context.
     */
   trait Context extends Scope {
+
     /**
-      * The application.
+      * A fake Guice module.
       */
-    private lazy val application = new GuiceApplicationBuilder()
-      .overrides(new FakeModule)
-      .build()
+    class FakeModule extends AbstractModule with ScalaModule {
+      override def configure() = {
+        bind[Environment[DefaultEnv]].toInstance(env)
+      }
+    }
+
     /**
       * An identity.
       */
@@ -71,16 +77,13 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     /**
       * A Silhouette fake environment.
       */
-    implicit val env: Environment[User, SessionAuthenticator] = new FakeEnvironment[User, SessionAuthenticator](Seq(LoginInfo("credentials", identity.email) -> identity))
+    implicit val env: Environment[DefaultEnv] = new FakeEnvironment[DefaultEnv](Seq(LoginInfo("credentials", identity.email) -> identity))
 
     /**
-      * A fake Guice module.
+      * The application.
       */
-    class FakeModule extends AbstractModule with ScalaModule {
-      def configure(): Unit = {
-        bind[Environment[User, SessionAuthenticator]].toInstance(env)
-      }
-    }
+    lazy val application = new GuiceApplicationBuilder()
+      .overrides(new FakeModule)
+      .build()
   }
-
 }
