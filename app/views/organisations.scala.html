@@ -4,42 +4,42 @@
         statistics: Map[java.util.UUID, Int],
         user: models.User)(implicit messages: Messages)
 
-    @scripts = {
-        @Html(webJarsUtil.css("bootstrap-table.css"))
-        @Html(webJarsUtil.script("bootstrap-table.js"))
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/organisations.js")"></script>
-    }
+@scripts = {
+    @webJarsUtil.locate("bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table.js").script()
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/organisations.js")"></script>
+}
 
-    @main(Messages("organisations"), Some(user), scripts) {
-        <div class="container">
-            <h1>@Messages("organisations") <small>@organisations.size @Messages("results")</small></h1>
-            <a href="@routes.Organisations.add">
-                <button id="btn-add" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon glyphicon-plus"></span>
-                    @Messages("organisation.add")
-                </button>
-            </a>
+@main(Messages("organisations"), Some(user), scripts) {
+    <div class="container">
+        <h1>@Messages("organisations") <small>@organisations.size @Messages("results")</small></h1>
+        <a href="@routes.Organisations.add">
+            <button id="btn-add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon glyphicon-plus"></span>
+                @Messages("organisation.add")
+            </button>
+        </a>
 
-            <div class="table-responsive">
-                <table id="organisations" data-striped="true" data-toggle="table" >
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th>@Messages("organisation")</th>
-                            <th>@Messages("count.volunteers")</th>
-                        </tr>
-                    </thead>
+        <div class="table-responsive">
+            <table id="organisations" data-striped="true" data-toggle="table" >
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th>@Messages("organisation")</th>
+                        <th>@Messages("count.volunteers")</th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                    @for(organisation <- organisations) {
-                        <tr>
-                            <td>@organisation.id</td>
-                            <td>@organisation.name</td>
-                            <td>@statistics.getOrElse(organisation.id, 0)</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+                <tbody>
+                @for(organisation <- organisations) {
+                    <tr>
+                        <td>@organisation.id</td>
+                        <td>@organisation.name</td>
+                        <td>@statistics.getOrElse(organisation.id, 0)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}

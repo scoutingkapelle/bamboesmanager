@@ -1,8 +1,10 @@
-@import b3.inline.fieldConstructor
-
 @this(main: views.html.main)
 
 @(listForm: Form[forms.ListForm.Data], groups: Seq[(String, String)], persons: Seq[Person], user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
+
+    @implicitFieldConstructor = @{
+        b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
+    }
 
     @main(Messages("list"), Some(user)) {
         <div class="container">

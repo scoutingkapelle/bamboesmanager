@@ -1,28 +1,30 @@
-@import b3.inline.fieldConstructor
-
 @this(main: views.html.main)
 
 @(signInForm: Form[forms.SignUpForm.Data])(implicit request: RequestHeader, messages: Messages)
 
-    @main(Messages("sign.up")) {
-        @request.flash.get("error").map { msg =>
-            <div class="col-md-4 col-md-offset-4 alert alert-danger alert-error">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <strong>@Messages("error")</strong> @msg
+@implicitFieldConstructor = @{
+    b3.inline.fieldConstructor()
+}
+
+@main(Messages("sign.up")) {
+    @request.flash.get("error").map { msg =>
+        <div class="col-md-4 col-md-offset-4 alert alert-danger alert-error">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>@Messages("error")</strong> @msg
+        </div>
+    }
+    <fieldset class="col-md-4 col-md-offset-4">
+        <legend>@Messages("sign.up.account")</legend>
+        @helper.form(action = routes.SignUp.signUp) {
+            @helper.CSRF.formField
+            @b3.text(signInForm("name"), '_hiddenLabel -> Messages("name"), 'placeholder -> Messages("name"), 'class -> "form-control input-lg")
+            @b3.text(signInForm("email"), '_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg")
+            @b3.password(signInForm("password"), '_hiddenLabel -> Messages("password"), 'placeholder -> Messages("password"), 'class -> "form-control input-lg")
+            <div class="form-group">
+                <div>
+                    <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@Messages("sign.up")</button>
+                </div>
             </div>
         }
-        <fieldset class="col-md-4 col-md-offset-4">
-            <legend>@Messages("sign.up.account")</legend>
-            @helper.form(action = routes.SignUp.signUp()) {
-                @helper.CSRF.formField
-                @b3.text(signInForm("name"), '_hiddenLabel -> Messages("name"), 'placeholder -> Messages("name"), 'class -> "form-control input-lg")
-                @b3.text(signInForm("email"), '_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg")
-                @b3.password(signInForm("password"), '_hiddenLabel -> Messages("password"), 'placeholder -> Messages("password"), 'class -> "form-control input-lg")
-                <div class="form-group">
-                    <div>
-                        <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@Messages("sign.up")</button>
-                    </div>
-                </div>
-            }
-        </fieldset>
-    }
+    </fieldset>
+}
