@@ -8,10 +8,6 @@ routesGenerator := InjectedRoutesGenerator
 
 scalaVersion := "2.11.8"
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-
-resolvers += "Typesafe Ivy releases" at "https://repo.typesafe.com/typesafe/ivy-releases"
-
 resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= Seq(
