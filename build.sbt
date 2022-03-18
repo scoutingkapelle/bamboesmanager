@@ -2,11 +2,11 @@ name := "bamboesmanager"
 
 version := "0.6.0-SNAPSHOT"
 
-lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala, RpmPlugin)
+lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala)
 
 routesGenerator := InjectedRoutesGenerator
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.15"
 
 resolvers += Resolver.jcenterRepo
 
@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette-crypto-jca" % "5.0.7",
   "com.mohiva" %% "play-silhouette-password-bcrypt" % "5.0.7",
   "com.mohiva" %% "play-silhouette-testkit" % "5.0.7" % "test",
-  "net.codingwell" %% "scala-guice" % "4.0.1",
+  "net.codingwell" %% "scala-guice" % "4.2.11",
   "com.iheart" %% "ficus" % "1.4.0",
   "com.typesafe.play" %% "play-mailer" % "6.0.1",
   "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
