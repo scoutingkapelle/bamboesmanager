@@ -18,7 +18,7 @@
             <legend>@Messages("organisation.add")</legend>
             @helper.form(action = routes.Organisations.save) {
                 @helper.CSRF.formField
-                @b3.text(organisationForm("name"), '_hiddenLabel -> Messages("name"), 'placeholder -> Messages("name"), 'class -> "form-control input-lg")
+                @b3.text(organisationForm("name"), Symbol("_hiddenLabel") -> Messages("name"), Symbol("placeholder") -> Messages("name"), Symbol("class") -> "form-control input-lg")
                 <div class="form-group">
                     <div>
                         <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">

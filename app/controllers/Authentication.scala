@@ -24,7 +24,7 @@ class Authentication @Inject()(credentialsProvider: CredentialsProvider,
   extends AbstractController(components) with I18nSupport {
 
   def authenticate = Action.async { implicit request =>
-    SignInForm.form.bindFromRequest.fold(
+    SignInForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(signInTemplate(form))),
       data => {
         val credentials = Credentials(data.email, data.password)

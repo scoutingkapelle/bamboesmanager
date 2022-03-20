@@ -17,8 +17,8 @@
         <legend>@Messages("sign.in.credentials")</legend>
         @helper.form(action = routes.Authentication.authenticate) {
             @helper.CSRF.formField
-            @b3.email(signInForm("email"), '_hiddenLabel -> Messages("email"), 'placeholder -> Messages("email"), 'class -> "form-control input-lg")
-            @b3.password(signInForm("password"), '_hiddenLabel -> Messages("password"), 'placeholder -> Messages("password"), 'class -> "form-control input-lg")
+            @b3.email(signInForm("email"), Symbol("_hiddenLabel") -> Messages("email"), Symbol("placeholder") -> Messages("email"), Symbol("class") -> "form-control input-lg")
+            @b3.password(signInForm("password"), Symbol("_hiddenLabel") -> Messages("password"), Symbol("placeholder") -> Messages("password"), Symbol("class") -> "form-control input-lg")
             <div class="form-group">
                 <div>
                     <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@Messages("sign.in")</button>

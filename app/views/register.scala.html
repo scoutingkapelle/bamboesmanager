@@ -29,31 +29,31 @@
                 <legend>@Messages("register.info")</legend>
                 @b3.form(action = routes.Registrations.save) {
                     @helper.CSRF.formField
-                    @b3.text(registerForm("firstName"), '_label -> Messages("firstname"), 'class -> "form-control input-lg")
-                    @b3.text(registerForm("prefix"), '_label -> Messages("prefix"), 'class -> "form-control input-lg")
-                    @b3.text(registerForm("surName"), '_label -> Messages("surname"), 'class -> "form-control input-lg")
-                    @b3.number(registerForm("age"), '_label -> Messages("age"), 'class -> "form-control input-lg")
-                    @b3.email(registerForm("email"), '_label -> Messages("email"), 'class -> "form-control input-lg")
+                    @b3.text(registerForm("firstName"), Symbol("_label") -> Messages("firstname"), Symbol("class") -> "form-control input-lg")
+                    @b3.text(registerForm("prefix"), Symbol("_label") -> Messages("prefix"), Symbol("class") -> "form-control input-lg")
+                    @b3.text(registerForm("surName"), Symbol("_label") -> Messages("surname"), Symbol("class") -> "form-control input-lg")
+                    @b3.number(registerForm("age"), Symbol("_label") -> Messages("age"), Symbol("class") -> "form-control input-lg")
+                    @b3.email(registerForm("email"), Symbol("_label") -> Messages("email"), Symbol("class") -> "form-control input-lg")
 
                     <hr>
-                    @b3.select(registerForm("organisation"), options = organisations, '_label -> Messages("organisation"), 'class -> "form-control input-lg", '_default -> Messages("organisation.select"))
-                    @b3.select(registerForm("group"), options = groups, '_label -> Messages("group"), 'class -> "form-control input-lg", '_default -> Messages("group.select"))
+                    @b3.select(registerForm("organisation"), options = organisations, Symbol("_label") -> Messages("organisation"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("organisation.select"))
+                    @b3.select(registerForm("group"), options = groups, Symbol("_label") -> Messages("group"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("group.select"))
 
                     <hr>
-                    @b3.checkbox(registerForm("friday"), '_label -> Messages("friday.label"))
+                    @b3.checkbox(registerForm("friday"), Symbol("_label") -> Messages("friday.label"))
                     <span class="help-block col-md-offset-2">@Messages("friday.text")</span>
-                    @b3.checkbox(registerForm("saturday"), '_label -> Messages("saturday.label"))
+                    @b3.checkbox(registerForm("saturday"), Symbol("_label") -> Messages("saturday.label"))
                     <span class="help-block col-md-offset-2">@Messages("saturday.text")</span>
                     <div id="sorting_wrapper">
-                        @b3.checkbox(registerForm("sorting"), '_label -> Messages("sorting.label"))
+                        @b3.checkbox(registerForm("sorting"), Symbol("_label") -> Messages("sorting.label"))
                         <span class="help-block col-md-offset-2">@Messages("sorting.text")</span>
                     </div>
-                    @b3.checkbox(registerForm("selling"), '_label -> Messages("selling.label"))
-                    @b3.select(registerForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'required -> false)
+                    @b3.checkbox(registerForm("selling"), Symbol("_label") -> Messages("selling.label"))
+                    @b3.select(registerForm("category"), options = categories, Symbol("_label") -> Messages("category.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("category.select"), Symbol("required") -> false)
                     <span class="help-block col-md-offset-2">@Messages("selling.text")</span>
 
                     <hr>
-                    @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
+                    @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
                         <span class="glyphicon glyphicon glyphicon-ok"></span>
                         @Messages("register")
                     }

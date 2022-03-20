@@ -13,7 +13,7 @@ package object models {
 
   def groupsTupled(groups: Seq[Group]): Seq[(String, String)] =
     groups.sortBy(_.name).map { group =>
-      (group.organisation.id + "#" + group.id.toString, group.organisation.name + ": " + group.name)
+      (group.organisation.id.toString + "#" + group.id.toString, group.organisation.name + ": " + group.name)
     }
 
   def organisationsTupled(organisations: Seq[Organisation]): Seq[(String, String)] =

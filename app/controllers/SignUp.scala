@@ -27,7 +27,7 @@ class SignUp @Inject()(userDAO: UserDAO,
   extends AbstractController(components) with I18nSupport {
 
   def signUp = silhouette.SecuredAction.async { implicit request =>
-    SignUpForm.form.bindFromRequest.fold(
+    SignUpForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(signUpTemplate(form))),
       data => {
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
