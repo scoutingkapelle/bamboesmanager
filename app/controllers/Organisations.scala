@@ -59,7 +59,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
   }
 
   def save = silhouette.SecuredAction.async { implicit request =>
-    OrganisationForm.form.bindFromRequest.fold(
+    OrganisationForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(organisationAddTemplate(form, request.identity))),
       data => {
         val organisation = Organisation(UUID.randomUUID, data.name)

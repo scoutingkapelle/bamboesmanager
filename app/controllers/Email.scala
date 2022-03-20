@@ -74,7 +74,7 @@ class Email @Inject()(mail: Mail,
   }
 
   def sendMessage = silhouette.SecuredAction.async { implicit request =>
-    MessageForm.form.bindFromRequest.fold(
+    MessageForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(messageTemplate(form, request.identity))),
       data => {
         registrationDAO.all.map(registrations => {
@@ -99,7 +99,7 @@ class Email @Inject()(mail: Mail,
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
 
-    ListForm.form.bindFromRequest.fold(
+    ListForm.form.bindFromRequest().fold(
       form => groupDAO.all.map { groups =>
         BadRequest(listTemplate(form, groupsTupled(groups), Seq(person), request.identity))
       },

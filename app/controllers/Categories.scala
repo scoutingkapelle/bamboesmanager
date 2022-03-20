@@ -60,7 +60,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
   }
 
   def save = silhouette.SecuredAction.async { implicit request =>
-    CategoryForm.form.bindFromRequest.fold(
+    CategoryForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(categoryAddTemplate(form, request.identity))),
       data => {
         val category = Category(UUID.randomUUID, data.name)

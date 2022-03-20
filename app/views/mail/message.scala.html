@@ -22,8 +22,8 @@
                 <fieldset>
                 @helper.form(action = routes.Email.sendMessage) {
                     @helper.CSRF.formField
-                    @b3.text(messageForm("subject"), '_hiddenLabel -> Messages("subject"), 'placeholder -> Messages("subject"), 'class -> "form-control input-lg")
-                    @b3.textarea(messageForm("message"), '_hiddenLabel -> Messages("message"), 'placeholder -> Messages("message"), 'class -> "form-control input-lg")
+                    @b3.text(messageForm("subject"), Symbol("_hiddenLabel") -> Messages("subject"), Symbol("placeholder") -> Messages("subject"), Symbol("class") -> "form-control input-lg")
+                    @b3.textarea(messageForm("message"), Symbol("_hiddenLabel") -> Messages("message"), Symbol("placeholder") -> Messages("message"), Symbol("class") -> "form-control input-lg")
                     <div class="form-group">
                         <div>
                             <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">

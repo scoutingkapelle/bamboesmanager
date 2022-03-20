@@ -73,7 +73,7 @@ class Registrations @Inject()(mail: Mail,
   }
 
   def save = silhouette.UserAwareAction.async { implicit request =>
-    RegisterForm.form.bindFromRequest.fold(
+    RegisterForm.form.bindFromRequest().fold(
       form => for {
         organisations <- organisationDAO.all
         groups <- groupDAO.all
@@ -140,7 +140,7 @@ class Registrations @Inject()(mail: Mail,
   def update(id: String) = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
-      RegistrationForm.form.bindFromRequest.fold(
+      RegistrationForm.form.bindFromRequest().fold(
         form => {
           for {
             registration <- registrationDAO.get(uuid)

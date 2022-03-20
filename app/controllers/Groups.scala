@@ -61,7 +61,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
   }
 
   def save = silhouette.SecuredAction.async { implicit request =>
-    GroupForm.form.bindFromRequest.fold(
+    GroupForm.form.bindFromRequest().fold(
       form => {
         organisationDAO.all.map(organisations =>
           BadRequest(groupAddTemplate(form, organisationsTupled(organisations), request.identity)))
