@@ -30,7 +30,7 @@ class Registrations @Inject()(mail: Mail,
                               badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def registrations: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def registrations(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations =>
       Ok(registrationsTemplate(registrations.sortBy(_.person.name), request.identity)))
   }
@@ -57,7 +57,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def register: Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
+  def register(): Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
       groups <- groupDAO.all
@@ -72,7 +72,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def save: Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
+  def save(): Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
     RegisterForm.form.bindFromRequest().fold(
       form => for {
         organisations <- organisationDAO.all
@@ -105,7 +105,7 @@ class Registrations @Inject()(mail: Mail,
                           registrationDAO.save(registration).flatMap(registration => {
                             Future.successful(mail.sendConfirmation(registration, Messages("confirmation.subject")))
                             val flash = ("message", Messages("registered"))
-                            Future.successful(Redirect(routes.Application.index).flashing(flash))
+                            Future.successful(Redirect(routes.Application.index()).flashing(flash))
                           })
                         case None =>
                           val error = Messages("object.not.found") + ": " + category_id
@@ -121,7 +121,7 @@ class Registrations @Inject()(mail: Mail,
                     registrationDAO.save(registration).flatMap(registration => {
                       Future.successful(mail.sendConfirmation(registration, Messages("confirmation.subject")))
                       val flash = ("message", Messages("registered"))
-                      Future.successful(Redirect(routes.Application.index).flashing(flash))
+                      Future.successful(Redirect(routes.Application.index()).flashing(flash))
                     })
                 }
               }
@@ -175,7 +175,7 @@ class Registrations @Inject()(mail: Mail,
                           category = Some(c),
                           teamLeader = data.teamLeader)
                         registrationDAO.save(updatedRegistration).flatMap(_ =>
-                          Future.successful(Redirect(routes.Registrations.registrations))
+                          Future.successful(Redirect(routes.Registrations.registrations()))
                         )
                       case None =>
                         val error = Messages("object.not.found") + ": " + category
@@ -193,7 +193,7 @@ class Registrations @Inject()(mail: Mail,
                     category = None,
                     teamLeader = data.teamLeader)
                   registrationDAO.save(updatedRegistration).flatMap(_ => {
-                    Future.successful(Redirect(routes.Registrations.registrations))
+                    Future.successful(Redirect(routes.Registrations.registrations()))
                   })
               }
             case None =>
@@ -216,7 +216,7 @@ class Registrations @Inject()(mail: Mail,
           for {
             _ <- registrationDAO.delete(uuid)
             _ <- personDAO.delete(registration.person.id)
-          } yield Redirect(routes.Registrations.registrations)
+          } yield Redirect(routes.Registrations.registrations())
         case None =>  Future.successful(NotFound(notFoundTemplate(id, Some(request.identity))))
       }
     } catch {
@@ -225,7 +225,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def all: Action[AnyContent] = silhouette.SecuredAction.async {
+  def all(): Action[AnyContent] = silhouette.SecuredAction.async {
     registrationDAO.all.map(registrations => Ok(Json.toJson(Map("registrations" -> registrations))))
   }
 

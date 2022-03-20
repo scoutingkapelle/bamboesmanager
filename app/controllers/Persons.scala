@@ -17,7 +17,7 @@ class Persons @Inject()(personDAO: PersonDAO,
                         silhouette: Silhouette[DefaultEnv])
   extends AbstractController(components) with I18nSupport {
 
-  def all: Action[AnyContent] = silhouette.SecuredAction.async {
+  def all(): Action[AnyContent] = silhouette.SecuredAction.async {
     personDAO.all.map(persons => Ok(Json.toJson(persons)))
   }
 

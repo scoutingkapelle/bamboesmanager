@@ -20,7 +20,7 @@
 
                 <hr>
                 <fieldset>
-                @helper.form(action = routes.Email.sendList) {
+                @helper.form(action = routes.Email.sendList()) {
                     @helper.CSRF.formField
                     @b3.text(listForm("email"), Symbol("_hiddenLabel") -> Messages("email"), Symbol("placeholder") -> Messages("email"), Symbol("class") -> "form-control input-lg")
                     @b3.select(listForm("group"), options = groups, Symbol("_hiddenLabel") -> Messages("group"), Symbol("_default") -> Messages("group.select.new"), Symbol("class") -> "form-control input-lg")

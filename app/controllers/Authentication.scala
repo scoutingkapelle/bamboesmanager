@@ -22,13 +22,13 @@ class Authentication @Inject()(credentialsProvider: CredentialsProvider,
                                signInTemplate: views.html.signIn)
   extends AbstractController(components) with I18nSupport {
 
-  def authenticate: Action[AnyContent] = Action.async { implicit request =>
+  def authenticate(): Action[AnyContent] = Action.async { implicit request =>
     SignInForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(signInTemplate(form))),
       data => {
         val credentials = Credentials(data.email, data.password)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
-          val result = Redirect(routes.Application.dashboard)
+          val result = Redirect(routes.Application.dashboard())
           userDAO.retrieve(loginInfo).flatMap {
             case Some(user) =>
               silhouette.env.authenticatorService.create(loginInfo).flatMap { authenticator =>
@@ -41,7 +41,7 @@ class Authentication @Inject()(credentialsProvider: CredentialsProvider,
           }
         }.recover {
           case _: ProviderException =>
-            Redirect(routes.Application.signIn).flashing("error" -> Messages("invalid.credentials"))
+            Redirect(routes.Application.signIn()).flashing("error" -> Messages("invalid.credentials"))
         }
       }
     )

@@ -27,7 +27,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
                        badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def groups: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def groups(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       groups <- groupDAO.all
       statistics <- statisticsDAO.group
@@ -54,12 +54,12 @@ class Groups @Inject()(groupDAO: GroupDAO,
     }
   }
 
-  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def add(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
       Ok(groupAddTemplate(GroupForm.form, organisationsTupled(organisations), request.identity)))
   }
 
-  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def save(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     GroupForm.form.bindFromRequest().fold(
       form => {
         organisationDAO.all.map(organisations =>
@@ -76,7 +76,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
     )
   }
 
-  def all: Action[AnyContent] = silhouette.SecuredAction.async {
+  def all(): Action[AnyContent] = silhouette.SecuredAction.async {
     groupDAO.all.map(groups => Ok(Json.toJson(groups.sortBy(_.name))))
   }
 
