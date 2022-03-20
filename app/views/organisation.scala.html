@@ -5,36 +5,36 @@
         statistics: Map[java.util.UUID, Int],
         user: models.User)(implicit messages: Messages)
 
-    @scripts = {
-        @Html(webJarsUtil.css("bootstrap-table.css"))
-        @Html(webJarsUtil.script("bootstrap-table.js"))
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
-    }
+@scripts = {
+    @webJarsUtil.locate("bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table.js").script()
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+}
 
-    @main(organisation.name, Some(user), scripts) {
-        <div class="container">
-            <h1>@organisation.name <small>@groups.size @Messages("results")</small></h1>
-            <div class="table-responsive">
-                <table id="groups" data-toggle="table" data-striped="true">
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th>@Messages("group")</th>
-                            <th>@Messages("organisation")</th>
-                            <th>@Messages("count.volunteers")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @for(group <- groups) {
-                        <tr>
-                            <td>@group.id</td>
-                            <td>@group.name</td>
-                            <td>@group.organisation.name</td>
-                            <td>@statistics.getOrElse(group.id, 0)</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+@main(organisation.name, Some(user), scripts) {
+    <div class="container">
+        <h1>@organisation.name <small>@groups.size @Messages("results")</small></h1>
+        <div class="table-responsive">
+            <table id="groups" data-toggle="table" data-striped="true">
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th>@Messages("group")</th>
+                        <th>@Messages("organisation")</th>
+                        <th>@Messages("count.volunteers")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(group <- groups) {
+                    <tr>
+                        <td>@group.id</td>
+                        <td>@group.name</td>
+                        <td>@group.organisation.name</td>
+                        <td>@statistics.getOrElse(group.id, 0)</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}

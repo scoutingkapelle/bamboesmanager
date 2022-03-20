@@ -1,8 +1,11 @@
-@import b3.inline.fieldConstructor
-
 @this(main: views.html.main)
 
 @(organisationForm: Form[forms.OrganisationForm.Data], user: models.User)(implicit request: RequestHeader, messages: Messages)
+
+
+    @implicitFieldConstructor = @{
+        b3.inline.fieldConstructor()
+    }
 
     @main(Messages("organisation.add"), Some(user)) {
         @request.flash.get("error").map { msg =>

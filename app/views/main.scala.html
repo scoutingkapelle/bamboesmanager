@@ -4,8 +4,6 @@
         user: Option[models.User] = None,
         scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
 
-<!DOCTYPE html>
-
 <html>
     <head>
         <title>@title</title>
@@ -17,9 +15,9 @@
 
         <script type='text/javascript' src='@routes.Assets.at("javascripts/analytics.js")'></script>
 
-        @Html(webJarsUtil.css("css/bootstrap.min.css"))
-        @Html(webJarsUtil.script("jquery.min.js"))
-        @Html(webJarsUtil.script("bootstrap.min.js"))
+        @webJarsUtil.locate("css/bootstrap.min.css").css()
+        @webJarsUtil.locate("jquery.min.js").script()
+        @webJarsUtil.locate("bootstrap.min.js").script()
 
         @scripts
     </head>

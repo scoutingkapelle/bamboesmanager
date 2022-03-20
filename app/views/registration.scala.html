@@ -5,61 +5,61 @@
         categories: Seq[(String, String)],
         user: models.User)(implicit request: RequestHeader, messages: Messages)
 
-    @scripts = {
-        @Html(webJarsUtil.css("bootstrap3/bootstrap-switch.min.css"))
-        @Html(webJarsUtil.script("bootstrap-switch.min.js"))
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registration.js")"></script>
-    }
+@scripts = {
+    @webJarsUtil.locate("bootstrap3/bootstrap-switch.min.css").css()
+    @webJarsUtil.locate("bootstrap-switch.min.js").script()
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registration.js")"></script>
+}
 
-    @implicitFieldConstructor = @{
-        b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
-    }
+@implicitFieldConstructor = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
+}
 
-    @main(Messages("registration"), Some(user), scripts) {
-        <div class="container">
-            <div class="well">
-                @request.flash.get("error").map { msg =>
-                    <div class="alert alert-danger alert-error">
-                        <a href="#" class="close" data-dismiss="alert">&times;</a>
-                        <strong>@Messages("error")</strong> @msg
-                    </div>
+@main(Messages("registration"), Some(user), scripts) {
+    <div class="container">
+        <div class="well">
+            @request.flash.get("error").map { msg =>
+                <div class="alert alert-danger alert-error">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <strong>@Messages("error")</strong> @msg
+                </div>
+            }
+            <fieldset>
+                <legend>@Messages("registration")</legend>
+                @b3.form(action = routes.Registrations.update(registration.id.toString)) {
+                    @helper.CSRF.formField
+                    @b3.text(registrationForm("name"), '_label -> Messages("name"), 'value -> registration.person.name, 'disabled -> true, 'class -> "form-control input-lg")
+                    @b3.number(registrationForm("age"), '_label -> Messages("age"), 'value -> registration.person.age, 'disabled -> true, 'class -> "form-control input-lg")
+                    @b3.text(registrationForm("email"), '_label -> Messages("email"), 'value -> registration.person.email, 'disabled -> true, 'class -> "form-control input-lg")
+                    @b3.text(registrationForm("organisation"), '_label -> Messages("organisation"), 'value -> registration.person.group.organisation.name, 'disabled -> true, 'class -> "form-control input-lg")
+                    @b3.text(registrationForm("group"), '_label -> Messages("group"), 'value -> registration.person.group.name, 'disabled -> true, 'class -> "form-control input-lg")
+                    @b3.checkbox(registrationForm("friday"), '_label -> Messages("friday.label"), 'checked -> registration.friday)
+                    @b3.checkbox(registrationForm("saturday"), '_label -> Messages("saturday.label"), 'checked -> registration.saturday)
+                    @b3.checkbox(registrationForm("sorting"), '_label -> Messages("sorting.label"), 'checked -> registration.sorting)
+                    @{
+                        registration.category match {
+                            case Some(category) => Html(
+                                b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label"), 'checked -> true).body +
+                                        b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'value -> category.id, 'required -> false).body)
+                            case None => Html(
+                                b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label")).body +
+                                        b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'required -> false).body)
+                        }
+                    }
+                    @b3.checkbox(registrationForm("teamLeader"), '_label -> Messages("team.leader.label"), 'checked -> registration.teamLeader)
+                    @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
+                        <span class="glyphicon glyphicon glyphicon-ok"></span>
+                        @Messages("save")
+                    }
                 }
-                <fieldset>
-                    <legend>@Messages("registration")</legend>
-                    @b3.form(action = routes.Registrations.update(registration.id.toString)) {
-                        @helper.CSRF.formField
-                        @b3.text(registrationForm("name"), '_label -> Messages("name"), 'value -> registration.person.name, 'disabled -> true, 'class -> "form-control input-lg")
-                        @b3.number(registrationForm("age"), '_label -> Messages("age"), 'value -> registration.person.age, 'disabled -> true, 'class -> "form-control input-lg")
-                        @b3.text(registrationForm("email"), '_label -> Messages("email"), 'value -> registration.person.email, 'disabled -> true, 'class -> "form-control input-lg")
-                        @b3.text(registrationForm("organisation"), '_label -> Messages("organisation"), 'value -> registration.person.group.organisation.name, 'disabled -> true, 'class -> "form-control input-lg")
-                        @b3.text(registrationForm("group"), '_label -> Messages("group"), 'value -> registration.person.group.name, 'disabled -> true, 'class -> "form-control input-lg")
-                        @b3.checkbox(registrationForm("friday"), '_label -> Messages("friday.label"), 'checked -> registration.friday)
-                        @b3.checkbox(registrationForm("saturday"), '_label -> Messages("saturday.label"), 'checked -> registration.saturday)
-                        @b3.checkbox(registrationForm("sorting"), '_label -> Messages("sorting.label"), 'checked -> registration.sorting)
-                        @{
-                            registration.category match {
-                                case Some(category) => Html(
-                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label"), 'checked -> true).body +
-                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'value -> category.id, 'required -> false).body)
-                                case None => Html(
-                                    b3.checkbox(registrationForm("selling"), '_label -> Messages("selling.label")).body +
-                                            b3.select(registrationForm("category"), options = categories, '_label -> Messages("category.label"), 'class -> "form-control input-lg", '_default -> Messages("category.select"), 'required -> false).body)
-                            }
-                        }
-                        @b3.checkbox(registrationForm("teamLeader"), '_label -> Messages("team.leader.label"), 'checked -> registration.teamLeader)
-                        @b3.submit('class -> "btn btn-lg btn-primary btn-block") {
-                            <span class="glyphicon glyphicon glyphicon-ok"></span>
-                            @Messages("save")
-                        }
+                @b3.form(action = routes.Registrations.delete(registration.id.toString), 'id -> "delete-registration") {
+                    @helper.CSRF.formField
+                    @b3.submit('class -> "btn btn-lg btn-danger btn-block") {
+                        <span class="glyphicon glyphicon glyphicon-remove"></span>
+                        @Messages("delete")
                     }
-                    @b3.form(action = routes.Registrations.delete(registration.id.toString), 'id -> "delete-registration") {
-                        @helper.CSRF.formField
-                        @b3.submit('class -> "btn btn-lg btn-danger btn-block") {
-                            <span class="glyphicon glyphicon glyphicon-remove"></span>
-                            @Messages("delete")
-                        }
-                    }
-                </fieldset>
-            </div>
+                }
+            </fieldset>
         </div>
-    }
+    </div>
+}

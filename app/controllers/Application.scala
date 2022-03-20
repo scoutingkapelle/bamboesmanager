@@ -28,7 +28,7 @@ class Application @Inject()(components: ControllerComponents,
 
   def signIn = silhouette.UserAwareAction.async { implicit request =>
     request.identity match {
-      case Some(_) => Future.successful(Redirect(routes.Application.index()))
+      case Some(_) => Future.successful(Redirect(routes.Application.index))
       case None => Future.successful(Ok(signInTemplate(SignInForm.form)))
     }
   }
@@ -38,7 +38,7 @@ class Application @Inject()(components: ControllerComponents,
   }
 
   def signOut = silhouette.SecuredAction.async { implicit request =>
-    val result = Redirect(routes.Application.index())
+    val result = Redirect(routes.Application.index)
     silhouette.env.eventBus.publish(LogoutEvent(request.identity, request))
     silhouette.env.authenticatorService.discard(request.authenticator, result)
   }

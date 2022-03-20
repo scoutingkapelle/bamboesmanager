@@ -4,37 +4,37 @@
         registrations: Seq[Registration],
         user: models.User)(implicit messages: Messages)
 
-    @scripts = {
-        @Html(webJarsUtil.css("bootstrap-table.css"))
-        @Html(webJarsUtil.script("bootstrap-table.js"))
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
-    }
+@scripts = {
+    @webJarsUtil.locate("bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table.js").script()
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
+}
 
-    @main(group.name, Some(user), scripts) {
-        <div class="container">
-            <h1>@(group.organisation.name + ": " + group.name) <small>@registrations.size @Messages("results")</small></h1>
+@main(group.name, Some(user), scripts) {
+    <div class="container">
+        <h1>@(group.organisation.name + ": " + group.name) <small>@registrations.size @Messages("results")</small></h1>
 
-            <div class="table-responsive">
-                <table id="group" data-toggle="table" data-striped="true">
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th>@Messages("person")</th>
-                            <th>@Messages("age")</th>
-                            <th>@Messages("email")</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @for(registration <- registrations) {
-                        <tr>
-                            <td>@registration.id</td>
-                            <td>@registration.person.name</td>
-                            <td>@registration.person.age</td>
-                            <td>@registration.person.email</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+        <div class="table-responsive">
+            <table id="group" data-toggle="table" data-striped="true">
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th>@Messages("person")</th>
+                        <th>@Messages("age")</th>
+                        <th>@Messages("email")</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(registration <- registrations) {
+                    <tr>
+                        <td>@registration.id</td>
+                        <td>@registration.person.name</td>
+                        <td>@registration.person.age</td>
+                        <td>@registration.person.email</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}

@@ -5,8 +5,8 @@
         user: models.User)(implicit messages: Messages)
 
 @scripts = {
-    @Html(webJarsUtil.css("bootstrap-table.css"))
-    @Html(webJarsUtil.script("bootstrap-table.js"))
+    @webJarsUtil.locate("bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table.js").script()
     <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
 }
 

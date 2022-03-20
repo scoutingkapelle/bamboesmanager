@@ -65,7 +65,7 @@ class Email @Inject()(mail: Mail,
     registrationDAO.all.map(registrations => {
       mail.sendDistribution(registrations, Messages("distribution.subject"))
       val flash = ("message", Messages("distribution.success"))
-      Redirect(routes.Email.distribution()).flashing(flash)
+      Redirect(routes.Email.distribution).flashing(flash)
     })
   }
 
@@ -80,7 +80,7 @@ class Email @Inject()(mail: Mail,
         registrationDAO.all.map(registrations => {
           mail.sendMessage(registrations, data.subject, data.message)
           val flash = ("message", Messages("message.success"))
-          Redirect(routes.Email.message()).flashing(flash)
+          Redirect(routes.Email.message).flashing(flash)
         })
       })
   }
@@ -109,7 +109,7 @@ class Email @Inject()(mail: Mail,
           groupDAO.persons(uuid).map { persons =>
             mail.sendList(data.email, Messages("list.subject"), persons.sortBy(_.name))
             val flash = ("message", Messages("list.success"))
-            Redirect(routes.Email.list()).flashing(flash)
+            Redirect(routes.Email.list).flashing(flash)
           }
         } catch {
           case _: IllegalArgumentException =>

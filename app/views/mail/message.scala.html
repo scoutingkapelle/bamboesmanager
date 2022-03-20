@@ -1,8 +1,10 @@
-@import b3.inline.fieldConstructor
-
 @this(main: views.html.main)
 
 @(messageForm: Form[forms.MessageForm.Data], user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
+
+    @implicitFieldConstructor = @{
+        b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
+    }
 
     @main(Messages("message"), Some(user)) {
         <div class="container">

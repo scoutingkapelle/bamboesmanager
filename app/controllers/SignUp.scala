@@ -33,7 +33,7 @@ class SignUp @Inject()(userDAO: UserDAO,
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userDAO.retrieve(loginInfo).flatMap {
           case Some(_) =>
-            Future.successful(Redirect(routes.Application.signUp()).flashing("error" -> Messages("user.exists")))
+            Future.successful(Redirect(routes.Application.signUp).flashing("error" -> Messages("user.exists")))
           case None =>
             val authInfo = passwordHasher.hash(data.password)
             val user = User(
@@ -46,7 +46,7 @@ class SignUp @Inject()(userDAO: UserDAO,
               _ <- authInfoRepository.add(loginInfo, authInfo)
               authenticator <- silhouette.env.authenticatorService.create(loginInfo)
               value <- silhouette.env.authenticatorService.init(authenticator)
-              result <- silhouette.env.authenticatorService.embed(value, Redirect(routes.Application.dashboard()))
+              result <- silhouette.env.authenticatorService.embed(value, Redirect(routes.Application.dashboard))
             } yield {
               silhouette.env.eventBus.publish(SignUpEvent(user, request))
               silhouette.env.eventBus.publish(LoginEvent(user, request))

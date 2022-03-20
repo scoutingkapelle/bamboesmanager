@@ -2,53 +2,53 @@
 
 @(registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
-    @scripts = {
-        @Html(webJarsUtil.css("bootstrap-table.css"))
-        @Html(webJarsUtil.script("bootstrap-table.js"))
-        @Html(webJarsUtil.script("bootstrap-table-export.js"))
-        @Html(webJarsUtil.script("tableExport.min.js"))
-        <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registrations.js")"></script>
-    }
+@scripts = {
+    @webJarsUtil.locate("bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table.js").script()
+    @webJarsUtil.locate("bootstrap-table-export.js").script()
+    @webJarsUtil.locate("tableExport.min.js").script()
+    <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registrations.js")"></script>
+}
 
-    @main(Messages("registrations"), Some(user), scripts) {
-        <div class="container-fluid">
-            <h1>@Messages("registrations") <small>@registrations.size @Messages("results")</small></h1>
-            <div class="table-responsive">
-                <table id="registrations" data-toggle="table" data-striped="true" data-search="true" data-show-export="true" data-export-types="['excel']">
-                    <thead>
-                        <tr>
-                            <th data-visible="false">id</th>
-                            <th data-sortable="true">@Messages("name")</th>
-                            <th data-sortable="true">@Messages("age")</th>
-                            <th data-sortable="true">@Messages("email")</th>
-                            <th data-sortable="true">@Messages("group")</th>
-                            <th data-sortable="true">@Messages("organisation")</th>
-                            <th data-sortable="true">@Messages("friday")</th>
-                            <th data-sortable="true">@Messages("saturday")</th>
-                            <th data-sortable="true">@Messages("sorting")</th>
-                            <th data-sortable="true">@Messages("category")</th>
-                            <th data-sortable="true">@Messages("team.leader")</th>
-                        </tr>
-                    </thead>
+@main(Messages("registrations"), Some(user), scripts) {
+    <div class="container-fluid">
+        <h1>@Messages("registrations") <small>@registrations.size @Messages("results")</small></h1>
+        <div class="table-responsive">
+            <table id="registrations" data-toggle="table" data-striped="true" data-search="true" data-show-export="true" data-export-types="['excel']">
+                <thead>
+                    <tr>
+                        <th data-visible="false">id</th>
+                        <th data-sortable="true">@Messages("name")</th>
+                        <th data-sortable="true">@Messages("age")</th>
+                        <th data-sortable="true">@Messages("email")</th>
+                        <th data-sortable="true">@Messages("group")</th>
+                        <th data-sortable="true">@Messages("organisation")</th>
+                        <th data-sortable="true">@Messages("friday")</th>
+                        <th data-sortable="true">@Messages("saturday")</th>
+                        <th data-sortable="true">@Messages("sorting")</th>
+                        <th data-sortable="true">@Messages("category")</th>
+                        <th data-sortable="true">@Messages("team.leader")</th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                    @for(registration <- registrations) {
-                        <tr>
-                            <td>@registration.id</td>
-                            <td>@registration.person.name</td>
-                            <td>@registration.person.age</td>
-                            <td>@registration.person.email</td>
-                            <td>@registration.person.group.name</td>
-                            <td>@registration.person.group.organisation.name</td>
-                            <td>@(if(registration.friday) Messages("yes") else Messages("no"))</td>
-                            <td>@(if(registration.saturday) Messages("yes") else Messages("no"))</td>
-                            <td>@(if(registration.sorting) Messages("yes") else Messages("no"))</td>
-                            <td>@registration.category.map(cat => cat.name).getOrElse(Messages("category.none"))</td>
-                            <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
-                        </tr>
-                    }
-                    </tbody>
-                </table>
-            </div>
+                <tbody>
+                @for(registration <- registrations) {
+                    <tr>
+                        <td>@registration.id</td>
+                        <td>@registration.person.name</td>
+                        <td>@registration.person.age</td>
+                        <td>@registration.person.email</td>
+                        <td>@registration.person.group.name</td>
+                        <td>@registration.person.group.organisation.name</td>
+                        <td>@(if(registration.friday) Messages("yes") else Messages("no"))</td>
+                        <td>@(if(registration.saturday) Messages("yes") else Messages("no"))</td>
+                        <td>@(if(registration.sorting) Messages("yes") else Messages("no"))</td>
+                        <td>@registration.category.map(cat => cat.name).getOrElse(Messages("category.none"))</td>
+                        <td>@(if(registration.teamLeader) Messages("yes") else Messages("no"))</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </div>
-    }
+    </div>
+}
