@@ -26,7 +26,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
                            badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def categories: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def categories(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       categories <- categoryDAO.all
       statistics <- statisticsDAO.category
@@ -54,21 +54,21 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     }
   }
 
-  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def add(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     Future.successful(Ok(categoryAddTemplate(CategoryForm.form, request.identity)))
   }
 
-  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def save(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     CategoryForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(categoryAddTemplate(form, request.identity))),
       data => {
         val category = Category(UUID.randomUUID, data.name)
-        categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories))
+        categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories()))
       }
     )
   }
 
-  def all: Action[AnyContent] = silhouette.SecuredAction.async {
+  def all(): Action[AnyContent] = silhouette.SecuredAction.async {
     categoryDAO.all.map(categories => Ok(Json.toJson(categories.sortBy(_.name))))
   }
 

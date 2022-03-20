@@ -25,7 +25,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
                               badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def organisations: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def organisations(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
       statistics <- statisticsDAO.organisation
@@ -53,11 +53,11 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     }
   }
 
-  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def add(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     Future.successful(Ok(organisationAddTemplate(OrganisationForm.form, request.identity)))
   }
 
-  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
+  def save(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     OrganisationForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(organisationAddTemplate(form, request.identity))),
       data => {
@@ -73,7 +73,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     )
   }
 
-  def all: Action[AnyContent] = silhouette.SecuredAction.async {
+  def all(): Action[AnyContent] = silhouette.SecuredAction.async {
     organisationDAO.all.map(organisations => Ok(Json.toJson(organisations.sortBy(_.name))))
   }
 

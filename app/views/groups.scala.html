@@ -13,7 +13,7 @@
 @main(Messages("groups"), Some(user), scripts) {
     <div class="container">
         <h1>@Messages("groups") <small>@groups.size @Messages("results")</small></h1>
-        <a href="@routes.Groups.add">
+        <a href="@routes.Groups.add()">
             <button id="btn-add" type="button" class="btn btn-default">
                 <span class="glyphicon glyphicon glyphicon-plus"></span>
                 @Messages("group.add")

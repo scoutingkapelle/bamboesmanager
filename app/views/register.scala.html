@@ -27,7 +27,7 @@
             }
             <fieldset>
                 <legend>@Messages("register.info")</legend>
-                @b3.form(action = routes.Registrations.save) {
+                @b3.form(action = routes.Registrations.save()) {
                     @helper.CSRF.formField
                     @b3.text(registerForm("firstName"), Symbol("_label") -> Messages("firstname"), Symbol("class") -> "form-control input-lg")
                     @b3.text(registerForm("prefix"), Symbol("_label") -> Messages("prefix"), Symbol("class") -> "form-control input-lg")

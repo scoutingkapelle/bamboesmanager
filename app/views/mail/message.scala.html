@@ -20,7 +20,7 @@
 
                 <hr>
                 <fieldset>
-                @helper.form(action = routes.Email.sendMessage) {
+                @helper.form(action = routes.Email.sendMessage()) {
                     @helper.CSRF.formField
                     @b3.text(messageForm("subject"), Symbol("_hiddenLabel") -> Messages("subject"), Symbol("placeholder") -> Messages("subject"), Symbol("class") -> "form-control input-lg")
                     @b3.textarea(messageForm("message"), Symbol("_hiddenLabel") -> Messages("message"), Symbol("placeholder") -> Messages("message"), Symbol("class") -> "form-control input-lg")

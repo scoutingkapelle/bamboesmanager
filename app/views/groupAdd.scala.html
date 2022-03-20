@@ -17,7 +17,7 @@
     }
     <fieldset class="col-md-4 col-md-offset-4">
         <legend>@Messages("group.add")</legend>
-        @helper.form(action = routes.Groups.save) {
+        @helper.form(action = routes.Groups.save()) {
             @helper.CSRF.formField
             @b3.text(groupForm("name"), Symbol("_hiddenLabel") -> Messages("name"), Symbol("placeholder") -> Messages("name"), Symbol("class") -> "form-control input-lg")
             @b3.select(groupForm("organisation_id"), options = organisations, Symbol("_hiddenLabel") -> Messages("organisation"), Symbol("class") -> "form-control input-lg")
