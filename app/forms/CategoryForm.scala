@@ -5,7 +5,7 @@ import play.api.data.Forms._
 
 object CategoryForm {
 
-  val form = Form(
+  val form: Form[Data] = Form(
     mapping(
       "name" -> nonEmptyText
     )(Data.apply)(Data.unapply)

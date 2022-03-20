@@ -1,13 +1,12 @@
 package controllers
 
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import models._
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.collection.immutable.ListMap
@@ -20,7 +19,7 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
                            statisticsTemplate: views.html.statistics)
   extends AbstractController(components) with I18nSupport {
 
-  def statistics = silhouette.SecuredAction.async { implicit request =>
+  def statistics: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       friday <- statisticsDAO.friday
       saturday <- statisticsDAO.saturday
@@ -41,19 +40,19 @@ class Statistics @Inject()(statisticsDAO: StatisticsDAO,
   private def fill(organisations: Seq[Organisation], statistic: Map[String, Int]): Map[String, Int] =
     organisations.map(organisation => (organisation.name, statistic.getOrElse(organisation.name, 0))).toMap
 
-  def friday = silhouette.SecuredAction.async { implicit request =>
+  def friday: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.friday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def saturday = silhouette.SecuredAction.async { implicit request =>
+  def saturday: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.saturday.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def sorting = silhouette.SecuredAction.async { implicit request =>
+  def sorting: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.sorting.map(statistics => Ok(Json.toJson(statistics)))
   }
 
-  def selling = silhouette.SecuredAction.async { implicit request =>
+  def selling: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     statisticsDAO.selling.map(statistics => Ok(Json.toJson(statistics)))
   }
 }

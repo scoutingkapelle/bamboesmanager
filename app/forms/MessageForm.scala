@@ -5,7 +5,7 @@ import play.api.data.Forms._
 
 object MessageForm {
 
-  val form = Form(
+  val form: Form[Data] = Form(
     mapping(
       "subject" -> nonEmptyText,
       "message" -> nonEmptyText

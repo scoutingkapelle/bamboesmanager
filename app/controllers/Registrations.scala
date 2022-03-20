@@ -1,15 +1,15 @@
 package controllers
 
 import java.util.UUID
-
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.{RegisterForm, RegistrationForm}
+
 import javax.inject.Inject
 import models._
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -30,12 +30,12 @@ class Registrations @Inject()(mail: Mail,
                               badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def registrations = silhouette.SecuredAction.async { implicit request =>
+  def registrations: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations =>
       Ok(registrationsTemplate(registrations.sortBy(_.person.name), request.identity)))
   }
 
-  def registration(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def registration(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -57,7 +57,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def register = silhouette.UserAwareAction.async { implicit request =>
+  def register: Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
       groups <- groupDAO.all
@@ -72,7 +72,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def save = silhouette.UserAwareAction.async { implicit request =>
+  def save: Action[AnyContent] = silhouette.UserAwareAction.async { implicit request =>
     RegisterForm.form.bindFromRequest().fold(
       form => for {
         organisations <- organisationDAO.all
@@ -137,7 +137,7 @@ class Registrations @Inject()(mail: Mail,
     )
   }
 
-  def update(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def update(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       RegistrationForm.form.bindFromRequest().fold(
@@ -208,7 +208,7 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def delete(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def delete(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       registrationDAO.get(uuid).flatMap {
@@ -225,11 +225,11 @@ class Registrations @Inject()(mail: Mail,
     }
   }
 
-  def all = silhouette.SecuredAction.async {
+  def all: Action[AnyContent] = silhouette.SecuredAction.async {
     registrationDAO.all.map(registrations => Ok(Json.toJson(Map("registrations" -> registrations))))
   }
 
-  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def get(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       registrationDAO.get(UUID.fromString(id)).map {
         case Some(registration) => Ok(Json.toJson(Map("registration" -> registration)))

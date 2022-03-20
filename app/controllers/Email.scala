@@ -3,13 +3,12 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.{ListForm, MessageForm}
 import models._
 import models.daos.{GroupDAO, RegistrationDAO}
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -27,7 +26,7 @@ class Email @Inject()(mail: Mail,
                       badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def confirmation = silhouette.SecuredAction { implicit request =>
+  def confirmation: Action[AnyContent] = silhouette.SecuredAction { implicit request =>
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
@@ -44,7 +43,7 @@ class Email @Inject()(mail: Mail,
     Ok(confirmationTemplate(registration, request.identity))
   }
 
-  def distribution = silhouette.SecuredAction { implicit request =>
+  def distribution: Action[AnyContent] = silhouette.SecuredAction { implicit request =>
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
@@ -61,7 +60,7 @@ class Email @Inject()(mail: Mail,
     Ok(distributionTemplate(registration, request.identity))
   }
 
-  def sendDistribution = silhouette.SecuredAction.async { implicit request =>
+  def sendDistribution: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     registrationDAO.all.map(registrations => {
       mail.sendDistribution(registrations, Messages("distribution.subject"))
       val flash = ("message", Messages("distribution.success"))
@@ -69,11 +68,11 @@ class Email @Inject()(mail: Mail,
     })
   }
 
-  def message = silhouette.SecuredAction { implicit request =>
+  def message(): Action[AnyContent] = silhouette.SecuredAction { implicit request =>
     Ok(messageTemplate(MessageForm.form, request.identity))
   }
 
-  def sendMessage = silhouette.SecuredAction.async { implicit request =>
+  def sendMessage: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     MessageForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(messageTemplate(form, request.identity))),
       data => {
@@ -85,7 +84,7 @@ class Email @Inject()(mail: Mail,
       })
   }
 
-  def list = silhouette.SecuredAction.async { implicit request =>
+  def list: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
@@ -94,7 +93,7 @@ class Email @Inject()(mail: Mail,
       Ok(listTemplate(ListForm.form, groupsTupled(groups), Seq(person), request.identity)))
   }
 
-  def sendList = silhouette.SecuredAction.async { implicit request =>
+  def sendList: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)

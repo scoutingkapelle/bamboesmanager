@@ -2,7 +2,6 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
 import com.mohiva.play.silhouette.api.util.PasswordHasher
@@ -12,7 +11,7 @@ import models.User
 import models.daos.UserDAO
 import org.webjars.play.WebJarsUtil
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -26,7 +25,7 @@ class SignUp @Inject()(userDAO: UserDAO,
                        signUpTemplate: views.html.signUp)
   extends AbstractController(components) with I18nSupport {
 
-  def signUp = silhouette.SecuredAction.async { implicit request =>
+  def signUp: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     SignUpForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(signUpTemplate(form))),
       data => {

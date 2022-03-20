@@ -2,12 +2,11 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json._
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -18,11 +17,11 @@ class Persons @Inject()(personDAO: PersonDAO,
                         silhouette: Silhouette[DefaultEnv])
   extends AbstractController(components) with I18nSupport {
 
-  def all = silhouette.SecuredAction.async {
+  def all: Action[AnyContent] = silhouette.SecuredAction.async {
     personDAO.all.map(persons => Ok(Json.toJson(persons)))
   }
 
-  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def get(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       personDAO.get(UUID.fromString(id)).map {
         case Some(person) => Ok(Json.toJson(person))

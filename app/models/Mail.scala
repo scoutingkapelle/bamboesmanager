@@ -3,10 +3,10 @@ package models
 import javax.inject.Inject
 
 import play.api.libs.mailer.{Email, MailerClient}
-import play.api.{Configuration, Environment}
+import play.api.Configuration
 import views.html.mail.{confirmationMail, distributionMail, listMail, messageMail}
 
-class Mail @Inject()(mailer: MailerClient, configuration: Configuration, env: Environment) {
+class Mail @Inject()(mailer: MailerClient, configuration: Configuration) {
 
   private val from = configuration.underlying.getString("email.from")
   private val replyTo = configuration.underlying.getString("email.replyTo")

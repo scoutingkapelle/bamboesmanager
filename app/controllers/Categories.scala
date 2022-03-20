@@ -2,14 +2,13 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.CategoryForm
 import models.Category
 import models.daos.{CategoryDAO, RegistrationDAO, StatisticsDAO}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -27,7 +26,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
                            badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def categories = silhouette.SecuredAction.async { implicit request =>
+  def categories: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       categories <- categoryDAO.all
       statistics <- statisticsDAO.category
@@ -37,7 +36,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     }
   }
 
-  def category(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def category(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -55,11 +54,11 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     }
   }
 
-  def add = silhouette.SecuredAction.async { implicit request =>
+  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     Future.successful(Ok(categoryAddTemplate(CategoryForm.form, request.identity)))
   }
 
-  def save = silhouette.SecuredAction.async { implicit request =>
+  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     CategoryForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(categoryAddTemplate(form, request.identity))),
       data => {
@@ -69,11 +68,11 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     )
   }
 
-  def all = silhouette.SecuredAction.async {
+  def all: Action[AnyContent] = silhouette.SecuredAction.async {
     categoryDAO.all.map(categories => Ok(Json.toJson(categories.sortBy(_.name))))
   }
 
-  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def get(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       categoryDAO.get(uuid).map {

@@ -1,5 +1,4 @@
 import java.util.UUID
-
 import com.google.inject.AbstractModule
 import com.mohiva.play.silhouette.api.{Environment, LoginInfo}
 import com.mohiva.play.silhouette.test._
@@ -7,6 +6,7 @@ import models.User
 import net.codingwell.scalaguice.ScalaModule
 import org.specs2.mock.Mockito
 import org.specs2.specification.Scope
+import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.CSRFTokenHelper._
 import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
@@ -60,7 +60,7 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
       * A fake Guice module.
       */
     class FakeModule extends AbstractModule with ScalaModule {
-      override def configure() = {
+      override def configure(): Unit = {
         bind[Environment[DefaultEnv]].toInstance(env)
       }
     }
@@ -68,7 +68,7 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     /**
       * An identity.
       */
-    val identity = User(
+    val identity: User = User(
       id = UUID.randomUUID(),
       name = "John Doe",
       email = "jdoe@example.com"
@@ -82,7 +82,7 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     /**
       * The application.
       */
-    lazy val application = new GuiceApplicationBuilder()
+    lazy val application: Application = new GuiceApplicationBuilder()
       .overrides(new FakeModule)
       .build()
   }

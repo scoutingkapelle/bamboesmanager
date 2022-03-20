@@ -5,7 +5,7 @@ import play.api.data.Forms._
 
 object RegistrationForm {
 
-  val form = Form(
+  val form: Form[Data] = Form(
     mapping(
       "friday" -> boolean,
       "saturday" -> boolean,
