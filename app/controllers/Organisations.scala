@@ -2,14 +2,13 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.OrganisationForm
 import models._
 import models.daos.{OrganisationDAO, StatisticsDAO}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -26,7 +25,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
                               badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def organisations = silhouette.SecuredAction.async { implicit request =>
+  def organisations: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       organisations <- organisationDAO.all
       statistics <- statisticsDAO.organisation
@@ -35,7 +34,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     }
   }
 
-  def organisation(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def organisation(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -54,11 +53,11 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     }
   }
 
-  def add = silhouette.SecuredAction.async { implicit request =>
+  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     Future.successful(Ok(organisationAddTemplate(OrganisationForm.form, request.identity)))
   }
 
-  def save = silhouette.SecuredAction.async { implicit request =>
+  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     OrganisationForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(organisationAddTemplate(form, request.identity))),
       data => {
@@ -74,11 +73,11 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     )
   }
 
-  def all = silhouette.SecuredAction.async {
+  def all: Action[AnyContent] = silhouette.SecuredAction.async {
     organisationDAO.all.map(organisations => Ok(Json.toJson(organisations.sortBy(_.name))))
   }
 
-  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def get(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       organisationDAO.get(uuid).map {

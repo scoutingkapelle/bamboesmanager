@@ -5,7 +5,7 @@ import play.api.data.Forms._
 
 object ListForm {
 
-  val form = Form(
+  val form: Form[Data] = Form(
     mapping(
       "email" -> nonEmptyText,
       "group" -> nonEmptyText

@@ -2,14 +2,13 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.GroupForm
 import models._
 import models.daos.{GroupDAO, OrganisationDAO, RegistrationDAO, StatisticsDAO}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -28,7 +27,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
                        badRequestTemplate: views.html.badRequest)
   extends AbstractController(components) with I18nSupport {
 
-  def groups = silhouette.SecuredAction.async { implicit request =>
+  def groups: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     for {
       groups <- groupDAO.all
       statistics <- statisticsDAO.group
@@ -37,7 +36,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
     }
   }
 
-  def group(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def group(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       for {
@@ -55,12 +54,12 @@ class Groups @Inject()(groupDAO: GroupDAO,
     }
   }
 
-  def add = silhouette.SecuredAction.async { implicit request =>
+  def add: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     organisationDAO.all.map(organisations =>
       Ok(groupAddTemplate(GroupForm.form, organisationsTupled(organisations), request.identity)))
   }
 
-  def save = silhouette.SecuredAction.async { implicit request =>
+  def save: Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     GroupForm.form.bindFromRequest().fold(
       form => {
         organisationDAO.all.map(organisations =>
@@ -77,11 +76,11 @@ class Groups @Inject()(groupDAO: GroupDAO,
     )
   }
 
-  def all = silhouette.SecuredAction.async {
+  def all: Action[AnyContent] = silhouette.SecuredAction.async {
     groupDAO.all.map(groups => Ok(Json.toJson(groups.sortBy(_.name))))
   }
 
-  def get(id: String) = silhouette.SecuredAction.async { implicit request =>
+  def get(id: String): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
     try {
       val uuid = UUID.fromString(id)
       groupDAO.get(uuid).map {

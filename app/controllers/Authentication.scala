@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.util.Credentials
@@ -10,7 +9,7 @@ import com.mohiva.play.silhouette.impl.providers._
 import forms.SignInForm
 import models.daos.UserDAO
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{AbstractController, ControllerComponents}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -23,7 +22,7 @@ class Authentication @Inject()(credentialsProvider: CredentialsProvider,
                                signInTemplate: views.html.signIn)
   extends AbstractController(components) with I18nSupport {
 
-  def authenticate = Action.async { implicit request =>
+  def authenticate: Action[AnyContent] = Action.async { implicit request =>
     SignInForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(signInTemplate(form))),
       data => {
