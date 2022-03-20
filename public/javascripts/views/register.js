@@ -4,10 +4,10 @@ $(document).ready(function () {
     $.fn.bootstrapSwitch.defaults.onText = 'Ja';
     $.fn.bootstrapSwitch.defaults.offText = 'Nee';
 
-    var friday = $('#friday');
-    var saturday = $('#saturday');
-    var sorting = $('#sorting');
-    var selling = $('#selling');
+    const friday = $('#friday');
+    const saturday = $('#saturday');
+    const sorting = $('#sorting');
+    const selling = $('#selling');
 
     friday.bootstrapSwitch();
     saturday.bootstrapSwitch();
@@ -15,34 +15,34 @@ $(document).ready(function () {
     selling.bootstrapSwitch();
     $('.checkbox label').css('padding-left', 0);
 
-    var categoryField = $('#category_field');
+    const categoryField = $('#category_field');
 
     if (selling.bootstrapSwitch('state')) categoryField.removeClass('hidden');
     else categoryField.addClass('hidden');
 
-    var selected = $('#category :selected').val();
+    const selected = $('#category :selected').val();
     selling.on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
             categoryField.removeClass('hidden');
             $('#category').val(selected)
-        }
-        else {
+        } else {
             categoryField.addClass('hidden');
             $('#category option:selected').val([]);
         }
     });
 
-    var selected_organisation = $('#organisation').find(':selected');
+    const organisations = $('#organisation');
+    const selected_organisation = organisations.find(':selected');
     updateSorting(selected_organisation);
-    if (selected_organisation.val().length == 0) {
+    if (selected_organisation.val().length === 0) {
         $('#group option').each(function (i, option) {
             $(option).addClass('hidden')
         });
     } else {
         $('#group option').each(function (i, option) {
-            if ($(option).val().length == 0) {
+            if ($(option).val().length === 0) {
                 $(option).text("Selecteer een groep").removeClass('hidden')
-            } else if ($(option).val().split('#')[0] == selected_organisation.val()) {
+            } else if ($(option).val().split('#')[0] === selected_organisation.val()) {
                 $(option).removeClass('hidden')
             } else {
                 $(option).addClass('hidden')
@@ -50,16 +50,16 @@ $(document).ready(function () {
         })
     }
 
-    $('#organisation').change(function () {
-        var organisation = $('#organisation').find(':selected');
+    organisations.change(function () {
+        const organisation = $('#organisation').find(':selected');
         updateGroups(organisation.val());
         updateSorting(organisation)
     });
 
     function updateGroups(organisation) {
-        if (organisation.length == 0) {
+        if (organisation.length === 0) {
             $('#group option').each(function (i, option) {
-                if ($(option).val().length == 0) {
+                if ($(option).val().length === 0) {
                     $(option).text("Selecteer eerst een vereniging").prop('selected', true)
                 } else {
                     $(option).addClass('hidden')
@@ -67,9 +67,9 @@ $(document).ready(function () {
             })
         } else {
             $('#group option').each(function (i, option) {
-                if ($(option).val().length == 0) {
+                if ($(option).val().length === 0) {
                     $(option).text("Selecteer een groep").prop('selected', true).removeClass('hidden')
-                } else if ($(option).val().split('#')[0] == organisation) {
+                } else if ($(option).val().split('#')[0] === organisation) {
                     $(option).removeClass('hidden')
                 } else {
                     $(option).addClass('hidden')
@@ -79,9 +79,9 @@ $(document).ready(function () {
     }
 
     function updateSorting(organisation) {
-        if (organisation.text() == "Scouting Kapelle" || organisation.val().length == 0) {
+        if (organisation.text() === "Scouting Kapelle" || organisation.val().length === 0) {
             $('#sorting_wrapper').addClass('hidden');
-            $('#sorting').prop('checked', false)
+            sorting.prop('checked', false)
         } else {
             $('#sorting_wrapper').removeClass('hidden')
         }
