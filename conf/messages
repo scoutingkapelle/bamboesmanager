@@ -53,29 +53,24 @@ registered = Succesvol aangemeld voor Actie Bamboes! Je ontvangt een email met a
 
 friday = Vrijdag
 friday.label = Ophalen vrijdag
-friday.text = Vrijdag 12 april om 18.15 uur verzamelen bij het station.
+friday.text = Vrijdag 8 april om 18.15 uur verzamelen bij het station.
 
 saturday = Zaterdag
 saturday.label = Ophalen zaterdag
-saturday.text = Zaterdag 13 april om 9.15 uur verzamelen bij het station.
+saturday.text = Zaterdag 9 april om 9.15 uur verzamelen bij het station.
 
 sorting = Sorteren
 sorting.label = Helpen sorteren
-sorting.text = Maandag 15 en dinsdag 16 april. Van 13.00 - 16.00 uur en van 19.00 - 21.00 uur.
+sorting.text = Datums voor het sorteren volgen later.
 
 selling = Verkopen
 selling.label = Helpen verkopen
-selling.text =  Zaterdag 27 april om 7.00 uur beginnen met klaarzetten op de parkeerplaats bij het zwembad.
-selling.date = zaterdag 27 april 2019
+selling.text =  Woensdag 27 april om 7.00 uur beginnen met klaarzetten op de parkeerplaats bij het zwembad.
+selling.date = woensdag 27 april 2022
 
 team.leader = Teamleider
 team.leaders = Teamleider(s)
 team.leader.label = Teamleider
-
-bbq = BBQ
-bbq.label = BBQ bij feest
-bbq.partner = Partner BBQ
-bbq.partner.label = Partner bij BBQ
 
 yes = Ja
 no = Nee
@@ -85,11 +80,11 @@ delete = Verwijderen
 subject= Onderwerp
 
 confirmation = Bevestiging
-confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2019
+confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2022
 
 distribution = Verdeling
 distribution.send = Verstuur indeling naar iedereen
-distribution.subject = Definitieve indeling voor Actie Bamboes 2019
+distribution.subject = Definitieve indeling voor Actie Bamboes 2022
 distribution.success = De indeling is succesvol naar iedereen verstuurd
 
 message = Bericht
@@ -99,7 +94,7 @@ message.success = Het bericht is succesvol naar iedereen verstuurd
 
 list = Lijst
 list.send = Vestuur de lijst
-list.subject = Lijst van aanmeldingen voor Actie Bamboes 2019
+list.subject = Lijst van aanmeldingen voor Actie Bamboes 2022
 list.success = De lijst is succesvol verstuurd
 
 statistics = Verdeling
