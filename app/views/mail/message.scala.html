@@ -2,38 +2,38 @@
 
 @(messageForm: Form[forms.MessageForm.Data], user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
-    @implicitFieldConstructor = @{
-        b3.horizontal.fieldConstructor("col-md-2", "col-md-10")
-    }
+@implicitFieldConstructor = @{
+    b3.inline.fieldConstructor()
+}
 
-    @main(Messages("message"), Some(user)) {
-        <div class="container">
-            @flash.get("message").map { message =>
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    @message
+@main(Messages("message"), Some(user)) {
+    <div class="container">
+        @flash.get("message").map { message =>
+            <div class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                @message
+            </div>
+        }
+        <div class="well">
+            <h1>@Messages("message.subject")</h1>
+            @mail.messageMail(Messages("name"), "<< " + Messages("message") + " >>")
+
+            <hr>
+            <fieldset>
+            @helper.form(action = routes.Email.sendMessage()) {
+                @helper.CSRF.formField
+                @b3.text(messageForm("subject"), Symbol("_hiddenLabel") -> Messages("subject"), Symbol("placeholder") -> Messages("subject"), Symbol("class") -> "form-control input-lg")
+                @b3.textarea(messageForm("message"), Symbol("_hiddenLabel") -> Messages("message"), Symbol("placeholder") -> Messages("message"), Symbol("class") -> "form-control input-lg")
+                <div class="form-group">
+                    <div>
+                        <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
+                            <span class="glyphicon glyphicon glyphicon-ok"></span>
+                            @Messages("message.send")
+                        </button>
+                    </div>
                 </div>
             }
-            <div class="well">
-                <h1>@Messages("message.subject")</h1>
-                @mail.messageMail(Messages("name"), "<< " + Messages("message") + " >>")
-
-                <hr>
-                <fieldset>
-                @helper.form(action = routes.Email.sendMessage()) {
-                    @helper.CSRF.formField
-                    @b3.text(messageForm("subject"), Symbol("_hiddenLabel") -> Messages("subject"), Symbol("placeholder") -> Messages("subject"), Symbol("class") -> "form-control input-lg")
-                    @b3.textarea(messageForm("message"), Symbol("_hiddenLabel") -> Messages("message"), Symbol("placeholder") -> Messages("message"), Symbol("class") -> "form-control input-lg")
-                    <div class="form-group">
-                        <div>
-                            <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
-                                <span class="glyphicon glyphicon glyphicon-ok"></span>
-                                @Messages("message.send")
-                            </button>
-                        </div>
-                    </div>
-                }
-                </fieldset>
-            </div>
+            </fieldset>
         </div>
-    }
+    </div>
+}
