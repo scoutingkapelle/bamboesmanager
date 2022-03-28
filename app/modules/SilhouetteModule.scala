@@ -63,11 +63,9 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * @return The Silhouette environment.
    */
   @Provides
-  def provideEnvironment(
-                          userService: UserDAO,
-                          authenticatorService: AuthenticatorService[SessionAuthenticator],
-                          eventBus: EventBus): Environment[DefaultEnv] = {
-
+  def provideEnvironment(userService: UserDAO,
+                         authenticatorService: AuthenticatorService[SessionAuthenticator],
+                         eventBus: EventBus): Environment[DefaultEnv] = {
     Environment[DefaultEnv](
       userService,
       authenticatorService,
@@ -86,7 +84,6 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
   @Named("authenticator-crypter")
   def provideAuthenticatorCrypter(configuration: Configuration): Crypter = {
     val config = configuration.underlying.as[JcaCrypterSettings]("silhouette.authenticator.crypter")
-
     new JcaCrypter(config)
   }
 
@@ -111,16 +108,13 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * @return The authenticator service.
    */
   @Provides
-  def provideAuthenticatorService(
-                                   @Named("authenticator-crypter") crypter: Crypter,
-                                   fingerprintGenerator: FingerprintGenerator,
-                                   sessionCookieBaker: SessionCookieBaker,
-                                   configuration: Configuration,
-                                   clock: Clock): AuthenticatorService[SessionAuthenticator] = {
-
+  def provideAuthenticatorService(@Named("authenticator-crypter") crypter: Crypter,
+                                  fingerprintGenerator: FingerprintGenerator,
+                                  sessionCookieBaker: SessionCookieBaker,
+                                  configuration: Configuration,
+                                  clock: Clock): AuthenticatorService[SessionAuthenticator] = {
     val config = configuration.underlying.as[SessionAuthenticatorSettings]("silhouette.authenticator")
     val authenticatorEncoder = new CrypterAuthenticatorEncoder(crypter)
-
     new SessionAuthenticatorService(config, fingerprintGenerator, authenticatorEncoder, sessionCookieBaker, clock)
   }
 
@@ -142,10 +136,8 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * @return The credentials provider.
    */
   @Provides
-  def provideCredentialsProvider(
-                                  authInfoRepository: AuthInfoRepository,
-                                  passwordHasherRegistry: PasswordHasherRegistry): CredentialsProvider = {
-
+  def provideCredentialsProvider(authInfoRepository: AuthInfoRepository,
+                                 passwordHasherRegistry: PasswordHasherRegistry): CredentialsProvider = {
     new CredentialsProvider(authInfoRepository, passwordHasherRegistry)
   }
 

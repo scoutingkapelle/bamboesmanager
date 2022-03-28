@@ -1,10 +1,6 @@
 @this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(registerForm: Form[forms.RegisterForm.Data],
-        organisations: Seq[(String, String)],
-        groups: Seq[(String, String)],
-        categories: Seq[(String, String)],
-        user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
+@(registerForm: Form[forms.RegisterForm.Data], organisations: Seq[(String, String)], groups: Seq[(String, String)], categories: Seq[(String, String)], user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
 @scripts = {
     @webJarsUtil.locate("bootstrap3/bootstrap-switch.min.css").css()

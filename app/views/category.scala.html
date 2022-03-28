@@ -1,8 +1,6 @@
 @this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(category: Category,
-        registrations: Seq[Registration],
-        user: models.User)(implicit messages: Messages)
+@(category: Category, registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
 @scripts = {
     @webJarsUtil.locate("bootstrap-table.css").css()

@@ -1,8 +1,6 @@
 @this(main: views.html.main)
 
-@(groupForm: Form[forms.GroupForm.Data],
-        organisations: Seq[(String, String)],
-        user: models.User)(implicit request: RequestHeader, messages: Messages)
+@(groupForm: Form[forms.GroupForm.Data], organisations: Seq[(String, String)], user: models.User)(implicit request: RequestHeader, messages: Messages)
 
 @implicitFieldConstructor = @{
     b3.inline.fieldConstructor()

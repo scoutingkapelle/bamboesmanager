@@ -33,7 +33,7 @@ groups = Groepen
 group = Groep
 group.add = Groep toevoegen
 group.save = Groep opslaan
-group.select = Selecteer eerst een vereninging
+group.select = Selecteer eerst een vereniging
 group.select.new = Selecteer een groep
 
 persons = Medewerkers
@@ -41,7 +41,7 @@ person = Medewerker
 
 organisations = Verenigingen
 organisation = Vereniging
-organisation.add = Vereninging toevoegen
+organisation.add = Vereniging toevoegen
 organisation.save = Vereniging opslaan
 organisation.select = Selecteer een vereniging
 
@@ -93,7 +93,7 @@ message.subject = Bericht naar iedereen versturen
 message.success = Het bericht is succesvol naar iedereen verstuurd
 
 list = Lijst
-list.send = Vestuur de lijst
+list.send = Verstuur de lijst
 list.subject = Lijst van aanmeldingen voor Actie Bamboes 2022
 list.success = De lijst is succesvol verstuurd
 
@@ -120,7 +120,7 @@ constraint.min=Minimale waarde: {0}
 constraint.max=Maximale waarde: {0}
 constraint.minLength=Minimale lengte: {0}
 constraint.maxLength=Maximale lengte: {0}
-constraint.email=Emailadres
+constraint.email=E-mailadres
 # --- Errors
 error.invalid=Ongeldige waarde
 error.required=Dit veld is verplicht
