@@ -91,8 +91,7 @@ class Registrations @Inject()(mail: Mail,
           val group_id = UUID.fromString(data.group.split('#')(1))
           groupDAO.get(group_id).flatMap {
             case Some(group) =>
-              val name = fullName(data.firstName, data.prefix, data.surName)
-              val p = Person(UUID.randomUUID, name, data.email.toLowerCase, data.age, group)
+              val p = Person(UUID.randomUUID, data.fullName, data.email.toLowerCase, data.age, group)
               personDAO.save(p).flatMap { person =>
                 data.category match {
                   case Some(category) =>
