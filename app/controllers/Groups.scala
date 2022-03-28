@@ -1,7 +1,5 @@
 package controllers
 
-import java.util.UUID
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.GroupForm
 import models._
@@ -11,8 +9,9 @@ import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import java.util.UUID
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Groups @Inject()(groupDAO: GroupDAO,
                        organisationDAO: OrganisationDAO,
@@ -25,6 +24,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
                        groupAddTemplate: views.html.groupAdd,
                        notFoundTemplate: views.html.notFound,
                        badRequestTemplate: views.html.badRequest)
+                      (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def groups(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>

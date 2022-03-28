@@ -1,8 +1,6 @@
 
 package controllers
 
-import java.util.UUID
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.{ListForm, MessageForm}
 import models._
@@ -11,8 +9,9 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import java.util.UUID
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Email @Inject()(mail: Mail,
                       registrationDAO: RegistrationDAO,
@@ -24,6 +23,7 @@ class Email @Inject()(mail: Mail,
                       listTemplate: views.html.mail.list,
                       messageTemplate: views.html.mail.message,
                       badRequestTemplate: views.html.badRequest)
+                     (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def confirmation(): Action[AnyContent] = silhouette.SecuredAction { implicit request =>

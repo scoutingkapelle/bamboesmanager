@@ -5,10 +5,9 @@ import play.api.db.slick.DatabaseConfigProvider
 
 import java.util.UUID
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends DAOSlick {
+class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends DAOSlick {
 
   import profile.api._
 

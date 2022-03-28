@@ -7,12 +7,11 @@ import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 import scala.reflect.ClassTag
 
 class PasswordInfoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-                               (implicit val classTag: ClassTag[PasswordInfo])
+                               (implicit val classTag: ClassTag[PasswordInfo], ec: ExecutionContext)
   extends DelegableAuthInfoDAO[PasswordInfo] with DAOSlick {
 
   import profile.api._

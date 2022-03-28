@@ -1,7 +1,5 @@
 package controllers
 
-import java.util.UUID
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.CategoryForm
 import models.Category
@@ -11,8 +9,9 @@ import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import java.util.UUID
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Categories @Inject()(categoryDAO: CategoryDAO,
                            registrationDAO: RegistrationDAO,
@@ -24,6 +23,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
                            categoryAddTemplate: views.html.categoryAdd,
                            notFoundTemplate: views.html.notFound,
                            badRequestTemplate: views.html.badRequest)
+                          (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def categories(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>

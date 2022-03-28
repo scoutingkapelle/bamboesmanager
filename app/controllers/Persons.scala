@@ -9,12 +9,12 @@ import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class Persons @Inject()(personDAO: PersonDAO,
                         components: ControllerComponents,
                         silhouette: Silhouette[DefaultEnv])
+                       (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def all(): Action[AnyContent] = silhouette.SecuredAction.async {
