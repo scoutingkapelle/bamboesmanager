@@ -19,11 +19,9 @@
             @helper.CSRF.formField
             @b3.email(signInForm("email"), Symbol("_hiddenLabel") -> Messages("email"), Symbol("placeholder") -> Messages("email"), Symbol("class") -> "form-control input-lg")
             @b3.password(signInForm("password"), Symbol("_hiddenLabel") -> Messages("password"), Symbol("placeholder") -> Messages("password"), Symbol("class") -> "form-control input-lg")
-            <div class="form-group">
-                <div>
-                    <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary btn-block">@Messages("sign.in")</button>
-                </div>
-            </div>
+            @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
+                @Messages("sign.in")
+            }
         }
     </fieldset>
 }
