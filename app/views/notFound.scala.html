@@ -2,11 +2,11 @@
 
 @(id: String, user: Option[models.User])(implicit messages: Messages)
 
-    @main(Messages("not.found"), user) {
-        <div class="container">
-            <div class="well">
-                <h1>@Messages("not.found")</h1>
-                <p>@(Messages("object.not.found") + ": " + id)</p>
-            </div>
+@main(Messages("not.found"), user) {
+    <div class="container">
+        <div class="well">
+            <h1>@Messages("not.found")</h1>
+            <p>@(Messages("object.not.found") + ": " + id)</p>
         </div>
-    }
+    </div>
+}

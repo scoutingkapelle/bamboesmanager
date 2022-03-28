@@ -2,11 +2,11 @@
 
 @(user: models.User)(implicit messages: Messages)
 
-    @main(Messages("dashboard"), Some(user)) {
-        <div class="container">
-            <div class="well">
-                <h1>@Messages("dashboard")</h1>
-                <p>@(Messages("sign.in.welcome") + " " + user.name)</p>
-            </div>
+@main(Messages("dashboard"), Some(user)) {
+    <div class="container">
+        <div class="well">
+            <h1>@Messages("dashboard")</h1>
+            <p>@(Messages("sign.in.welcome") + " " + user.name)</p>
         </div>
-    }
+    </div>
+}

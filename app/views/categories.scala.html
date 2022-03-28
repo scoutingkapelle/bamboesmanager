@@ -1,9 +1,6 @@
 @this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(categories: Seq[Category],
-        counts: Map[java.util.UUID, Int],
-        teamLeaders: Map[java.util.UUID, String],
-        user: models.User)(implicit messages: Messages)
+@(categories: Seq[Category], counts: Map[java.util.UUID, Int], teamLeaders: Map[java.util.UUID, String], user: models.User)(implicit messages: Messages)
 
 @scripts = {
     @webJarsUtil.locate("bootstrap-table.css").css()

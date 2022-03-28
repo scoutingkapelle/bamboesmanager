@@ -2,30 +2,30 @@
 
 @(statistics: Map[String, Map[String, Int]], user: models.User)(implicit messages: Messages)
 
-    @main(Messages("statistics"), Some(user)) {
-        <div class="container row-eq-height">
-            <h1>@Messages("statistics")</h1>
+@main(Messages("statistics"), Some(user)) {
+    <div class="container row-eq-height">
+        <h1>@Messages("statistics")</h1>
 
-            @for(statistic <- statistics) {
-                <div class="col-md-6">
-                    <h2>@statistic._1</h2>
-                    <table class="table table-striped table-bordered">
+        @for((activity, statistic) <- statistics) {
+            <div class="col-md-6">
+                <h2>@activity</h2>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>@Messages("organisation")</th>
+                        <th>@Messages("count")</th>
+                    </tr>
+                    @for((organisation, value) <- statistic) {
                         <tr>
-                            <th>@Messages("organisation")</th>
-                            <th>@Messages("count")</th>
+                            <td>@organisation</td>
+                            <td>@value</td>
                         </tr>
-                        @for(stats <- statistic._2) {
-                            <tr>
-                                <td>@stats._1</td>
-                                <td>@stats._2</td>
-                            </tr>
-                        }
-                        <tr>
-                            <td><strong>@Messages("total")</strong></td>
-                            <td><strong>@statistic._2.values.sum</strong></td>
-                        </tr>
-                    </table>
-                </div>
-            }
-        </div>
-    }
+                    }
+                    <tr>
+                        <td><strong>@Messages("total")</strong></td>
+                        <td><strong>@statistic.values.sum</strong></td>
+                    </tr>
+                </table>
+            </div>
+        }
+    </div>
+}

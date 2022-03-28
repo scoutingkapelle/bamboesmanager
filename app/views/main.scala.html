@@ -1,10 +1,8 @@
 @this(webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(title: String,
-        user: Option[models.User] = None,
-        scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
+@(title: String, user: Option[models.User] = None, scripts: Html = Html(""))(content: Html)(implicit messages: Messages)
 
-<html>
+<html lang="nl">
     <head>
         <title>@title</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,13 +59,11 @@
                     </nav>
                 </div>
             </header>
-
             <main>
                 @content
                 <div id="push"></div>
             </main>
         </div>
-
         <footer id="footer">
             <div class="container">
                 <p class="muted credit">
@@ -75,6 +71,5 @@
                 </p>
             </div>
         </footer>
-
     </body>
 </html>
