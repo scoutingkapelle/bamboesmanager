@@ -105,7 +105,7 @@ class Email @Inject()(mail: Mail,
       data => {
         try {
           val uuid = UUID.fromString(data.group.split('#')(1))
-          groupDAO.persons(uuid).map { persons =>
+          groupDAO.members(uuid).map { persons =>
             mail.sendList(data.email, Messages("list.subject"), persons.sortBy(_.name))
             val flash = ("message", Messages("list.success"))
             Redirect(routes.Email.list()).flashing(flash)

@@ -1,26 +1,17 @@
 package models.daos
 
+import models._
+import models.daos.tables.DAOSlick
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
-
-import models._
-import models.daos.tables._
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.language.implicitConversions
 
-class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
+class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends DAOSlick {
 
-  private val registrations = TableQuery[RegistrationTable]
-  private val persons = TableQuery[PersonTable]
-  private val groups = TableQuery[GroupTable]
-  private val organisations = TableQuery[OrganisationTable]
-  private val categories = TableQuery[CategoryTable]
+  import profile.api._
 
   def all: Future[Seq[Registration]] = {
     val query = for {
@@ -87,21 +78,10 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   }
 
   def save(registration: Registration): Future[Registration] =
-    db.run(registrations.insertOrUpdate(toDBRegistration(registration))).map(_ => registration)
+    db.run(registrations.insertOrUpdate(registration)).map(_ => registration)
 
   def delete(id: UUID): Future[Int] = {
     val query = registrations.filter(_.id === id).delete
     db.run(query)
   }
-
-  implicit private def toDBRegistration(registration: Registration): DBRegistration =
-    DBRegistration(
-      registration.id,
-      registration.person.id,
-      registration.friday,
-      registration.saturday,
-      registration.sorting,
-      registration.category.map(cat => cat.id),
-      registration.teamLeader
-    )
 }

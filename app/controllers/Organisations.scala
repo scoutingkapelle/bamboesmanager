@@ -38,7 +38,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
     try {
       val uuid = UUID.fromString(id)
       for {
-        groups <- organisationDAO.groups(uuid)
+        groups <- organisationDAO.members(uuid)
         organisation <- organisationDAO.get(uuid)
         stats <- statisticsDAO.organisation(uuid)
       } yield {
@@ -64,7 +64,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
         val organisation = Organisation(UUID.randomUUID, data.name)
         for {
           _ <- organisationDAO.save(organisation)
-          groups <- organisationDAO.groups(organisation.id)
+          groups <- organisationDAO.members(organisation.id)
           stats <- statisticsDAO.organisation(organisation.id)
         } yield {
           Ok(organisationTemplate(organisation, groups, stats, request.identity))

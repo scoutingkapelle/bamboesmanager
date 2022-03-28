@@ -1,23 +1,16 @@
 package models.daos
 
+import models.daos.tables.DAOSlick
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
-
-import models.daos.tables._
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
+class StatisticsDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends DAOSlick {
 
-  private val registrations = TableQuery[RegistrationTable]
-  private val persons = TableQuery[PersonTable]
-  private val groups = TableQuery[GroupTable]
-  private val organisations = TableQuery[OrganisationTable]
+  import profile.api._
 
   def friday: Future[Map[String, Int]] = {
     val query = (for {
