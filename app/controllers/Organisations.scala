@@ -62,13 +62,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
       form => Future.successful(BadRequest(organisationAddTemplate(form, request.identity))),
       data => {
         val organisation = Organisation(UUID.randomUUID, data.name)
-        for {
-          _ <- organisationDAO.save(organisation)
-          groups <- organisationDAO.members(organisation.id)
-          stats <- statisticsDAO.organisation(organisation.id)
-        } yield {
-          Ok(organisationTemplate(organisation, groups, stats, request.identity))
-        }
+        organisationDAO.save(organisation).map(_ => Redirect(routes.Organisations.organisations()))
       }
     )
   }

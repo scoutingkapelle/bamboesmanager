@@ -69,7 +69,7 @@ class Groups @Inject()(groupDAO: GroupDAO,
         organisationDAO.get(UUID.fromString(data.organisation_id)).flatMap {
           case Some(organisation) =>
             val group = Group(UUID.randomUUID, data.name, organisation)
-            groupDAO.save(group).map(_ => Redirect(routes.Groups.group(group.id.toString)))
+            groupDAO.save(group).map(_ => Redirect(routes.Groups.groups()))
           case None => Future.successful(BadRequest(notFoundTemplate(data.organisation_id, Some(request.identity))))
         }
       }

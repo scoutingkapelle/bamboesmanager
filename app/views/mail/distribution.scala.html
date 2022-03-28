@@ -2,6 +2,10 @@
 
 @(registration: Registration, user: models.User)(implicit request: RequestHeader, messages: Messages, flash: Flash)
 
+@implicitFieldConstructor = @{
+    b3.inline.fieldConstructor()
+}
+
 @main(Messages("distribution"), Some(user)) {
     <div class="container">
         @flash.get("message").map { message =>
@@ -15,14 +19,10 @@
             @mail.distributionMail(registration)
             @helper.form(action = routes.Email.sendDistribution()) {
                 @helper.CSRF.formField
-                <div class="form-group">
-                    <div>
-                        <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
-                            <span class="glyphicon glyphicon glyphicon-ok"></span>
-                            @Messages("distribution.send")
-                        </button>
-                    </div>
-                </div>
+                @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
+                    <span class="glyphicon glyphicon glyphicon-ok"></span>
+                    @Messages("distribution.send")
+                }
             }
         </div>
     </div>

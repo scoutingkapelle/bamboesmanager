@@ -24,14 +24,10 @@
                 @helper.CSRF.formField
                 @b3.text(listForm("email"), Symbol("_hiddenLabel") -> Messages("email"), Symbol("placeholder") -> Messages("email"), Symbol("class") -> "form-control input-lg")
                 @b3.select(listForm("group"), options = groups, Symbol("_hiddenLabel") -> Messages("group"), Symbol("_default") -> Messages("group.select.new"), Symbol("class") -> "form-control input-lg")
-                <div class="form-group">
-                    <div>
-                        <button id="submit" type="submit" value="submit" class="btn btn-lg btn-primary">
-                            <span class="glyphicon glyphicon glyphicon-ok"></span>
-                            @Messages("list.send")
-                        </button>
-                    </div>
-                </div>
+                @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
+                    <span class="glyphicon glyphicon glyphicon-ok"></span>
+                    @Messages("list.send")
+                }
             }
             </fieldset>
         </div>
