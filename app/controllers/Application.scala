@@ -7,7 +7,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class Application @Inject()(components: ControllerComponents,
                             silhouette: Silhouette[DefaultEnv],
@@ -15,6 +15,7 @@ class Application @Inject()(components: ControllerComponents,
                             dashboardTemplate: views.html.dashboard,
                             signInTemplate: views.html.signIn,
                             signUpTemplate: views.html.signUp)
+                           (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def index(): Action[AnyContent] = silhouette.UserAwareAction { implicit request =>

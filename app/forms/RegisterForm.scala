@@ -31,5 +31,11 @@ object RegisterForm {
                    saturday: Boolean,
                    sorting: Boolean,
                    category: Option[String]
-                 )
+                 ) {
+
+    lazy val fullName: String =
+      (firstName.toLowerCase.split(" ").map(_.capitalize).mkString(" ") + " " +
+        prefix.toLowerCase + " " +
+        surName.toLowerCase.split(" ").map(_.capitalize).mkString(" ")).trim.replaceAll("( )+", " ")
+  }
 }

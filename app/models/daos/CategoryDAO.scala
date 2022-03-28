@@ -1,23 +1,16 @@
 package models.daos
 
+import models.Category
+import models.daos.tables.DAOSlick
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-import models.Category
-import models.daos.tables.{CategoryTable, PersonTable, RegistrationTable}
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
+class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends DAOSlick {
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
-class CategoryDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
-
-  private val categories = TableQuery[CategoryTable]
-  private val registrations = TableQuery[RegistrationTable]
-  private val persons = TableQuery[PersonTable]
+  import profile.api._
 
   def all: Future[Seq[Category]] = db.run(categories.result)
 

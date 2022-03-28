@@ -1,24 +1,16 @@
 package models.daos
 
+import models.daos.tables.DAOSlick
+import models.{Group, Person}
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-import models.daos.tables.{DBGroup, GroupTable, OrganisationTable, PersonTable}
-import models.{Group, Person}
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
+class GroupDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends DAOSlick {
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import scala.language.implicitConversions
-
-class GroupDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
-
-  private val groups = TableQuery[GroupTable]
-  private val organisations = TableQuery[OrganisationTable]
-  private val persons = TableQuery[PersonTable]
+  import profile.api._
 
   def all: Future[Seq[Group]] = {
     val query = for {
@@ -31,7 +23,7 @@ class GroupDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     })
   }
 
-  def persons(group_id: UUID): Future[Seq[Person]] = {
+  def members(group_id: UUID): Future[Seq[Person]] = {
     val query = for {
       p <- persons if p.group_id === group_id
       g <- groups if g.id === p.group_id
@@ -57,6 +49,4 @@ class GroupDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   }
 
   def save(group: Group): Future[Int] = db.run(groups.insertOrUpdate(group))
-
-  implicit private def toDBGroup(group: Group): DBGroup = DBGroup(group.id, group.name, group.organisation.id)
 }

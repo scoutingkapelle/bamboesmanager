@@ -1,10 +1,7 @@
 package controllers
 
-import java.util.UUID
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.{RegisterForm, RegistrationForm}
-
-import javax.inject.Inject
 import models._
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
@@ -12,8 +9,9 @@ import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import java.util.UUID
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Registrations @Inject()(mail: Mail,
                               registrationDAO: RegistrationDAO,
@@ -28,6 +26,7 @@ class Registrations @Inject()(mail: Mail,
                               registerTemplate: views.html.register,
                               notFoundTemplate: views.html.notFound,
                               badRequestTemplate: views.html.badRequest)
+                             (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def registrations(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
@@ -91,8 +90,7 @@ class Registrations @Inject()(mail: Mail,
           val group_id = UUID.fromString(data.group.split('#')(1))
           groupDAO.get(group_id).flatMap {
             case Some(group) =>
-              val name = fullName(data.firstName, data.prefix, data.surName)
-              val p = Person(UUID.randomUUID, name, data.email.toLowerCase, data.age, group)
+              val p = Person(UUID.randomUUID, data.fullName, data.email.toLowerCase, data.age, group)
               personDAO.save(p).flatMap { person =>
                 data.category match {
                   case Some(category) =>
@@ -217,7 +215,7 @@ class Registrations @Inject()(mail: Mail,
             _ <- registrationDAO.delete(uuid)
             _ <- personDAO.delete(registration.person.id)
           } yield Redirect(routes.Registrations.registrations())
-        case None =>  Future.successful(NotFound(notFoundTemplate(id, Some(request.identity))))
+        case None => Future.successful(NotFound(notFoundTemplate(id, Some(request.identity))))
       }
     } catch {
       case _: IllegalArgumentException =>

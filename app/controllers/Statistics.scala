@@ -10,13 +10,14 @@ import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponent
 import utils.DefaultEnv
 
 import scala.collection.immutable.ListMap
-import scala.concurrent.ExecutionContext.Implicits._
+import scala.concurrent.ExecutionContext
 
 class Statistics @Inject()(statisticsDAO: StatisticsDAO,
                            organisationDAO: OrganisationDAO,
                            components: ControllerComponents,
                            silhouette: Silhouette[DefaultEnv],
                            statisticsTemplate: views.html.statistics)
+                          (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def statistics(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>
