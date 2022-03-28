@@ -16,6 +16,8 @@ $(document).ready(function () {
     $('.checkbox label').css('padding-left', 0);
 
     const categoryField = $('#category_field');
+    const categoryDropdown = $('#category');
+    categoryDropdown.removeProp('required');
 
     if (selling.bootstrapSwitch('state')) categoryField.removeClass('hidden');
     else categoryField.addClass('hidden');
@@ -24,9 +26,11 @@ $(document).ready(function () {
     selling.on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
             categoryField.removeClass('hidden');
+            $('#category').prop('required', true)
             $('#category').val(selected)
         } else {
             categoryField.addClass('hidden');
+            categoryDropdown.removeProp('required');
             $('#category option:selected').val([]);
         }
     });
