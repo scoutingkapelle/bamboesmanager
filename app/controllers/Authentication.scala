@@ -1,6 +1,5 @@
 package controllers
 
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api._
 import com.mohiva.play.silhouette.api.exceptions.ProviderException
 import com.mohiva.play.silhouette.api.util.Credentials
@@ -12,14 +11,15 @@ import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Authentication @Inject()(credentialsProvider: CredentialsProvider,
                                userDAO: UserDAO,
                                components: ControllerComponents,
                                silhouette: Silhouette[DefaultEnv],
                                signInTemplate: views.html.signIn)
+                              (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def authenticate(): Action[AnyContent] = Action.async { implicit request =>

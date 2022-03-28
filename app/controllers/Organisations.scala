@@ -1,7 +1,5 @@
 package controllers
 
-import java.util.UUID
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api.Silhouette
 import forms.OrganisationForm
 import models._
@@ -11,8 +9,9 @@ import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.ExecutionContext.Implicits._
-import scala.concurrent.Future
+import java.util.UUID
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class Organisations @Inject()(organisationDAO: OrganisationDAO,
                               statisticsDAO: StatisticsDAO,
@@ -23,6 +22,7 @@ class Organisations @Inject()(organisationDAO: OrganisationDAO,
                               organisationAddTemplate: views.html.organisationAdd,
                               notFoundTemplate: views.html.notFound,
                               badRequestTemplate: views.html.badRequest)
+                             (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def organisations(): Action[AnyContent] = silhouette.SecuredAction.async { implicit request =>

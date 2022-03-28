@@ -7,10 +7,9 @@ import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends IdentityService[User] with DAOSlick {
+class UserDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) extends IdentityService[User] with DAOSlick {
 
   import profile.api._
 
