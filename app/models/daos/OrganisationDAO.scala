@@ -1,26 +1,21 @@
 package models.daos
 
+import models.daos.tables.DAOSlick
+import models.{Group, Organisation}
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
-
-import models.daos.tables.{GroupTable, OrganisationTable}
-import models.{Group, Organisation}
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class OrganisationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
+class OrganisationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends DAOSlick {
 
-  private val organisations = TableQuery[OrganisationTable]
-  private val groups = TableQuery[GroupTable]
+  import profile.api._
 
   def all: Future[Seq[Organisation]] = db.run(organisations.result)
 
-  def groups(organisation_id: UUID): Future[Seq[Group]] = {
+  def members(organisation_id: UUID): Future[Seq[Group]] = {
     val query = for {
       g <- groups if g.organisation_id === organisation_id
       o <- organisations if o.id === g.organisation_id

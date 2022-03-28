@@ -1,17 +1,18 @@
 package models.daos
 
-import javax.inject.Inject
 import com.mohiva.play.silhouette.api.LoginInfo
 import com.mohiva.play.silhouette.api.util.PasswordInfo
 import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
 import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider
 
-import scala.concurrent.ExecutionContext.Implicits._
+import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.reflect.ClassTag
 
-class PasswordInfoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(implicit val classTag: ClassTag[PasswordInfo])
+class PasswordInfoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
+                               (implicit val classTag: ClassTag[PasswordInfo])
   extends DelegableAuthInfoDAO[PasswordInfo] with DAOSlick {
 
   import profile.api._
@@ -27,8 +28,7 @@ class PasswordInfoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   def add(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = save(loginInfo, authInfo)
 
   def save(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = {
-    val dbPasswordInfo = DBPasswordInfo(authInfo.hasher, authInfo.password, authInfo.salt, loginInfo.providerKey)
-    val query = passwords.insertOrUpdate(dbPasswordInfo)
+    val query = passwords.insertOrUpdate(loginInfo, authInfo)
     db.run(query).map(_ => authInfo)
   }
 

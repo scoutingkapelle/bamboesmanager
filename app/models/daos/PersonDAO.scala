@@ -1,24 +1,17 @@
 package models.daos
 
+import models._
+import models.daos.tables.DAOSlick
+import play.api.db.slick.DatabaseConfigProvider
+
 import java.util.UUID
 import javax.inject.Inject
-
-import models._
-import models.daos.tables.{DBPerson, GroupTable, OrganisationTable, PersonTable}
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.JdbcProfile
-import slick.jdbc.PostgresProfile.api._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.language.implicitConversions
 
-class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
-  extends HasDatabaseConfigProvider[JdbcProfile] {
+class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends DAOSlick {
 
-  private val persons = TableQuery[PersonTable]
-  private val groups = TableQuery[GroupTable]
-  private val organisations = TableQuery[OrganisationTable]
+  import profile.api._
 
   def all: Future[Seq[Person]] = {
     val query = for {
@@ -54,6 +47,4 @@ class PersonDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     val query = persons.filter(_.id === id).delete
     db.run(query)
   }
-
-  implicit private def toDBPerson(person: Person): DBPerson = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
 }
