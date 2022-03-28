@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap-switch" % "3.3.4" exclude("org.webjars", "jquery"),
   "org.webjars.bower" % "tableExport.jquery.plugin" % "1.9.3" exclude("org.webjars.bower", "jquery") exclude("org.webjars.bower", "jspdf") exclude("org.webjars.bower", "jspdf-autotable") exclude("org.webjars.bower", "file-saver.js") exclude("org.webjars.bower", "html2canvas"),
   "org.webjars" % "jquery" % "1.12.4",
-  "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B3" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
+  "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B4" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
   "io.github.honeycomb-cheesecake" %% "play-silhouette" % "7.0.4",
   "io.github.honeycomb-cheesecake" %% "play-silhouette-persistence" % "7.0.4",
   "io.github.honeycomb-cheesecake" %% "play-silhouette-crypto-jca" % "7.0.4",
