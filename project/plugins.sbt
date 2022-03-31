@@ -1,3 +1,3 @@
 logLevel := Level.Warn
 
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.14")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.15")
