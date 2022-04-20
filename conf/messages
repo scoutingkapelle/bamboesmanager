@@ -8,7 +8,6 @@ prefix = Tussenvoegsel
 surname = Achternaam
 age = Leeftijd
 email = Email
-email.text = Helaas ontvang je op dit moment geen bevestiging met een @hotmail.com of @outlook.com adres
 password = Wachtwoord
 
 sign.in = Inloggen
