@@ -6,48 +6,42 @@
         @registration.category match {
             case Some(category) => {
                 <p>Dit jaar ben je ingedeeld bij de stand <strong>@registration.category.get.name</strong>
-                    om te helpen verkopen
-                    @{
-                        if(registration.teamLeader) " en je bent hier ook teamleider."
-                    }
-                    </p>
+                    om te helpen verkopen@if(registration.teamLeader) { en je bent hier ook teamleider.} else {.}
+                </p>
             }
             case None => {
-                <p>Je hebt aangegeven niet te kunnen helpen verkopen, maar in deze email staat wel alle informatie.</p>
+                <p>Je hebt aangegeven niet te kunnen helpen verkopen, maar in deze email staat wel alle informatie over de rommelmarkt.</p>
             }
         }
 
-        <p>De meeste voorbereidingen zijn al getroffen en aan jullie de taak om de spullen zo goed mogelijk te verkopen; hoge kwaliteit voor hoge prijs! We hebben veel spullen, maar let erop dat deze niet voor een stuiver verkocht worden, dit betekent niet lager dan &euro;
+        <p>De meeste voorbereidingen zijn al getroffen en aan jullie de taak om de spullen zo goed mogelijk te verkopen; hoge kwaliteit voor hoge prijs! We hebben veel spullen, maar let erop dat deze niet te goedkoop verkocht worden, dit betekent in het begin niet lager dan &euro;
             1,-! Hieronder nog een paar feitjes & weetjes op een rij:</p>
         <ul>
             <li><strong>Waar:</strong> parkeerterrein sporthal 't Groenewoud in Kapelle</li>
             <li><strong>Starttijd:</strong>
-                Wij willen jullie vragen om 7.00 uur aanwezig te zijn. Zo kunnen we op tijd starten met de opbouw. De starttijd van de verkoop is om 9.15 uur.</li>
+                wij willen jullie vragen om 7.00 uur aanwezig te zijn. Zo kunnen we op tijd starten met de opbouw en hebben we genoeg tijd om alles uit te stallen. De starttijd van de verkoop is om 9.15 uur</li>
             <li><strong>Eindtijd:</strong>
-                vanaf 12.00 tot 12.15 mag je per kraam een plastic tas voor een euro verkopen. Zorg dat je tassen hiervoor bewaard! Als iedereen meewerkt zijn we voor 14.00 uur klaar</li>
+                vanaf 12.00 tot 12.15 mag je per kraam een plastic tas voor een euro verkopen. Zorg dat je tassen hiervoor bewaard!</li>
             <li><strong>Onderdeel:</strong> zie bovenaan deze email en plattegrond heeft de teamleider</li>
-            <li><strong>Opbouwen:</strong>
-                niet meer dan 3 planken gebruiken - alle spullen uit de kisten en uitstallen</li>
+            <li><strong>Opbouwen:</strong> alle spullen uit de kisten en uitstallen</li>
             <li><strong>Verkoop:</strong> in het begin niet lager dan een euro</li>
-            <li><strong>Opruimen:</strong> ruim met je afdeling de kraam op
-                <ul>
-                    <li>aardewerk en glas weer in doosjes, dan container in</li>
-                    <li>neem een bezem mee</li>
-                    <li>afval in containers</li>
-                    <li>elektrisch/staal in daarvoor bestemde container (volg instructies)</li>
-                </ul></li>
-            <li><strong>Wisselgeld:</strong> wordt voor gezorgd, let erop dat geld 'verstopt' staat</li>
-            <li><strong>EHBO:</strong> bij de Koek & Zopie staat een verbandtrommel
-        <li><strong>Kleding:</strong>
-            alle medewerkers dienen een uniform/oranje kleding te dragen, zodat wij herkenbaar zijn als medewerker</li>
+            <li><strong>Opruimen:</strong>
+                ruim met je afdeling de kraam op en help daarna de rest met opruimen. Als iedereen mee helpt met opruimen zijn we hopelijk weer voor 14.00 uur klaar</li>
+            <li><strong>Wisselgeld:</strong>
+                wordt voor gezorgd en tussentijds opgehaald, let erop dat geld 'verstopt' staat</li>
+            <li><strong>EHBO:</strong> bij de Koek & Zopie staat een verbandtrommel</li>
+            <li><strong>Kleding:</strong>
+                alle medewerkers dienen een scouting uniform/trui/tshirt of oranje kleding te dragen, zodat wij herkenbaar zijn als medewerker</li>
+            <li><strong>Consumpties:</strong> alle medewerkers krijgen een consumptiebon voor koffie/thee/fris en een broodje knakworst. Broodjes hamburger zijn voor eigen rekening.</li>
         </ul>
 
-        <p>Alvast bedankt !!</p>
-
-        <p>Tot op Koningsdag!</p>
+        <p>Alvast bedankt voor je hulp!! En tot op Koningsdag!</p>
 
         <p>Groeten,</p>
 
-        <p>Het Actie Bamboes team</p>
+        <p>
+            Het Actie Bamboes team<br>
+            <em>Iman, Richard, Els, Monica, Bart & Stefan</em>
+        </p>
     </body>
 </html>
