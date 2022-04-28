@@ -30,7 +30,6 @@
                     @b3.text(registerForm("surName"), Symbol("_label") -> Messages("surname"), Symbol("class") -> "form-control input-lg")
                     @b3.number(registerForm("age"), Symbol("_label") -> Messages("age"), Symbol("class") -> "form-control input-lg")
                     @b3.email(registerForm("email"), Symbol("_label") -> Messages("email"), Symbol("class") -> "form-control input-lg")
-                    <span class="help-block col-md-offset-2">@Messages("email.text")</span>
 
                     <hr>
                     @b3.select(registerForm("organisation"), options = organisations, Symbol("_label") -> Messages("organisation"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("organisation.select"))

@@ -8,7 +8,6 @@ prefix = Tussenvoegsel
 surname = Achternaam
 age = Leeftijd
 email = Email
-email.text = Helaas ontvang je op dit moment geen bevestiging met een @hotmail.com of @outlook.com adres
 password = Wachtwoord
 
 sign.in = Inloggen
@@ -85,7 +84,7 @@ confirmation.subject = Bevestiging van aanmelding voor Actie Bamboes 2022
 
 distribution = Verdeling
 distribution.send = Verstuur indeling naar iedereen
-distribution.subject = Definitieve indeling voor Actie Bamboes 2022
+distribution.subject = Indeling en laatste informatie voor Actie Bamboes 2022
 distribution.success = De indeling is succesvol naar iedereen verstuurd
 
 message = Bericht
