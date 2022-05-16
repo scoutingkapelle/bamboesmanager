@@ -1,9 +1,9 @@
 package controllers
 
-import com.mohiva.play.silhouette.api._
-import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.util.PasswordHasher
-import com.mohiva.play.silhouette.impl.providers._
+import io.github.honeycombcheesecake.play.silhouette.api._
+import io.github.honeycombcheesecake.play.silhouette.api.repositories.AuthInfoRepository
+import io.github.honeycombcheesecake.play.silhouette.api.util.PasswordHasher
+import io.github.honeycombcheesecake.play.silhouette.impl.providers._
 import forms.SignUpForm
 import models.User
 import models.daos.UserDAO

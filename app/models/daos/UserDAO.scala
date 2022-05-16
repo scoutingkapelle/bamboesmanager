@@ -1,7 +1,7 @@
 package models.daos
 
-import com.mohiva.play.silhouette.api.LoginInfo
-import com.mohiva.play.silhouette.api.services.IdentityService
+import io.github.honeycombcheesecake.play.silhouette.api.LoginInfo
+import io.github.honeycombcheesecake.play.silhouette.api.services.IdentityService
 import models.User
 import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider

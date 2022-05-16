@@ -1,4 +1,4 @@
-import com.mohiva.play.silhouette.api.Identity
+import io.github.honeycombcheesecake.play.silhouette.api.Identity
 import play.api.libs.json.{Json, Writes}
 
 import java.util.UUID

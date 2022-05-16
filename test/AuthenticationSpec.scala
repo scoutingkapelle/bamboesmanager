@@ -1,7 +1,7 @@
 import java.util.UUID
 import com.google.inject.AbstractModule
-import com.mohiva.play.silhouette.api.{Environment, LoginInfo}
-import com.mohiva.play.silhouette.test._
+import io.github.honeycombcheesecake.play.silhouette.api.{Environment, LoginInfo}
+import io.github.honeycombcheesecake.play.silhouette.test._
 import models.User
 import net.codingwell.scalaguice.ScalaModule
 import org.specs2.mock.Mockito

@@ -2,18 +2,18 @@ package modules
 
 import com.google.inject.name.Named
 import com.google.inject.{AbstractModule, Provides}
-import com.mohiva.play.silhouette.api.crypto._
-import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.services._
-import com.mohiva.play.silhouette.api.util._
-import com.mohiva.play.silhouette.api.{Environment, EventBus, Silhouette, SilhouetteProvider}
-import com.mohiva.play.silhouette.crypto.{JcaCrypter, JcaCrypterSettings}
-import com.mohiva.play.silhouette.impl.authenticators._
-import com.mohiva.play.silhouette.impl.providers._
-import com.mohiva.play.silhouette.impl.util._
-import com.mohiva.play.silhouette.password.{BCryptPasswordHasher, BCryptSha256PasswordHasher}
-import com.mohiva.play.silhouette.persistence.daos.DelegableAuthInfoDAO
-import com.mohiva.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
+import io.github.honeycombcheesecake.play.silhouette.api.crypto._
+import io.github.honeycombcheesecake.play.silhouette.api.repositories.AuthInfoRepository
+import io.github.honeycombcheesecake.play.silhouette.api.services._
+import io.github.honeycombcheesecake.play.silhouette.api.util._
+import io.github.honeycombcheesecake.play.silhouette.api.{Environment, EventBus, Silhouette, SilhouetteProvider}
+import io.github.honeycombcheesecake.play.silhouette.crypto.{JcaCrypter, JcaCrypterSettings}
+import io.github.honeycombcheesecake.play.silhouette.impl.authenticators._
+import io.github.honeycombcheesecake.play.silhouette.impl.providers._
+import io.github.honeycombcheesecake.play.silhouette.impl.util._
+import io.github.honeycombcheesecake.play.silhouette.password.{BCryptPasswordHasher, BCryptSha256PasswordHasher}
+import io.github.honeycombcheesecake.play.silhouette.persistence.daos.DelegableAuthInfoDAO
+import io.github.honeycombcheesecake.play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import models.daos.{PasswordInfoDAO, UserDAO}
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader._

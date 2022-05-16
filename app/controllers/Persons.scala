@@ -2,7 +2,7 @@ package controllers
 
 import java.util.UUID
 import javax.inject.Inject
-import com.mohiva.play.silhouette.api.Silhouette
+import io.github.honeycombcheesecake.play.silhouette.api.Silhouette
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json._

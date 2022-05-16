@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject.Inject
-import com.mohiva.play.silhouette.api.{LogoutEvent, Silhouette}
+import io.github.honeycombcheesecake.play.silhouette.api.{LogoutEvent, Silhouette}
 import forms.{SignInForm, SignUpForm}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}

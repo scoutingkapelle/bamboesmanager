@@ -1,7 +1,7 @@
 package utils
 
-import com.mohiva.play.silhouette.api.Env
-import com.mohiva.play.silhouette.impl.authenticators.SessionAuthenticator
+import io.github.honeycombcheesecake.play.silhouette.api.Env
+import io.github.honeycombcheesecake.play.silhouette.impl.authenticators.SessionAuthenticator
 import models.User
 
 trait DefaultEnv extends Env {
