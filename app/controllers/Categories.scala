@@ -1,6 +1,6 @@
 package controllers
 
-import com.mohiva.play.silhouette.api.Silhouette
+import io.github.honeycombcheesecake.play.silhouette.api.Silhouette
 import forms.CategoryForm
 import models.Category
 import models.daos.{CategoryDAO, RegistrationDAO, StatisticsDAO}
