@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick-evolutions" % "5.0.2",
   "com.typesafe.play" %% "play-json" % "2.9.2",
   "com.h2database" % "h2" % "2.1.214",
-  "org.postgresql" % "postgresql" % "42.4.2",
+  "org.postgresql" % "postgresql" % "42.5.0",
   "org.webjars" %% "webjars-play" % "2.8.13",
   "org.webjars" % "bootstrap" % "5.2.0" exclude("org.webjars", "jquery"),
   "org.webjars" % "bootstrap-table" % "1.16.0" exclude("org.webjars", "jquery"),
