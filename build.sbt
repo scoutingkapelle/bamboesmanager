@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
   "com.typesafe.play" %% "play-slick" % "5.1.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "5.1.0",
-  "com.typesafe.play" %% "play-json" % "2.9.3",
+  "com.typesafe.play" %% "play-json" % "2.9.4",
   "com.h2database" % "h2" % "2.1.214",
   "org.postgresql" % "postgresql" % "42.5.1",
   "org.webjars" %% "webjars-play" % "2.8.18",
