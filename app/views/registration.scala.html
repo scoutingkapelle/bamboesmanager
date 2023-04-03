@@ -1,6 +1,6 @@
 @this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(registration: Registration, registrationForm: Form[forms.RegistrationForm.Data], categories: Seq[(String, String)], user: models.User)(implicit request: RequestHeader, messages: Messages)
+@(registration: Registration, registrationForm: Form[forms.RegistrationForm.Data], categories: Seq[(String, String)], secondChoices: Seq[(String, String)], user: models.User)(implicit request: RequestHeader, messages: Messages)
 
 @scripts = {
     @webJarsUtil.locate("bootstrap3/bootstrap-switch.min.css").css()
@@ -34,7 +34,8 @@
                     @b3.checkbox(registrationForm("saturday"), Symbol("_label") -> Messages("saturday.label"), Symbol("checked") -> registration.saturday)
                     @b3.checkbox(registrationForm("sorting"), Symbol("_label") -> Messages("sorting.label"), Symbol("checked") -> registration.sorting)
                     @b3.checkbox(registrationForm("selling"), Symbol("_label") -> Messages("selling.label"), Symbol("checked") -> registration.category.isDefined)
-                    @b3.select(registrationForm("category"), options = categories, Symbol("_label") -> Messages("category.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("category.select"), Symbol("value") -> registration.category.map(_.id), Symbol("required") -> false)
+                    @b3.select(registrationForm("category"), options = categories, Symbol("_label") -> Messages("category.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("category.select"), Symbol("value") -> registration.category.map(_.id).getOrElse(""), Symbol("required") -> false)
+                    @b3.select(registrationForm("secondChoice"), options = secondChoices, Symbol("_label") -> Messages("second.choice.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("second.choice.select"), Symbol("value") -> registration.secondChoice.map(_.id).getOrElse(""), Symbol("required") -> false)
                     @b3.checkbox(registrationForm("teamLeader"), Symbol("_label") -> Messages("team.leader.label"), Symbol("checked") -> registration.teamLeader)
                     @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
                         <span class="glyphicon glyphicon glyphicon-ok"></span>

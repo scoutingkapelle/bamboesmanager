@@ -7,10 +7,11 @@ object CategoryForm {
 
   val form: Form[Data] = Form(
     mapping(
-      "name" -> nonEmptyText
+      "name" -> nonEmptyText,
+      "secondChoice" -> boolean
     )(Data.apply)(Data.unapply)
   )
 
-  case class Data(name: String)
+  case class Data(name: String, secondChoice: Boolean)
 
 }

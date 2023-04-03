@@ -1,6 +1,6 @@
 @this(main: views.html.main, webJarsUtil: org.webjars.play.WebJarsUtil)
 
-@(registerForm: Form[forms.RegisterForm.Data], organisations: Seq[(String, String)], groups: Seq[(String, String)], categories: Seq[(String, String)], user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
+@(registerForm: Form[forms.RegisterForm.Data], organisations: Seq[(String, String)], groups: Seq[(String, String)], categories: Seq[(String, String)], secondChoices: Seq[(String, String)], user: Option[models.User])(implicit request: RequestHeader, messages: Messages)
 
 @scripts = {
     @webJarsUtil.locate("bootstrap3/bootstrap-switch.min.css").css()
@@ -46,6 +46,7 @@
                     </div>
                     @b3.checkbox(registerForm("selling"), Symbol("_label") -> Messages("selling.label"))
                     @b3.select(registerForm("category"), options = categories, Symbol("_label") -> Messages("category.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("category.select"), Symbol("required") -> "false")
+                    @b3.select(registerForm("secondChoice"), options = secondChoices, Symbol("_label") -> Messages("second.choice.label"), Symbol("class") -> "form-control input-lg", Symbol("_default") -> Messages("second.choice.select"), Symbol("required") -> "false")
                     <span class="help-block col-md-offset-2">@Messages("selling.text")</span>
 
                     <hr>

@@ -19,19 +19,38 @@ $(document).ready(function () {
     const categoryDropdown = $('#category');
     categoryDropdown.removeProp('required');
 
-    if (selling.bootstrapSwitch('state')) categoryField.removeClass('hidden');
-    else categoryField.addClass('hidden');
+    const secondChoiceField = $('#secondChoice_field');
+    const secondChoiceDropdown = $('#secondChoice');
+    secondChoiceDropdown.removeProp('required');
 
-    const selected = $('#category :selected').val();
+    if (selling.bootstrapSwitch('state')) {
+        categoryField.removeClass('hidden');
+        secondChoiceField.removeClass('hidden');
+    } else {
+        categoryField.addClass('hidden');
+        secondChoiceField.addClass('hidden');
+    }
+
+    const selectedCategory = $('#category :selected').val();
+    const selectedSecondChoice = $('#secondChoice :selected').val();
+
     selling.on('switchChange.bootstrapSwitch', function (event, state) {
         if (state) {
             categoryField.removeClass('hidden');
-            $('#category').prop('required', true)
-            $('#category').val(selected)
+            categoryDropdown.prop('required', true)
+            categoryDropdown.val(selectedCategory)
+
+            secondChoiceField.removeClass('hidden');
+            secondChoiceDropdown.prop('required', true)
+            secondChoiceDropdown.val(selectedSecondChoice)
         } else {
             categoryField.addClass('hidden');
             categoryDropdown.removeProp('required');
             $('#category option:selected').val([]);
+
+            secondChoiceField.addClass('hidden');
+            secondChoiceDropdown.removeProp('required');
+            $('#secondChoice option:selected').val([]);
         }
     });
 
