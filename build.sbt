@@ -6,7 +6,7 @@ lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala)
 
 routesGenerator := InjectedRoutesGenerator
 
-scalaVersion := "2.13.10"
+scalaVersion := "2.13.11"
 
 resolvers += Resolver.jcenterRepo
 
