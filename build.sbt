@@ -12,7 +12,7 @@ resolvers += Resolver.jcenterRepo
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test,
   "com.typesafe.play" %% "play-slick" % "5.1.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "5.1.0",
   "org.playframework" %% "play-json" % "3.0.0",
