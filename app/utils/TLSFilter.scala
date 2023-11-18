@@ -1,7 +1,8 @@
 package utils
 
+import org.apache.pekko.stream.Materializer
+
 import javax.inject.Inject
-import akka.stream.Materializer
 import play.api.Environment
 import play.api.mvc.{Filter, RequestHeader, Result, Results}
 
