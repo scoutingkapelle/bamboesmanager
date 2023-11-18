@@ -43,7 +43,17 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
-  "-Ywarn-value-discard"
+  "-Ywarn-value-discard",
+  "-Werror",
+  "-Xlint",
+  "-Xlint:-multiarg-infix",
+)
+
+// https://stackoverflow.com/questions/37413032/ywarn-unused-import-triggering-on-play-routes-file
+scalacOptions ++= Seq(
+  "-Wconf:cat=unused-imports&site=.*views.html.*:s", // Silence import warnings in Play html files
+  "-Wconf:cat=unused-imports&site=<empty>:s", // Silence import warnings on Play `routes` files
+  "-Wconf:cat=unused-imports&site=router:s", // Silence import warnings on Play `routes` files
 )
 
 Global / onChangedBuildSource := ReloadOnSourceChanges

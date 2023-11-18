@@ -27,7 +27,7 @@ class PasswordInfoDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   def add(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = save(loginInfo, authInfo)
 
   def save(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] = {
-    val query = passwords.insertOrUpdate(loginInfo, authInfo)
+    val query = passwords.insertOrUpdate((loginInfo, authInfo))
     db.run(query).map(_ => authInfo)
   }
 

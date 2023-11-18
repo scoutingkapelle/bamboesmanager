@@ -1,13 +1,13 @@
 package controllers
 
-import javax.inject.Inject
-import io.github.honeycombcheesecake.play.silhouette.api.{LogoutEvent, Silhouette}
 import forms.{SignInForm, SignUpForm}
+import io.github.honeycombcheesecake.play.silhouette.api.{LogoutEvent, Silhouette}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 import utils.DefaultEnv
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Inject
+import scala.concurrent.Future
 
 class Application @Inject()(components: ControllerComponents,
                             silhouette: Silhouette[DefaultEnv],
@@ -15,7 +15,6 @@ class Application @Inject()(components: ControllerComponents,
                             dashboardTemplate: views.html.dashboard,
                             signInTemplate: views.html.signIn,
                             signUpTemplate: views.html.signUp)
-                           (implicit ec: ExecutionContext)
   extends AbstractController(components) with I18nSupport {
 
   def index(): Action[AnyContent] = silhouette.UserAwareAction { implicit request =>
