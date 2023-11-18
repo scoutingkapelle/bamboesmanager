@@ -13,8 +13,8 @@ resolvers += Resolver.jcenterRepo
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test,
-  "com.typesafe.play" %% "play-slick" % "5.2.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "5.2.0",
+  "org.playframework" %% "play-slick" % "6.0.0",
+  "org.playframework" %% "play-slick-evolutions" % "6.0.0",
   "org.playframework" %% "play-json" % "3.0.1",
   "com.h2database" % "h2" % "2.2.224",
   "org.postgresql" % "postgresql" % "42.6.0",
