@@ -32,8 +32,8 @@ libraryDependencies ++= Seq(
   "io.github.honeycomb-cheesecake" %% "play-silhouette-testkit" % "8.0.2" % "test",
   "net.codingwell" %% "scala-guice" % "7.0.0",
   "com.iheart" %% "ficus" % "1.5.2",
-  "com.typesafe.play" %% "play-mailer" % "9.0.0",
-  "com.typesafe.play" %% "play-mailer-guice" % "9.0.0"
+  "org.playframework" %% "play-mailer" % "10.0.0",
+  "org.playframework" %% "play-mailer-guice" % "10.0.0"
 )
 
 scalacOptions ++= Seq(
