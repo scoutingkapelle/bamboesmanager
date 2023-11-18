@@ -10,12 +10,16 @@ scalaVersion := "2.13.12"
 
 resolvers += Resolver.jcenterRepo
 
+libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
+
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test,
   "org.playframework" %% "play-slick" % "6.0.0",
   "org.playframework" %% "play-slick-evolutions" % "6.0.0",
   "org.playframework" %% "play-json" % "3.0.1",
+  "org.playframework" %% "play-mailer" % "10.0.0",
+  "org.playframework" %% "play-mailer-guice" % "10.0.0",
   "com.h2database" % "h2" % "2.2.224",
   "org.postgresql" % "postgresql" % "42.6.0",
   "org.webjars" %% "webjars-play" % "3.0.0",
@@ -32,8 +36,6 @@ libraryDependencies ++= Seq(
   "io.github.honeycomb-cheesecake" %% "play-silhouette-testkit" % "8.0.2" % "test",
   "net.codingwell" %% "scala-guice" % "7.0.0",
   "com.iheart" %% "ficus" % "1.5.2",
-  "org.playframework" %% "play-mailer" % "10.0.0",
-  "org.playframework" %% "play-mailer-guice" % "10.0.0"
 )
 
 scalacOptions ++= Seq(
