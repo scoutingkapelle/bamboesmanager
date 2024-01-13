@@ -14,7 +14,7 @@ libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionSch
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test,
   "org.playframework" %% "play-slick" % "6.0.0",
   "org.playframework" %% "play-slick-evolutions" % "6.0.0",
   "org.playframework" %% "play-json" % "3.0.1",
