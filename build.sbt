@@ -29,12 +29,12 @@ libraryDependencies ++= Seq(
   "org.webjars.bower" % "tableExport.jquery.plugin" % "1.9.3" exclude("org.webjars.bower", "jquery") exclude("org.webjars.bower", "jspdf") exclude("org.webjars.bower", "jspdf-autotable") exclude("org.webjars.bower", "file-saver.js") exclude("org.webjars.bower", "html2canvas"),
   "org.webjars" % "jquery" % "1.12.4",
   "com.adrianhurt" %% "play-bootstrap" % "1.6.1-P28-B3" exclude("org.webjars", "bootstrap") exclude("org.webjars", "jquery"),
-  "io.github.honeycomb-cheesecake" %% "play-silhouette" % "8.0.2",
-  "io.github.honeycomb-cheesecake" %% "play-silhouette-persistence" % "8.0.2",
-  "io.github.honeycomb-cheesecake" %% "play-silhouette-crypto-jca" % "8.0.2",
-  "io.github.honeycomb-cheesecake" %% "play-silhouette-password-bcrypt" % "8.0.2",
-  "io.github.honeycomb-cheesecake" %% "play-silhouette-testkit" % "8.0.2" % "test",
-  "net.codingwell" %% "scala-guice" % "7.0.0",
+  "org.playframework.silhouette" %% "play-silhouette" % "10.0.0",
+  "org.playframework.silhouette" %% "play-silhouette-persistence" % "10.0.0",
+  "org.playframework.silhouette" %% "play-silhouette-crypto-jca" % "10.0.0",
+  "org.playframework.silhouette" %% "play-silhouette-password-bcrypt" % "10.0.0",
+  "org.playframework.silhouette" %% "play-silhouette-testkit" % "10.0.0" % "test",
+  "net.codingwell" %% "scala-guice" % "6.0.0",
   "com.iheart" %% "ficus" % "1.5.2",
 )
 

@@ -1,8 +1,8 @@
 package models.daos.tables
 
-import io.github.honeycombcheesecake.play.silhouette.api.LoginInfo
-import io.github.honeycombcheesecake.play.silhouette.api.util.PasswordInfo
 import models.User
+import play.silhouette.api.LoginInfo
+import play.silhouette.api.util.PasswordInfo
 import slick.jdbc.JdbcProfile
 import slick.lifted.ProvenShape.proveShapeOf
 
