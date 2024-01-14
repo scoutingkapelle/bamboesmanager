@@ -4,13 +4,7 @@ version := "0.6.0-SNAPSHOT"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala)
 
-routesGenerator := InjectedRoutesGenerator
-
 scalaVersion := "2.13.12"
-
-resolvers += Resolver.jcenterRepo
-
-libraryDependencySchemes += "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
