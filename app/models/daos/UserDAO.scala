@@ -1,10 +1,10 @@
 package models.daos
 
-import io.github.honeycombcheesecake.play.silhouette.api.LoginInfo
-import io.github.honeycombcheesecake.play.silhouette.api.services.IdentityService
 import models.User
 import models.daos.tables.DAOSlick
 import play.api.db.slick.DatabaseConfigProvider
+import play.silhouette.api.LoginInfo
+import play.silhouette.api.services.IdentityService
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

@@ -1,14 +1,14 @@
 package controllers
 
-import io.github.honeycombcheesecake.play.silhouette.api._
-import io.github.honeycombcheesecake.play.silhouette.api.repositories.AuthInfoRepository
-import io.github.honeycombcheesecake.play.silhouette.api.util.PasswordHasher
-import io.github.honeycombcheesecake.play.silhouette.impl.providers._
 import forms.SignUpForm
 import models.User
 import models.daos.UserDAO
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.silhouette.api._
+import play.silhouette.api.repositories.AuthInfoRepository
+import play.silhouette.api.util.PasswordHasher
+import play.silhouette.impl.providers._
 import utils.DefaultEnv
 
 import java.util.UUID

@@ -1,14 +1,14 @@
 package controllers
 
-import java.util.UUID
-import javax.inject.Inject
-import io.github.honeycombcheesecake.play.silhouette.api.Silhouette
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json._
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.silhouette.api.Silhouette
 import utils.DefaultEnv
 
+import java.util.UUID
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class Persons @Inject()(personDAO: PersonDAO,

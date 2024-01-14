@@ -1,22 +1,21 @@
-import java.util.UUID
 import com.google.inject.AbstractModule
-import io.github.honeycombcheesecake.play.silhouette.api.{Environment, LoginInfo}
-import io.github.honeycombcheesecake.play.silhouette.test._
 import models.User
 import net.codingwell.scalaguice.ScalaModule
 import org.specs2.mock.Mockito
 import org.specs2.specification.Scope
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.test.CSRFTokenHelper._
-import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
+import play.api.test.PlaySpecification
+import play.silhouette.api.{Environment, LoginInfo}
+import play.silhouette.test._
 import utils.DefaultEnv
 
+import java.util.UUID
 import scala.concurrent.ExecutionContext.Implicits.global
 
 /**
-  * Test case for the [[controllers.Authentication]] class.
-  */
+ * Test case for the [[controllers.Authentication]] class.
+ */
 class AuthenticationSpec extends PlaySpecification with Mockito {
   sequential
 
@@ -52,13 +51,13 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
   }*/
 
   /**
-    * The context.
-    */
+   * The context.
+   */
   trait Context extends Scope {
 
     /**
-      * A fake Guice module.
-      */
+     * A fake Guice module.
+     */
     class FakeModule extends AbstractModule with ScalaModule {
       override def configure(): Unit = {
         bind[Environment[DefaultEnv]].toInstance(env)
@@ -66,8 +65,8 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     }
 
     /**
-      * An identity.
-      */
+     * An identity.
+     */
     val identity: User = User(
       id = UUID.randomUUID(),
       name = "John Doe",
@@ -75,13 +74,13 @@ class AuthenticationSpec extends PlaySpecification with Mockito {
     )
 
     /**
-      * A Silhouette fake environment.
-      */
+     * A Silhouette fake environment.
+     */
     implicit val env: Environment[DefaultEnv] = new FakeEnvironment[DefaultEnv](Seq(LoginInfo("credentials", identity.email) -> identity))
 
     /**
-      * The application.
-      */
+     * The application.
+     */
     lazy val application: Application = new GuiceApplicationBuilder()
       .overrides(new FakeModule)
       .build()

@@ -1,12 +1,12 @@
 package controllers
 
-import io.github.honeycombcheesecake.play.silhouette.api.Silhouette
 import forms.OrganisationForm
 import models._
 import models.daos.{OrganisationDAO, StatisticsDAO}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.silhouette.api.Silhouette
 import utils.DefaultEnv
 
 import java.util.UUID

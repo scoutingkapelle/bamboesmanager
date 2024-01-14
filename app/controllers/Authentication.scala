@@ -1,14 +1,14 @@
 package controllers
 
-import io.github.honeycombcheesecake.play.silhouette.api._
-import io.github.honeycombcheesecake.play.silhouette.api.exceptions.ProviderException
-import io.github.honeycombcheesecake.play.silhouette.api.util.Credentials
-import io.github.honeycombcheesecake.play.silhouette.impl.exceptions.IdentityNotFoundException
-import io.github.honeycombcheesecake.play.silhouette.impl.providers._
 import forms.SignInForm
 import models.daos.UserDAO
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.silhouette.api._
+import play.silhouette.api.exceptions.ProviderException
+import play.silhouette.api.util.Credentials
+import play.silhouette.impl.exceptions.IdentityNotFoundException
+import play.silhouette.impl.providers._
 import utils.DefaultEnv
 
 import javax.inject.Inject

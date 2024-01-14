@@ -1,14 +1,14 @@
 package controllers
 
-import javax.inject.Inject
-import io.github.honeycombcheesecake.play.silhouette.api.Silhouette
 import models._
 import models.daos._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+import play.silhouette.api.Silhouette
 import utils.DefaultEnv
 
+import javax.inject.Inject
 import scala.collection.immutable.ListMap
 import scala.concurrent.ExecutionContext
 

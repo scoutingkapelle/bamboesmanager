@@ -1,6 +1,6 @@
 package models
 
-import io.github.honeycombcheesecake.play.silhouette.api.Identity
+import play.silhouette.api.Identity
 
 import java.util.UUID
 
