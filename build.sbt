@@ -4,7 +4,7 @@ version := "0.6.0-SNAPSHOT"
 
 lazy val `bamboesmanager` = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.13.12"
+scalaVersion := "2.13.13"
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
@@ -43,6 +43,7 @@ scalacOptions ++= Seq(
   "-Werror",
   "-Xlint",
   "-Xlint:-multiarg-infix",
+  "-Xlint:-named-booleans",
 )
 
 // https://stackoverflow.com/questions/37413032/ywarn-unused-import-triggering-on-play-routes-file
