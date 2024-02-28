@@ -43,6 +43,7 @@ scalacOptions ++= Seq(
   "-Werror",
   "-Xlint",
   "-Xlint:-multiarg-infix",
+  "-Xlint:-named-booleans",
 )
 
 // https://stackoverflow.com/questions/37413032/ywarn-unused-import-triggering-on-play-routes-file
