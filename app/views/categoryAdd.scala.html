@@ -18,6 +18,7 @@
         @helper.form(action = routes.Categories.save()) {
             @helper.CSRF.formField
             @b3.text(categoryForm("name"), Symbol("_hiddenLabel") -> Messages("name"), Symbol("placeholder") -> Messages("name"), Symbol("class") -> "form-control input-lg")
+            @b3.checkbox(categoryForm("secondChoice"), Symbol("_label") -> Messages("second.choice"))
             @b3.submit(Symbol("class") -> "btn btn-lg btn-primary btn-block") {
                 <span class="glyphicon glyphicon glyphicon-ok"></span>
                 @Messages("category.save")

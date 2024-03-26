@@ -16,7 +16,8 @@ object RegisterForm {
       "friday" -> boolean,
       "saturday" -> boolean,
       "sorting" -> boolean,
-      "category" -> optional(nonEmptyText)
+      "category" -> optional(nonEmptyText),
+      "secondChoice" -> optional(nonEmptyText)
     )(Data.apply)(Data.unapply)
   )
 
@@ -30,7 +31,8 @@ object RegisterForm {
                    friday: Boolean,
                    saturday: Boolean,
                    sorting: Boolean,
-                   category: Option[String]
+                   category: Option[String],
+                   secondChoice: Option[String],
                  ) {
 
     lazy val fullName: String =

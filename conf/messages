@@ -28,6 +28,9 @@ category.label = Stand verkopen
 category.none = Niet helpen verkopen
 category.save = Stand opslaan
 category.select = Selecteer een stand
+second.choice.label = Tweede keuze verkopen
+second.choice.select = Selecteer een tweede keuze
+second.choice = Tweede keuze
 
 groups = Groepen
 group = Groep

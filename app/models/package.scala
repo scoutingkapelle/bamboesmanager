@@ -11,6 +11,9 @@ package object models {
   def categoriesTupled(categories: Seq[Category]): Seq[(String, String)] =
     categories.sortBy(_.name).map(category => (category.id.toString, category.name))
 
+  def secondChoicesTupled(categories: Seq[Category]): Seq[(String, String)] =
+    categories.filter(_.secondChoice).sortBy(_.name).map(category => (category.id.toString, category.name))
+
   def groupsTupled(groups: Seq[Group]): Seq[(String, String)] =
     groups.sortBy(group => (group.organisation.name, group.name)).map { group =>
       (group.organisation.id.toString + "#" + group.id.toString, group.organisation.name + ": " + group.name)

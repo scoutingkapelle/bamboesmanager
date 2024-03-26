@@ -62,7 +62,7 @@ class Categories @Inject()(categoryDAO: CategoryDAO,
     CategoryForm.form.bindFromRequest().fold(
       form => Future.successful(BadRequest(categoryAddTemplate(form, request.identity))),
       data => {
-        val category = Category(UUID.randomUUID, data.name)
+        val category = Category(UUID.randomUUID, data.name, data.secondChoice)
         categoryDAO.save(category).map(_ => Redirect(routes.Categories.categories()))
       }
     )

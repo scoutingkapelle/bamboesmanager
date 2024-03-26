@@ -18,11 +18,13 @@ trait TableDefinitions {
   val registrations = TableQuery[RegistrationTable]
 
   class CategoryTable(tag: Tag) extends Table[Category](tag, "categories") {
-    def * = (id, name) <> (Category.tupled, Category.unapply)
+    def * = (id, name, second_choice) <> (Category.tupled, Category.unapply)
 
     def id = column[UUID]("id", O.PrimaryKey)
 
     def name = column[String]("name")
+
+    def second_choice = column[Boolean]("second_choice")
   }
 
   class GroupTable(tag: Tag) extends Table[DBGroup](tag, "groups") {
@@ -70,7 +72,7 @@ trait TableDefinitions {
   implicit def toDBPerson(person: Person): DBPerson = DBPerson(person.id, person.name, person.email, person.age, person.group.id)
 
   class RegistrationTable(tag: Tag) extends Table[DBRegistration](tag, "registrations") {
-    def * = (id, person_id, friday, saturday, sorting, category_id, team_leader) <> (DBRegistration.tupled, DBRegistration.unapply)
+    def * = (id, person_id, friday, saturday, sorting, category_id, second_choice_id, team_leader) <> (DBRegistration.tupled, DBRegistration.unapply)
 
     def friday = column[Boolean]("friday")
 
@@ -86,12 +88,14 @@ trait TableDefinitions {
 
     def category_id = column[Option[UUID]]("category_id")
 
+    def second_choice_id = column[Option[UUID]]("second_choice_id")
+
     def category = foreignKey("category_fk", category_id, categories)(_.id.?)
 
     def person = foreignKey("person_fk", person_id, persons)(_.id)
   }
 
-  case class DBRegistration(id: UUID, person_id: UUID, friday: Boolean, saturday: Boolean, sorting: Boolean, category_id: Option[UUID], team_leader: Boolean)
+  case class DBRegistration(id: UUID, person_id: UUID, friday: Boolean, saturday: Boolean, sorting: Boolean, category_id: Option[UUID], second_choice_id: Option[UUID], team_leader: Boolean)
 
   implicit def toDBRegistration(registration: Registration): DBRegistration =
     DBRegistration(
@@ -100,7 +104,8 @@ trait TableDefinitions {
       registration.friday,
       registration.saturday,
       registration.sorting,
-      registration.category.map(cat => cat.id),
+      registration.category.map(_.id),
+      registration.secondChoice.map(_.id),
       registration.teamLeader
     )
 }

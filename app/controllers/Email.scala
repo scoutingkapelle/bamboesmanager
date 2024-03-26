@@ -30,7 +30,7 @@ class Email @Inject()(mail: Mail,
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
-    val category = Category(UUID.randomUUID, Messages("category"))
+    val category = Category(UUID.randomUUID, Messages("category"), secondChoice = true)
     val registration = Registration(
       id = UUID.randomUUID,
       person = person,
@@ -38,6 +38,7 @@ class Email @Inject()(mail: Mail,
       saturday = true,
       sorting = true,
       category = Some(category),
+      secondChoice = Some(category),
       teamLeader = true
     )
     Ok(confirmationTemplate(registration, request.identity))
@@ -47,7 +48,7 @@ class Email @Inject()(mail: Mail,
     val organisation = Organisation(UUID.randomUUID, Messages("organisation"))
     val group = Group(UUID.randomUUID, Messages("group"), organisation)
     val person = Person(UUID.randomUUID, Messages("name"), Messages("email"), 21, group)
-    val category = Category(UUID.randomUUID, Messages("category"))
+    val category = Category(UUID.randomUUID, Messages("category"), secondChoice = true)
     val registration = Registration(
       id = UUID.randomUUID,
       person = person,
@@ -55,6 +56,7 @@ class Email @Inject()(mail: Mail,
       saturday = true,
       sorting = true,
       category = Some(category),
+      secondChoice = Some(category),
       teamLeader = true
     )
     Ok(distributionTemplate(registration, request.identity))

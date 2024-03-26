@@ -14,65 +14,65 @@ class RegistrationDAO @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   def all: Future[Seq[Registration]] = {
     val query = for {
-      (r, c) <- registrations joinLeft categories on (_.category_id === _.id)
+      ((r, c), s) <- registrations joinLeft categories on (_.category_id === _.id) joinLeft categories on (_._1.second_choice_id === _.id)
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
-    } yield (r, p, g, o, c)
+    } yield (r, p, g, o, c, s)
 
     db.run(query.result).map(rows => rows.map {
-      case (r, p, g, o, c) =>
+      case (r, p, g, o, c, s) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, s, r.team_leader)
     })
   }
 
   def category(category_id: UUID): Future[Seq[Registration]] = {
     val query = for {
-      (r, c) <- registrations joinLeft categories on (_.category_id === _.id)
+      ((r, c), s) <- registrations joinLeft categories on (_.category_id === _.id) joinLeft categories on (_._1.second_choice_id === _.id)
       p <- persons if p.id === r.person_id && r.category_id === category_id
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
-    } yield (r, p, g, o, c)
+    } yield (r, p, g, o, c, s)
 
     db.run(query.result).map(rows => rows.map {
-      case (r, p, g, o, c) =>
+      case (r, p, g, o, c, s) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, s, r.team_leader)
     })
   }
 
   def group(group_id: UUID): Future[Seq[Registration]] = {
     val query = for {
-      (r, c) <- registrations joinLeft categories on (_.category_id === _.id)
+      ((r, c), s) <- registrations joinLeft categories on (_.category_id === _.id) joinLeft categories on (_._1.second_choice_id === _.id)
       p <- persons if p.id === r.person_id && p.group_id === group_id
       g <- groups if g.id === group_id
       o <- organisations if o.id === g.organisation_id
-    } yield (r, p, g, o, c)
+    } yield (r, p, g, o, c, s)
 
     db.run(query.result).map(rows => rows.map {
-      case (r, p, g, o, c) =>
+      case (r, p, g, o, c, s) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, s, r.team_leader)
     })
   }
 
   def get(id: UUID): Future[Option[Registration]] = {
     val query = for {
-      (r, c) <- registrations joinLeft categories on (_.category_id === _.id) if r.id === id
+      ((r, c), s) <- registrations  joinLeft categories on (_.category_id === _.id) joinLeft categories on (_._1.second_choice_id === _.id) if r.id === id
       p <- persons if p.id === r.person_id
       g <- groups if g.id === p.group_id
       o <- organisations if o.id === g.organisation_id
-    } yield (r, p, g, o, c)
+    } yield (r, p, g, o, c, s)
 
     db.run(query.result.headOption).map(rows => rows.map {
-      case (r, p, g, o, c) =>
+      case (r, p, g, o, c, s) =>
         val group = Group(g.id, g.name, o)
         val person = Person(p.id, p.name, p.email, p.age, group)
-        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, r.team_leader)
+        Registration(r.id, person, r.friday, r.saturday, r.sorting, c, s, r.team_leader)
     })
   }
 

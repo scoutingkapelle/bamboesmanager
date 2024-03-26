@@ -26,6 +26,7 @@
                         <th>@Messages("category")</th>
                         <th>@Messages("count.volunteers")</th>
                         <th>@Messages("team.leaders")</th>
+                        <th>@Messages("second.choice")</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,7 @@
                         <td>@category.name</td>
                         <td>@counts.getOrElse(category.id, 0)</td>
                         <td>@teamLeaders.get(category.id)</td>
+                        <td>@(if(category.secondChoice) Messages("yes") else Messages("no"))</td>
                     </tr>
                 }
                 </tbody>
