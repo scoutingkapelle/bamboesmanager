@@ -11,10 +11,10 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test,
   "org.playframework" %% "play-slick" % "6.1.1",
   "org.playframework" %% "play-slick-evolutions" % "6.1.1",
-  "org.playframework" %% "play-json" % "3.0.2",
-  "org.playframework" %% "play-mailer" % "10.0.1",
-  "org.playframework" %% "play-mailer-guice" % "10.0.1",
-  "com.h2database" % "h2" % "2.2.224",
+  "org.playframework" %% "play-json" % "3.0.4",
+  "org.playframework" %% "play-mailer" % "10.1.0",
+  "org.playframework" %% "play-mailer-guice" % "10.1.0",
+  "com.h2database" % "h2" % "2.3.232",
   "org.postgresql" % "postgresql" % "42.7.5",
   "org.webjars" %% "webjars-play" % "3.0.2",
   "org.webjars" % "bootstrap" % "3.4.1" exclude("org.webjars", "jquery"),
@@ -42,8 +42,6 @@ scalacOptions ++= Seq(
   "-Ywarn-value-discard",
   "-Werror",
   "-Xlint",
-  "-Xlint:-multiarg-infix",
-  "-Xlint:-named-booleans",
 )
 
 // https://stackoverflow.com/questions/37413032/ywarn-unused-import-triggering-on-play-routes-file
