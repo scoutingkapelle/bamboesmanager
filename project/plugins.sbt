@@ -1,3 +1,3 @@
 logLevel := Level.Warn
 
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.6")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.0.7")
