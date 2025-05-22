@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK
@@ -21,4 +21,4 @@ jobs:
     - uses: sbt/setup-sbt@v1
     - name: Run tests
       run: sbt test
-    - uses: scalacenter/sbt-dependency-submission@v2
+    - uses: scalacenter/sbt-dependency-submission@v3
