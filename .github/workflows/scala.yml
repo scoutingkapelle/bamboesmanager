@@ -22,3 +22,4 @@ jobs:
     - name: Run tests
       run: sbt test
     - uses: scalacenter/sbt-dependency-submission@v3
+      if: github.event_name == 'push'
