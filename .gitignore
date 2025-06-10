@@ -1,5 +1,6 @@
 logs
 project/project
 target
-/.idea
+.idea
+.bsp
 conf/overrides.conf
