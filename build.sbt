@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test,
   "org.playframework" %% "play-slick" % "6.2.0",
   "org.playframework" %% "play-slick-evolutions" % "6.2.0",
-  "org.playframework" %% "play-json" % "3.0.4",
+  "org.playframework" %% "play-json" % "3.0.5",
   "org.playframework" %% "play-mailer" % "10.1.0",
   "org.playframework" %% "play-mailer-guice" % "10.1.0",
   "com.h2database" % "h2" % "2.3.232",
