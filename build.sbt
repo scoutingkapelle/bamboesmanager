@@ -8,7 +8,7 @@ scalaVersion := "2.13.16"
 
 libraryDependencies ++= Seq(
   ehcache, ws, specs2 % Test, evolutions, filters, guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.1" % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.2" % Test,
   "org.playframework" %% "play-slick" % "6.2.0",
   "org.playframework" %% "play-slick-evolutions" % "6.2.0",
   "org.playframework" %% "play-json" % "3.0.5",
