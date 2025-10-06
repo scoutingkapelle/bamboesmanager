@@ -3,10 +3,10 @@
 @(registrations: Seq[Registration], user: models.User)(implicit messages: Messages)
 
 @scripts = {
-    @webJarsUtil.locate("bootstrap-table.css").css()
-    @webJarsUtil.locate("bootstrap-table.js").script()
-    @webJarsUtil.locate("bootstrap-table-export.js").script()
-    @webJarsUtil.locate("tableExport.min.js").script()
+    @webJarsUtil.locate("bootstrap-table", "bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table", "bootstrap-table.js").script()
+    @webJarsUtil.locate("bootstrap-table-export", "bootstrap-table-export.js").script()
+    @webJarsUtil.locate("bootstrap-table-export", "tableExport.min.js").script()
     <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registrations.js")"></script>
 }
 

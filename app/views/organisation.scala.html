@@ -3,8 +3,8 @@
 @(organisation: Organisation, groups: Seq[Group], statistics: Map[java.util.UUID, Int], user: models.User)(implicit messages: Messages)
 
 @scripts = {
-    @webJarsUtil.locate("bootstrap-table.css").css()
-    @webJarsUtil.locate("bootstrap-table.js").script()
+    @webJarsUtil.locate("bootstrap-table", "bootstrap-table.css").css()
+    @webJarsUtil.locate("bootstrap-table", "bootstrap-table.js").script()
     <script type="application/javascript" src="@routes.Assets.at("javascripts/views/groups.js")"></script>
 }
 

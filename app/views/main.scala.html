@@ -11,9 +11,9 @@
 
         <link rel="stylesheet" href='@routes.Assets.at("stylesheets/main.css")'>
 
-        @webJarsUtil.locate("css/bootstrap.min.css").css()
-        @webJarsUtil.locate("jquery.min.js").script()
-        @webJarsUtil.locate("bootstrap.min.js").script()
+        @webJarsUtil.locate("bootstrap", "css/bootstrap.min.css").css()
+        @webJarsUtil.locate("jquery", "jquery.min.js").script()
+        @webJarsUtil.locate("bootstrap", "bootstrap.min.js").script()
 
         @scripts
     </head>

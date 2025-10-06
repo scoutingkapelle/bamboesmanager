@@ -3,8 +3,8 @@
 @(registration: Registration, registrationForm: Form[forms.RegistrationForm.Data], categories: Seq[(String, String)], secondChoices: Seq[(String, String)], user: models.User)(implicit request: RequestHeader, messages: Messages)
 
 @scripts = {
-    @webJarsUtil.locate("bootstrap3/bootstrap-switch.min.css").css()
-    @webJarsUtil.locate("bootstrap-switch.min.js").script()
+    @webJarsUtil.locate("bootstrap-switch", "bootstrap3/bootstrap-switch.min.css").css()
+    @webJarsUtil.locate("bootstrap-switch", "bootstrap-switch.min.js").script()
     <script type="application/javascript" src="@routes.Assets.at("javascripts/views/registration.js")"></script>
 }
 
