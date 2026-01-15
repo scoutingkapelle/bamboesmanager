@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
   "org.playframework" %% "play-mailer" % "10.1.0",
   "org.playframework" %% "play-mailer-guice" % "10.1.0",
   "com.h2database" % "h2" % "2.4.240",
-  "org.postgresql" % "postgresql" % "42.7.8",
+  "org.postgresql" % "postgresql" % "42.7.9",
   "org.webjars" %% "webjars-play" % "3.0.10",
   "org.webjars" % "bootstrap" % "3.4.1" exclude("org.webjars", "jquery"),
   "org.webjars" % "bootstrap-table" % "1.16.0" exclude("org.webjars", "jquery"),
