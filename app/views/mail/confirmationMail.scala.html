@@ -26,6 +26,12 @@
                 {cat.name}
                 </li>).getOrElse(<li>Helpen verkopen: Nee</li>)
             }
+            @{
+                registration.secondChoice.map(secondChoice => <li>
+                Tweede keuze:
+                {secondChoice.name}
+                </li>).getOrElse(<li></li>)
+            }
         </ul>
 
         <p>Klopt er iets niet? Beantwoordt dan deze mail met de juiste gegevens, wij passen het vervolgens voor je aan.</p>

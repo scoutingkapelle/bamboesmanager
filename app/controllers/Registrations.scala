@@ -46,6 +46,7 @@ class Registrations @Inject()(mail: Mail,
             registration = r,
             registrationForm = RegistrationForm.form,
             categories = categoriesTupled(categories),
+            secondChoices = secondChoicesTupled(categories),
             user = request.identity))
           case None => NotFound(notFoundTemplate(id, Some(request.identity)))
         }
@@ -67,6 +68,7 @@ class Registrations @Inject()(mail: Mail,
         organisations = organisationsTupled(organisations),
         groups = groupsTupled(groups),
         categories = categoriesTupled(categories),
+        secondChoices = secondChoicesTupled(categories),
         user = request.identity))
     }
   }
@@ -83,6 +85,7 @@ class Registrations @Inject()(mail: Mail,
           organisations = organisationsTupled(organisations),
           groups = groupsTupled(groups),
           categories = categoriesTupled(categories),
+          secondChoices = secondChoicesTupled(categories),
           user = request.identity))
       },
       data => {
@@ -160,6 +163,7 @@ class Registrations @Inject()(mail: Mail,
                   registration = r,
                   registrationForm = form,
                   categories = categoriesTupled(categories),
+                  secondChoices = secondChoicesTupled(categories),
                   user = request.identity))
               case None =>
                 val error = Messages("object.not.found") + ": " + id
